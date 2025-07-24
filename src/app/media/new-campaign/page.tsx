@@ -1,0 +1,584 @@
+"use client";
+import { Button, Input, SelectDropdown, TextArea } from "@/components/elements";
+import React, { useRef, useState } from "react";
+import clsx from "clsx";
+import { Label } from "@/components/ui/label";
+import SelectDate from "@/components/widgets/SelectDate";
+import {
+  formatDateAndTime,
+  getDayDifference,
+  sanitizePrice,
+} from "@/utilities/helpers";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { newCampaign } from "@/schema/newCampaignSchema";
+import { toast } from "react-toastify";
+import { useCreateCampaign } from "@/hooks/campaignHooks";
+import { useRouter } from "next/navigation";
+import { Routes } from "@/utilities/routes";
+import { useInvalidateCampaigns } from "@/hooks/useInvalidateQueries";
+
+const mediaChannels = [
+  {
+    id: "SOCIAL_MEDIA",
+    title: "Social Media",
+    description:
+      "Facebook, Instagram, Twitter, LinkedIn campaigns with targeting options.",
+    price: "$1,500+",
+    options: ["facebook", "instagram", "tiktok", "x", "youtube", "linkedin"],
+  },
+  {
+    id: "SEARCH_ADS",
+    title: "Search Ads",
+    description: "Google Ads and Bing Ads to capture search intent.",
+    price: "$1,200+",
+    options: ["google_ads", "bing_ads"],
+  },
+  {
+    id: "DISPLAY_ADVERTISING",
+    title: "Display Advertising",
+    description: "Banner ads on relevant websites and platforms.",
+    price: "$1,800+",
+    options: ["banner_ads"],
+  },
+  {
+    id: "TELEVISION",
+    title: "Television",
+    description: "TV ads on local or national networks.",
+    price: "$5,000+",
+    options: [
+      "AIT",
+      "TVC",
+      "channels",
+      "NTA",
+      "galaxy_tv",
+      "silverbird_tv",
+      "arise_tv",
+      "wap_tv",
+      "free_tv",
+      "lagos_television",
+    ],
+  },
+  {
+    id: "RADIO",
+    title: "Radio",
+    description: "Radio spots on local or national stations.",
+    price: "$2,500+",
+    options: [
+      "soundcity_radio",
+      "inspiration_fm",
+      "freedom_radio",
+      "frcn",
+      "lagos_talks",
+      "classic_fm",
+      "nigeria_info_fm",
+      "cool_fm",
+      "naija_fm",
+      "the_beat_99_9_fm",
+      "ray_power",
+      "wazobia_fm",
+    ],
+  },
+  {
+    id: "PRINT_MEDIA",
+    title: "Print Media",
+    description: "Newspaper and magazine advertisements.",
+    price: "$3,000+",
+    options: [
+      "the_punch",
+      "the_guardian",
+      "vanguard",
+      "the_nation",
+      "daily_trust",
+      "the_sun",
+      "thisday",
+      "nigerian_tribune",
+      "business_day",
+      "alaroye",
+      "aminiya",
+    ],
+  },
+  {
+    id: "OUTDOOR_BILLBOARD",
+    title: "Outdoor/Billboards",
+    description: "Billboards and outdoor advertising in key locations.",
+    price: "$4,500+",
+    options: [
+      "outdoors_ng",
+      "alternative_adverts_ltd",
+      "signfix_industrial_limited",
+      "optimus_billboards",
+      "branditprintit",
+      "alliance_media_nigeria",
+      "vaad_media_ltd",
+      "gizad_media_design",
+      "bigtreebillboard",
+    ],
+  },
+  {
+    id: "EMAIL_MARKETING",
+    title: "Email Marketing",
+    description: "Targeted email campaigns to existing customers or prospects.",
+    price: "$800+",
+    options: [
+      "adhang",
+      "kong_marketing_agency",
+      "wild_fusion",
+      "odichi_solutions",
+      "maildrip",
+      "mailchimp",
+      "getresponse",
+      "moosend",
+      "hubspot",
+    ],
+  },
+];
+
+const NewCampaign = () => {
+  const [selectedChannel, setSelectedChannel] = useState<string | null>(null);
+  const [selectedItems, setSelectedItems] = useState<any[]>([]);
+  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { push } = useRouter();
+  const { RefetchCampaigns } = useInvalidateCampaigns();
+
+  const {
+    setValue,
+    control,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(newCampaign),
+  });
+
+  const start = formatDateAndTime(watch("startDate")).Date;
+  const end = formatDateAndTime(watch("endDate")).Date;
+
+  const days = getDayDifference(start, end);
+
+  const { mutate: createcampaign } = useCreateCampaign();
+
+  const toggleChannel = (channelId: string) => {
+    setSelectedChannel((prev) => {
+      const next = prev === channelId ? null : channelId;
+      if (next && cardRefs.current[next]) {
+        cardRefs.current[next]?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+      return next;
+    });
+  };
+
+  const toggleOption = (channelId: string, option: string) => {
+    const exists = selectedItems.find(
+      (item) => item.channel === channelId && item.option === option
+    );
+
+    if (exists) {
+      setSelectedItems((prev) =>
+        prev.filter(
+          (item) => item.channel !== channelId || item.option !== option
+        )
+      );
+    } else {
+      const channel = mediaChannels.find((ch) => ch.id === channelId);
+      const sanitizedPrice = channel ? sanitizePrice(channel.price) : "0";
+
+      const baseData = {
+        channel: channelId,
+        option,
+        duration: "2 weeks",
+        amount: sanitizedPrice,
+      };
+
+      const isSocial = channelId === "SOCIAL_MEDIA";
+      setSelectedItems((prev) => [
+        ...prev,
+        isSocial ? { ...baseData, userHandle: "" } : baseData,
+      ]);
+    }
+  };
+
+  const updateHandle = (channelId: string, option: string, handle: string) => {
+    setSelectedItems((prev) =>
+      prev.map((item) =>
+        item.channel === channelId && item.option === option
+          ? { ...item, userHandle: handle }
+          : item
+      )
+    );
+  };
+
+  const isOptionSelected = (channelId: string, option: string) => {
+    return selectedItems.some(
+      (item) => item.channel === channelId && item.option === option
+    );
+  };
+
+  const handleCreate = handleSubmit((data) => {
+    if (selectedItems.length < 1) {
+      toast.error("No media channels selected");
+      return;
+    }
+
+    const payload: any = {
+      campaignName: data?.campaignName,
+      campaignType: data?.campaignType?.value,
+      startDate: start,
+      endDate: end,
+      budget: data?.totalBudget,
+      totalBudget: data?.totalBudget,
+      campaignDescription: data?.campaignDescription,
+      primaryGoal: data?.primaryGoal?.value,
+      keyPerformanceIndicators: data?.keyPerformanceIndicators,
+      targetAudience: data?.targetAudience?.value,
+      instructionsRequirements: data?.instructionsRequirements,
+      location: data?.location,
+      mediaSelections: selectedItems,
+    };
+
+    setIsSubmitting(true);
+    createcampaign(payload, {
+      onSuccess: (response) => {
+        setIsSubmitting(false);
+        toast.success(response?.data?.message);
+        RefetchCampaigns();
+        push(Routes.CAMPAIGNS);
+      },
+      onError: (error: any) => {
+        setIsSubmitting(false);
+        toast.success(error?.response?.data?.message);
+      },
+    });
+  });
+  return (
+    <div className="p-5 md:p-8 bg-[#f5f8fc] text-gray-800">
+      <div className="space-y-1">
+        <h1 className="text-2xl font-bold">Create New Campaign</h1>
+        <p className="font-medium text-sm">
+          Fill in the details to start your next successful campaign.
+        </p>
+      </div>
+
+      <div className="bg-white p-5 shadow-md rounded-lg mt-10">
+        <h1 className="text-xl font-bold border-b border-gray-200 pb-3">
+          Campaign Details
+        </h1>
+
+        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <Controller
+            control={control}
+            name="campaignName"
+            render={({ field }) => (
+              <Input
+                type="text"
+                placeholder="e.g Summer product launch"
+                label="Campaign Name"
+                error={errors?.campaignName?.message}
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="campaignType"
+            render={({ field }) => (
+              <SelectDropdown
+                options={[
+                  { label: "brand awareness", value: "brand_awareness" },
+                  { label: "product launch", value: "product_launch" },
+                  { label: "promotion/sale", value: "promotion_sales" },
+                  { label: "event marketing", value: "event_marketing" },
+                  { label: "lead generation", value: "lead_generation" },
+                ]}
+                placeholder="select campaign type"
+                label="Campaign Type"
+                error={
+                  errors?.campaignType?.message ||
+                  errors?.campaignType?.value?.message
+                }
+                {...field}
+              />
+            )}
+          />
+
+          <div className="w-full">
+            <div className="space-y-2">
+              <Label>Start Date</Label>
+              <Controller
+                control={control}
+                name="startDate"
+                render={({ field }) => (
+                  <SelectDate
+                    selectedDate={field.value}
+                    onChange={field.onChange}
+                    error={errors.startDate?.message}
+                  />
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label>End Date</Label>
+            <Controller
+              control={control}
+              name="endDate"
+              render={({ field }) => (
+                <SelectDate
+                  selectedDate={field.value}
+                  onChange={field.onChange}
+                  error={errors?.endDate?.message}
+                />
+              )}
+            />
+          </div>
+          <Controller
+            control={control}
+            name="campaignDescription"
+            render={({ field }) => (
+              <TextArea
+                label="Campaign Description"
+                placeholder="Describe your objectives, target audience, and key messages.."
+                error={errors?.campaignDescription?.message}
+                {...field}
+              />
+            )}
+          />
+        </div>
+
+        <h1 className="text-xl font-bold border-b border-gray-200 pb-3 mt-10">
+          Budget and Goals
+        </h1>
+
+        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <Controller
+            control={control}
+            name="totalBudget"
+            render={({ field }) => (
+              <Input
+                type="text"
+                placeholder="e.g. 5000"
+                label="Total Budget (USD)"
+                error={errors?.totalBudget?.message}
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="primaryGoal"
+            render={({ field }) => (
+              <SelectDropdown
+                options={[
+                  { label: "brand awareness", value: "brand_awareness" },
+                  { label: "website traffic", value: "website_traffic" },
+                  { label: "sales conversions", value: "sales_conversions" },
+                  { label: "engagement", value: "engagement" },
+                  { label: "lead generation", value: "lead_generation" },
+                ]}
+                placeholder="select primary goal"
+                label="Primary Goal"
+                error={
+                  errors?.primaryGoal?.message ||
+                  errors?.primaryGoal?.value?.message
+                }
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="targetAudience"
+            render={({ field }) => (
+              <SelectDropdown
+                options={[
+                  {
+                    label: "young adults (18 - 24)",
+                    value: "young_adults_18_24",
+                  },
+                  {
+                    label: "adults (25 - 34)",
+                    value: "adults_25_34",
+                  },
+                  {
+                    label: "adults (35 - 44)",
+                    value: "adults_35_44",
+                  },
+                  {
+                    label: "adults (45 - 54)",
+                    value: "adults_45_54",
+                  },
+                  {
+                    label: "seniors (55+)",
+                    value: "seniors_55_plus",
+                  },
+                  {
+                    label: "Business Professionals",
+                    value: "business_professionals",
+                  },
+                ]}
+                placeholder="select primary audience"
+                label="Target Audience"
+                error={
+                  errors?.targetAudience?.message ||
+                  errors?.targetAudience?.value?.message
+                }
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="location"
+            render={({ field }) => (
+              <Input
+                type="text"
+                placeholder="e.g. New York, Los Angeles"
+                label="Target Locations"
+                error={errors?.location?.message}
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="keyPerformanceIndicators"
+            render={({ field }) => (
+              <TextArea
+                label="Key Performance Indicators (KPIs)"
+                placeholder="List the specific metrics you wannt to track"
+                error={errors?.keyPerformanceIndicators?.message}
+                {...field}
+              />
+            )}
+          />
+        </div>
+
+        <div className="mt-5">
+          <h1 className="text-xl font-bold border-b border-gray-200 pb-3">
+            Campaign Details
+          </h1>
+          <p className="text-sm md:text-base py-4">
+            Select the media channels you want to include in your campaign:
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
+            {mediaChannels.map((channel) => {
+              const isOpen = selectedChannel === channel.id;
+              return (
+                <div
+                  key={channel.id}
+                  ref={(el) => {
+                    cardRefs.current[channel.id] = el;
+                  }}
+                  className={clsx(
+                    "flex flex-col rounded-lg border bg-white p-4 transition-all duration-300 shadow-sm hover:shadow-md",
+                    isOpen
+                      ? "border-blue-600 ring-2 ring-blue-100"
+                      : "border-gray-200"
+                  )}
+                >
+                  <div
+                    onClick={() => toggleChannel(channel.id)}
+                    className="flex justify-between items-center mb-2 cursor-pointer"
+                  >
+                    <h3 className="font-semibold text-gray-800">
+                      {channel.title}
+                    </h3>
+                    <span className="text-blue-600 font-bold">
+                      {isOpen ? "➖" : "➕"}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-2">
+                    {channel.description}
+                  </p>
+                  <span className="text-sm text-gray-500 italic mb-2">
+                    {channel.price}
+                  </span>
+
+                  {isOpen && (
+                    <div className="mt-4 space-y-2">
+                      {channel.options.map((option) => (
+                        <div key={option} className="flex flex-col gap-1">
+                          <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+                            <input
+                              className="h-4 w-4 accent-blue-600"
+                              type="checkbox"
+                              checked={isOptionSelected(channel.id, option)}
+                              onChange={(e) => {
+                                e.stopPropagation();
+                                toggleOption(channel.id, option);
+                              }}
+                            />
+                            <span className="capitalize">
+                              {option.replace(/_/g, " ")}
+                            </span>
+                          </label>
+
+                          {channel.id === "SOCIAL_MEDIA" &&
+                            isOptionSelected(channel.id, option) && (
+                              <input
+                                type="text"
+                                placeholder="Enter your handle"
+                                className="w-full rounded border p-2 text-sm"
+                                onChange={(e) =>
+                                  updateHandle(
+                                    channel.id,
+                                    option,
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="mt-10">
+          <h1 className="text-xl font-bold border-b border-gray-200 pb-3">
+            Additional Information
+          </h1>
+
+          <div className="mt-5">
+            <Controller
+              control={control}
+              name="instructionsRequirements"
+              render={({ field }) => (
+                <TextArea
+                  label="Special Instructions or Requirements"
+                  placeholder="Any additional information we should know..."
+                  error={errors?.instructionsRequirements?.message}
+                  {...field}
+                />
+              )}
+            />
+          </div>
+        </div>
+
+        <div className="w-fit flex items-center justify-center mt-3">
+          <Button
+            className="bg-blue-600 hover:bg-blue-700 capitalize py-2.5 px-4 text-sm text-white font-medium"
+            text="Create Campaign"
+            onClick={handleCreate}
+            loading={isSubmitting}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default NewCampaign;
