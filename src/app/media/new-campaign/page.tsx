@@ -250,7 +250,7 @@ const NewCampaign = () => {
       },
       onError: (error: any) => {
         setIsSubmitting(false);
-        toast.success(error?.response?.data?.message);
+        toast.error(error?.response?.data?.message);
       },
     });
   });
