@@ -81,7 +81,7 @@ const Campaigns = () => {
         return (
           <Link
             href={`${Routes?.CAMPAIGNS}/${value?.id}`}
-            className="text-blue-500 font-medium underline cursor-default hover:text-blue-600"
+            className="text-purple-500 font-medium underline cursor-default hover:text-purple-600"
           >
             View Details
           </Link>

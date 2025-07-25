@@ -10,6 +10,8 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { toast } from "react-toastify";
+import { media_logo } from "../../../../public/assets/images";
+import Image from "next/image";
 
 interface LoginTypes {
   email: string;
@@ -95,15 +97,14 @@ const Page = () => {
       <section className="h-full flex items-center justify-center">
         <div className="w-11/12">
           <div className="text-center">
-            <h1 className="text-2xl lg:text-4xl font-bold">
-              <span className="text-blue-600">Media</span>
-              <span className="text-green-500">Flow</span>
-            </h1>
+            <div className={`flex items-center justify-center `}>
+              <Image src={media_logo} alt="logo" height={100} width={100} />
+            </div>
             <p className="text-gray-800 text-sm md:text-base font-medium mt-1">
               AI-Powered Campaign Management
             </p>
           </div>
-          <h2 className="md:text-xl text-blue-600 font-bold text-center mt-5">
+          <h2 className="md:text-xl text-purple-600 font-bold text-center mt-5">
             Login to Your Account
           </h2>
 
@@ -144,7 +145,7 @@ const Page = () => {
             />
 
             <Button
-              className="w-full bg-blue-600 hover:bg-blue-700 capitalize py-2.5 font-medium text-white"
+              className="w-full bg-purple-600 hover:bg-purple-700 capitalize py-2.5 font-medium text-white"
               loading={isSubmitting}
               onClick={handleLogin}
               text="Login"

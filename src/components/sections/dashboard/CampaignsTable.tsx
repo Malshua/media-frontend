@@ -105,7 +105,7 @@ const CampaignsTable = () => {
         return (
           <Link
             href={`${Routes?.CAMPAIGNS}/${value?.id}`}
-            className="text-blue-500 font-medium underline cursor-default hover:text-blue-600"
+            className="text-purple-500 font-medium underline cursor-default hover:text-purple-600"
           >
             View Details
           </Link>
@@ -122,7 +122,7 @@ const CampaignsTable = () => {
         </h1>
         <Link className="w-fit" href={Routes.CAMPAIGNS}>
           <Button
-            className="bg-blue-600 text-sm md:text-base hover:bg-blue-700 capitalize py-2.5 px-4 font-medium hover:underline text-white"
+            className="bg-purple-600 text-sm md:text-base hover:bg-purple-700 capitalize py-2.5 px-4 font-medium hover:underline text-white"
             text="View All"
           />
         </Link>

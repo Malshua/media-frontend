@@ -155,7 +155,7 @@ const Profile = () => {
 
         <div className="w-fit">
           <Button
-            className="bg-blue-500 hover:bg-blue-600 capitalize py-2.5 px-4 font-medium text-white text-xs md:text-sm"
+            className="bg-purple-500 hover:bg-purple-600 capitalize py-2.5 px-4 font-medium text-white text-xs md:text-sm"
             text="Save Changes"
             onClick={handleUpdate}
             loading={updating}
@@ -165,7 +165,7 @@ const Profile = () => {
       <div className="bg-white p-4 md:p-6 rounded-xl shadow-md w-full mt-5 md:mt-10">
         <div className="flex items-center space-x-5 ">
           {/* Avatar */}
-          <div className="w-20 h-20 rounded-full bg-blue-600 flex items-center justify-center text-white text-2xl font-semibold">
+          <div className="w-20 h-20 rounded-full bg-purple-600 flex items-center justify-center text-white text-2xl font-semibold">
             {name_initials}
           </div>
 
@@ -177,7 +177,7 @@ const Profile = () => {
             <div className="text-gray-500 text-sm mb-1.5">
               {user?.companyName}
             </div>
-            <button className="text-blue-600 border border-blue-500 px-4 py-2.5 rounded-sm text-sm hover:bg-blue-50 transition">
+            <button className="text-purple-600 border border-purple-500 px-4 py-2.5 rounded-sm text-sm hover:bg-purple-50 transition">
               Change Photo
             </button>
           </div>
@@ -310,7 +310,7 @@ const Profile = () => {
               type="checkbox"
               checked={preferences.campaignUpdates}
               onChange={() => togglePreference("campaignUpdates")}
-              className="accent-blue-600 h-4 w-4"
+              className="accent-purple-600 h-4 w-4"
             />
             <span>Campaign status updates</span>
           </label>
@@ -319,7 +319,7 @@ const Profile = () => {
               type="checkbox"
               checked={preferences.weeklyReports}
               onChange={() => togglePreference("weeklyReports")}
-              className="accent-blue-600 h-4 w-4"
+              className="accent-purple-600 h-4 w-4"
             />
             <span>Weekly analytics reports</span>
           </label>
@@ -328,7 +328,7 @@ const Profile = () => {
               type="checkbox"
               checked={preferences.budgetAlerts}
               onChange={() => togglePreference("budgetAlerts")}
-              className="accent-blue-600 h-4 w-4"
+              className="accent-purple-600 h-4 w-4"
             />
             <span>Budget alerts</span>
           </label>
@@ -337,7 +337,7 @@ const Profile = () => {
               type="checkbox"
               checked={preferences.marketingTips}
               onChange={() => togglePreference("marketingTips")}
-              className="accent-blue-600 h-4 w-4"
+              className="accent-purple-600 h-4 w-4"
             />
             <span>Marketing tips and best practices</span>
           </label>
@@ -411,7 +411,7 @@ const Profile = () => {
           />
           <div className="h-fit mt-auto">
             <Button
-              className="bg-blue-500 hover:bg-blue-600 capitalize py-3 px-4 font-medium text-white text-xs md:text-sm"
+              className="bg-purple-500 hover:bg-purple-600 capitalize py-3 px-4 font-medium text-white text-xs md:text-sm"
               text="Save password"
               onClick={handlePasswordChange}
               loading={isSubmitting}

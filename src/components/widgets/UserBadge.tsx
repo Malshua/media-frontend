@@ -121,7 +121,7 @@ const UserModal = ({
           href={Routes.LOGOUT}
           className="px-5 py-1.5 flex items-center gap-2 border border-secondary-default w-fit mx-auto rounded-md"
         >
-          <span className="text-blue-600 font-medium">Log Out</span>
+          <span className="text-purple-600 font-medium">Log Out</span>
           <ArrowBackIcon />
         </Link>
       </div>
@@ -161,7 +161,7 @@ const UserBadge = () => {
             />
           </div>
         ) : (
-          <div className="w-16 h-16 rounded-full border border-blue-600 bg-secondary-default text-blue-600 text-xl flex items-center justify-center uppercase font-semibold">
+          <div className="w-16 h-16 rounded-full border border-purple-600 bg-secondary-default text-purple-600 text-xl flex items-center justify-center uppercase font-semibold">
             {name_initials}
           </div>
         )}

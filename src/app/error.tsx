@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { Routes } from "@/utilities/routes";
+import { media_logo } from "../../public/assets/images";
 
 const Error = () => {
   const router = useRouter();
@@ -20,17 +21,13 @@ const Error = () => {
         <section className="p-8">
           <article className="mb-5">
             <Link href={Routes.DASHBOARD}>
-              {/* <Image
-                src={vendex_logo_dark}
+              <Image
+                src={media_logo}
                 alt="icon"
-                width={40}
-                height={40}
+                width={100}
+                height={100}
                 priority={true}
-              /> */}
-              <h1 className="text-2xl lg:text-4xl font-bold">
-                <span className="text-blue-600">Media</span>
-                <span className="text-green-500">Flow</span>
-              </h1>
+              />
             </Link>
           </article>
 

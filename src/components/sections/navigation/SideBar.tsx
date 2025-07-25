@@ -1,9 +1,11 @@
 "use client";
 import { Routes } from "@/utilities/routes";
 import { Tooltip } from "@material-tailwind/react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import { media_logo } from "../../../../public/assets/images";
 
 interface navItemProps {
   href: string | any;
@@ -20,13 +22,13 @@ const NavItem = ({ href, open, title }: navItemProps) => {
       <li
         className={`all__trans ${
           route.includes(href)
-            ? "border-l-4 border-blue-500 text-blue-600 font-semibold bg-blue-100"
-            : " hover:bg-[#F0F6FF] text-gray-700"
+            ? "border-l-4 border-purple-500 text-purple-600 font-semibold bg-purple-100"
+            : " hover:bg-purple-100 text-gray-700"
         }`}
       >
         <div
           className={`flex items-center py-4 px-6 ${
-            route.includes(href) ? "bg-blue-100/10" : ""
+            route.includes(href) ? "bg-purple-100/10" : ""
           }`}
         >
           <span className={`ml-4 text-sm font-medium capitalize`}>{title}</span>
@@ -39,14 +41,11 @@ const NavItem = ({ href, open, title }: navItemProps) => {
 const SideBar = ({ open, setOpen }: any) => {
   return (
     <div
-      className={`h-full scrollbar-hide flex flex-col bg-white shadow-md border-r w-64 relative py-10 duration-300`}
+      className={`h-full scrollbar-hide flex flex-col bg-white shadow-md border-r w-60 relative py-5 duration-300`}
     >
       {/* profile */}
-      <div className={`mb-10 w-fit rounded-lg flex px-6`}>
-        <h1 className="text-xl lg:text-3xl font-bold">
-          <span className="text-blue-600">Media</span>
-          <span className="text-green-500">Flow</span>
-        </h1>
+      <div className={`flex items-center justify-center mb-5`}>
+        <Image src={media_logo} alt="logo" height={100} width={100} />
       </div>
 
       {/* links */}

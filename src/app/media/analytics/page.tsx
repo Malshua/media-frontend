@@ -90,7 +90,9 @@ const Analytics = () => {
             className="bg-white shadow-md rounded-md p-6 flex flex-col items-center"
           >
             <div className="text-gray-600 text-sm mb-2">{stat.title}</div>
-            <div className="text-blue-600 text-2xl font-bold">{stat.value}</div>
+            <div className="text-purple-600 text-2xl font-bold">
+              {stat.value}
+            </div>
             <div className={`text-sm mt-2 ${stat.changeColor}`}>
               {stat.change}
             </div>
@@ -145,7 +147,7 @@ const Analytics = () => {
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
-                    className="bg-blue-600 h-2 rounded-full"
+                    className="bg-purple-600 h-2 rounded-full"
                     style={{ width: `${percent}%` }}
                   ></div>
                 </div>

@@ -75,7 +75,7 @@ const Input = React.forwardRef(function Input(
       <div
         className={`all__trans w-full border border-gray-300 focus-within:bg-white rounded text-sm md:text-base p-3 flex items-center gap-2 ${
           disabled && "bg-gray-100"
-        } focus-within:border-blue-400 focus-within:ring-4 focus-within:ring-blue-100`}
+        } focus-within:border-purple-400 focus-within:ring-4 focus-within:ring-purple-100`}
       >
         {left_icon && <div>{left_icon}</div>}
         <input

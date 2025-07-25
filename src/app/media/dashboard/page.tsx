@@ -35,7 +35,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="p-4 md:p-8 bg-[#f5f8fc]">
+    <div className="p-4 md:p-8 bg-[#f5f8fc] mt-5 sm:mt-0">
       <div className="flex items-center justify-between mb-5">
         <p className="hidden md:block md:text-xl font-medium text-gray-800">
           Campaigns overview.
@@ -43,7 +43,7 @@ const Dashboard = () => {
 
         <Link href={Routes.NEW_CAMPAIGN} className="w-fit ml-auto">
           <Button
-            className="bg-blue-600 text-xs md:text-base hover:bg-blue-700 capitalize py-2.5 px-4 font-medium text-white"
+            className="bg-purple-600 text-xs md:text-base hover:bg-purple-700 capitalize py-2.5 px-4 font-medium text-white"
             text="+ New Campaign"
           />
         </Link>
@@ -58,7 +58,7 @@ const Dashboard = () => {
               key={i}
               className="bg-white flex flex-col gap-3 py-8 px-6 shadow-md items-center rounded-md"
             >
-              <span className="text-blue-600 font-bold text-2xl">
+              <span className="text-purple-600 font-bold text-2xl">
                 {item?.value}
               </span>
               <span className="text-gray-600">{item?.label}</span>

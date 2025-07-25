@@ -28,7 +28,7 @@ const Header = ({ heading }: { heading?: string }) => {
             />
 
             {unread_notifs?.length > 0 && (
-              <span className="block absolute bg-[#002366] top-0 right-0 rounded-full h-3 w-3 border-2 border-white" />
+              <span className="block absolute bg-[#b314c5] top-0 right-0 rounded-full h-3 w-3 border-2 border-white" />
             )}
           </button>
         </div>
@@ -40,7 +40,7 @@ const Header = ({ heading }: { heading?: string }) => {
 
       {/* Bottom Line - visible only on lg+ screens */}
       <div
-        className={`hidden lg:block border-t-2 mt-3 border-[#669AFF] mx-20`}
+        className={`hidden lg:block border-t-2 mt-3 border-[#cc6cd9] mx-20`}
       ></div>
     </div>
   );

@@ -1,6 +1,8 @@
 export { default as Button } from "./Button";
 export { default as SelectDate } from "./SelectDate";
 export { default as EmptyState } from "./EmptyState";
+export { default as Modal } from "./Modal";
+export { default as SmoothSlider } from "./SmoothSlider";
 export { default as PageLoader } from "./PageLoader";
 export { default as TabView } from "./TabView";
 export { default as Wrapper } from "./Wrapper";

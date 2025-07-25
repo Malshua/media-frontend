@@ -1,5 +1,12 @@
 "use client";
-import { Button, Input, SelectDropdown, TextArea } from "@/components/elements";
+import {
+  Button,
+  Input,
+  Modal,
+  SelectDropdown,
+  SmoothSlider,
+  TextArea,
+} from "@/components/elements";
 import React, { useRef, useState } from "react";
 import clsx from "clsx";
 import { Label } from "@/components/ui/label";
@@ -17,6 +24,7 @@ import { useCreateCampaign } from "@/hooks/campaignHooks";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/utilities/routes";
 import { useInvalidateCampaigns } from "@/hooks/useInvalidateQueries";
+import { DialogTitle } from "@/components/ui/dialog";
 
 const mediaChannels = [
   {
@@ -137,13 +145,21 @@ const mediaChannels = [
 const NewCampaign = () => {
   const [selectedChannel, setSelectedChannel] = useState<string | null>(null);
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
-  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sliderValues, setSliderValues] = useState<{
+    [key: string]: { amount: number; duration: number };
+  }>({});
   const { push } = useRouter();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentChannel, setCurrentChannel] = useState<any>(null);
   const { RefetchCampaigns } = useInvalidateCampaigns();
 
+  const totalAmount = selectedItems?.reduce(
+    (sum, item) => sum + item.amount,
+    0
+  );
+
   const {
-    setValue,
     control,
     watch,
     handleSubmit,
@@ -154,25 +170,24 @@ const NewCampaign = () => {
 
   const start = formatDateAndTime(watch("startDate")).Date;
   const end = formatDateAndTime(watch("endDate")).Date;
+  const total = watch("totalBudget");
 
   const days = getDayDifference(start, end);
 
   const { mutate: createcampaign } = useCreateCampaign();
 
-  const toggleChannel = (channelId: string) => {
-    setSelectedChannel((prev) => {
-      const next = prev === channelId ? null : channelId;
-      if (next && cardRefs.current[next]) {
-        cardRefs.current[next]?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }
-      return next;
-    });
+  const sanitizePrice = (price: string) => {
+    return price.replace(/[^\d]/g, "");
+  };
+
+  const openModalForChannel = (channel: any) => {
+    setSelectedChannel(channel.id);
+    setCurrentChannel(channel);
+    setModalOpen(true);
   };
 
   const toggleOption = (channelId: string, option: string) => {
+    const key = `${channelId}-${option}`;
     const exists = selectedItems.find(
       (item) => item.channel === channelId && item.option === option
     );
@@ -183,15 +198,26 @@ const NewCampaign = () => {
           (item) => item.channel !== channelId || item.option !== option
         )
       );
+      setSliderValues((prev) => {
+        const newValues = { ...prev };
+        delete newValues[key];
+        return newValues;
+      });
     } else {
       const channel = mediaChannels.find((ch) => ch.id === channelId);
       const sanitizedPrice = channel ? sanitizePrice(channel.price) : "0";
 
+      // Initialize slider values for this option if not already set
+      setSliderValues((prev) => ({
+        ...prev,
+        [key]: { amount: 0, duration: 0 },
+      }));
+
       const baseData = {
         channel: channelId,
         option,
-        duration: "2 weeks",
-        amount: sanitizedPrice,
+        duration: 0, // Will be updated by slider
+        amount: 0, // Will be updated by slider
       };
 
       const isSocial = channelId === "SOCIAL_MEDIA";
@@ -212,15 +238,52 @@ const NewCampaign = () => {
     );
   };
 
-  const isOptionSelected = (channelId: string, option: string) => {
-    return selectedItems.some(
-      (item) => item.channel === channelId && item.option === option
+  const updateSliderValue = (
+    channelId: string,
+    option: string,
+    type: "amount" | "duration",
+    value: number
+  ) => {
+    const key = `${channelId}-${option}`;
+    setSliderValues((prev) => ({
+      ...prev,
+      [key]: {
+        ...prev[key],
+        [type]: value,
+      },
+    }));
+
+    // Update selectedItems with the new slider value
+    setSelectedItems((prev) =>
+      prev.map((item) =>
+        item.channel === channelId && item.option === option
+          ? {
+              ...item,
+              [type]:
+                type === "amount"
+                  ? Math.round((value / 100) * 1000000)
+                  : Math.round((value / 100) * 30),
+            }
+          : item
+      )
     );
+  };
+
+  const estimateReach = (amountValue: number, durationValue: number) => {
+    const baseReach = 0;
+    const amount = (amountValue / 100) * 1000000;
+    const duration = (durationValue / 100) * 30;
+    return Math.round((amount * duration) / 1000 + baseReach).toLocaleString();
   };
 
   const handleCreate = handleSubmit((data) => {
     if (selectedItems.length < 1) {
       toast.error("No media channels selected");
+      return;
+    }
+
+    if (Number(total) !== totalAmount) {
+      toast.error("Items you selected has to equal your total budget");
       return;
     }
 
@@ -235,6 +298,8 @@ const NewCampaign = () => {
       primaryGoal: data?.primaryGoal?.value,
       keyPerformanceIndicators: data?.keyPerformanceIndicators,
       targetAudience: data?.targetAudience?.value,
+      preferredTimeline: data?.preferredTimeline,
+      callToAction: data?.callToAction,
       instructionsRequirements: data?.instructionsRequirements,
       location: data?.location,
       mediaSelections: selectedItems,
@@ -254,6 +319,7 @@ const NewCampaign = () => {
       },
     });
   });
+
   return (
     <div className="p-5 md:p-8 bg-[#f5f8fc] text-gray-800">
       <div className="space-y-1">
@@ -339,9 +405,23 @@ const NewCampaign = () => {
           </div>
           <Controller
             control={control}
+            name="callToAction"
+            render={({ field }) => (
+              <Input
+                type="text"
+                placeholder="What actions do you want users to take?"
+                label="Call to Action"
+                error={errors?.totalBudget?.message}
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            control={control}
             name="campaignDescription"
             render={({ field }) => (
-              <TextArea
+              <Input
+                type="text"
                 label="Campaign Description"
                 placeholder="Describe your objectives, target audience, and key messages.."
                 error={errors?.campaignDescription?.message}
@@ -451,11 +531,26 @@ const NewCampaign = () => {
 
           <Controller
             control={control}
+            name="preferredTimeline"
+            render={({ field }) => (
+              <Input
+                type="text"
+                label="Preferred timeline"
+                placeholder="Any specific deadlines or timeline requirements?"
+                error={errors?.keyPerformanceIndicators?.message}
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
             name="keyPerformanceIndicators"
             render={({ field }) => (
-              <TextArea
+              <Input
+                type="text"
                 label="Key Performance Indicators (KPIs)"
-                placeholder="List the specific metrics you wannt to track"
+                placeholder="List the specific metrics you want to track"
                 error={errors?.keyPerformanceIndicators?.message}
                 {...field}
               />
@@ -470,81 +565,143 @@ const NewCampaign = () => {
           <p className="text-sm md:text-base py-4">
             Select the media channels you want to include in your campaign:
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
-            {mediaChannels.map((channel) => {
-              const isOpen = selectedChannel === channel.id;
-              return (
+          <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {mediaChannels.map((channel) => (
                 <div
                   key={channel.id}
-                  ref={(el) => {
-                    cardRefs.current[channel.id] = el;
-                  }}
                   className={clsx(
-                    "flex flex-col rounded-lg border bg-white p-4 transition-all duration-300 shadow-sm hover:shadow-md",
-                    isOpen
-                      ? "border-blue-600 ring-2 ring-blue-100"
+                    "flex flex-col rounded-lg border bg-white p-4 shadow-sm hover:shadow-md cursor-pointer",
+                    selectedChannel === channel.id
+                      ? "border-purple-600 ring-2 ring-purple-100"
                       : "border-gray-200"
                   )}
+                  onClick={() => openModalForChannel(channel)}
                 >
-                  <div
-                    onClick={() => toggleChannel(channel.id)}
-                    className="flex justify-between items-center mb-2 cursor-pointer"
-                  >
-                    <h3 className="font-semibold text-gray-800">
-                      {channel.title}
-                    </h3>
-                    <span className="text-blue-600 font-bold">
-                      {isOpen ? "➖" : "➕"}
-                    </span>
-                  </div>
+                  <h3 className="font-semibold text-gray-800 mb-1">
+                    {channel.title}
+                  </h3>
                   <p className="text-sm text-gray-600 mb-2">
                     {channel.description}
                   </p>
-                  <span className="text-sm text-gray-500 italic mb-2">
+                  <span className="text-sm text-gray-500 italic">
                     {channel.price}
                   </span>
-
-                  {isOpen && (
-                    <div className="mt-4 space-y-2">
-                      {channel.options.map((option) => (
-                        <div key={option} className="flex flex-col gap-1">
-                          <label className="inline-flex items-center gap-2 text-sm text-gray-700">
-                            <input
-                              className="h-4 w-4 accent-blue-600"
-                              type="checkbox"
-                              checked={isOptionSelected(channel.id, option)}
-                              onChange={(e) => {
-                                e.stopPropagation();
-                                toggleOption(channel.id, option);
-                              }}
-                            />
-                            <span className="capitalize">
-                              {option.replace(/_/g, " ")}
-                            </span>
-                          </label>
-
-                          {channel.id === "SOCIAL_MEDIA" &&
-                            isOptionSelected(channel.id, option) && (
-                              <input
-                                type="text"
-                                placeholder="Enter your handle"
-                                className="w-full rounded border p-2 text-sm"
-                                onChange={(e) =>
-                                  updateHandle(
-                                    channel.id,
-                                    option,
-                                    e.target.value
-                                  )
-                                }
-                              />
-                            )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </div>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* Modal for options */}
+            <Modal
+              open={modalOpen}
+              openModal={() => setModalOpen(false)}
+              closeBtn
+            >
+              {currentChannel && (
+                <div className="space-y-4">
+                  <DialogTitle>{currentChannel.title} Options</DialogTitle>
+
+                  <p className="text-sm text-gray-600">
+                    {currentChannel.description}
+                  </p>
+
+                  {currentChannel.options.map((option: string) => {
+                    const key = `${currentChannel.id}-${option}`;
+                    const isSelected = selectedItems.some(
+                      (item) =>
+                        item.channel === currentChannel.id &&
+                        item.option === option
+                    );
+                    const sliderData = sliderValues[key] || {
+                      amount: 0,
+                      duration: 0,
+                    };
+
+                    return (
+                      <div key={option} className="flex flex-col gap-1">
+                        <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+                          <input
+                            className="h-4 w-4 accent-purple-600"
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() =>
+                              toggleOption(currentChannel.id, option)
+                            }
+                          />
+                          <span className="capitalize">
+                            {option.replace(/_/g, " ")}
+                          </span>
+                        </label>
+
+                        {currentChannel.id === "SOCIAL_MEDIA" && isSelected && (
+                          <input
+                            type="text"
+                            placeholder="Enter your handle"
+                            className="w-full rounded border p-2 text-sm mt-2"
+                            onChange={(e) =>
+                              updateHandle(
+                                currentChannel.id,
+                                option,
+                                e.target.value
+                              )
+                            }
+                          />
+                        )}
+
+                        {isSelected && (
+                          <div className="pt-4 pl-6">
+                            <label className="text-sm font-medium text-gray-700">
+                              Amount
+                            </label>
+                            <SmoothSlider
+                              value={sliderData.amount}
+                              setValue={(value) =>
+                                updateSliderValue(
+                                  currentChannel.id,
+                                  option,
+                                  "amount",
+                                  value
+                                )
+                              }
+                              fullAmount={1000000}
+                              type="amount"
+                            />
+
+                            <label className="text-sm font-medium text-gray-700 mt-4 block">
+                              Duration (Days)
+                            </label>
+                            <SmoothSlider
+                              value={sliderData.duration}
+                              setValue={(value) =>
+                                updateSliderValue(
+                                  currentChannel.id,
+                                  option,
+                                  "duration",
+                                  value
+                                )
+                              }
+                              fullAmount={30}
+                              type="duration"
+                            />
+
+                            <div className="text-purple-700 mt-2 font-medium text-sm">
+                              Estimated Reach:{" "}
+                              <span className="font-bold">
+                                {estimateReach(
+                                  sliderData.amount,
+                                  sliderData.duration
+                                )}{" "}
+                                people
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </Modal>
           </div>
         </div>
         <div className="mt-10">
@@ -570,7 +727,7 @@ const NewCampaign = () => {
 
         <div className="w-fit flex items-center justify-center mt-3">
           <Button
-            className="bg-blue-600 hover:bg-blue-700 capitalize py-2.5 px-4 text-sm text-white font-medium"
+            className="bg-purple-600 hover:bg-purple-700 capitalize py-2.5 px-4 text-sm text-white font-medium"
             text="Create Campaign"
             onClick={handleCreate}
             loading={isSubmitting}

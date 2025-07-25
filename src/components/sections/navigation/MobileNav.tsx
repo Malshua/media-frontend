@@ -9,6 +9,7 @@ import { useAuth } from "@/hooks/useAuthActions";
 import { getFirstLetters, truncateText } from "@/utilities/helpers";
 import { Routes } from "@/utilities/routes";
 import { usePathname } from "next/navigation";
+import { media_logo } from "../../../../public/assets/images";
 
 const MobileNav = () => {
   const { user } = useAuth();
@@ -59,19 +60,10 @@ const MobileNav = () => {
   return (
     <nav>
       <div
-        className={`fixed z-20 top-0 left-0 right-0 w-full flex justify-between items-center px-4 py-3 all__trans bg-white`}
+        className={`fixed z-20 top-0 left-0 right-0 w-full flex justify-between items-center px-3 py-3 all__trans bg-white`}
       >
-        <div className="flex-1">
-          {/* <Image
-            src={AkilaahLogo}
-            alt="akilaah logo"
-            width="120"
-            height="100"
-          /> */}
-          <h1 className="text-2xl lg:text-4xl font-bold">
-            <span className="text-blue-600">Media</span>
-            <span className="text-green-500">Flow</span>
-          </h1>
+        <div className={`flex items-center justify-center `}>
+          <Image src={media_logo} alt="logo" height={60} width={60} />
         </div>
 
         <div className="mr-2 flex">
@@ -100,11 +92,11 @@ const MobileNav = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-white text-blue-600 flex items-center justify-center uppercase font-semibold border border-blue-600">
+            <div className="w-12 h-12 rounded-full bg-white text-purple-600 flex items-center justify-center uppercase font-semibold border border-purple-600">
               {name_initials}
             </div>
             <div className="flex flex-col leading-5">
-              <span className="text-sm text-primary-blue font-semibold capitalize">
+              <span className="text-sm text-purple-500 font-semibold capitalize">
                 {name}
               </span>
               <span className="text-xs text-[#858484]">
@@ -121,7 +113,7 @@ const MobileNav = () => {
               onClick={handleMenu}
               className={`text-lg ${
                 pathname.includes(item?.href)
-                  ? "text-blue-600 font-semibold"
+                  ? "text-purple-600 font-semibold"
                   : "font-light text-[#808080] hover:text-secondary-default"
               }`}
             >

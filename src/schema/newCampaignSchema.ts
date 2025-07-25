@@ -39,6 +39,8 @@ const newCampaign = yup.object().shape({
   instructionsRequirements: yup
     .string()
     .required("Instruction requirements required"),
+  callToAction: yup.string().required("Instruction requirements required"),
+  preferredTimeline: yup.string().required("Instruction requirements required"),
 });
 
 export { newCampaign };
