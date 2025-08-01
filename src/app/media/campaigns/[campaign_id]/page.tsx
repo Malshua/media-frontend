@@ -11,7 +11,7 @@ import { FaToolbox } from "react-icons/fa";
 import { FiDollarSign } from "react-icons/fi";
 import { IoLocationOutline } from "react-icons/io5";
 import React, { useMemo } from "react";
-import { getDayDifference } from "@/utilities/helpers";
+import { getDayDifference, moneyFormat } from "@/utilities/helpers";
 import { PageLoader } from "@/components/elements";
 
 const CampaignDetails = () => {
@@ -46,7 +46,7 @@ const CampaignDetails = () => {
     {
       icon: <FiDollarSign className="text-xl" />,
       heading: "Total Budget",
-      text: `$${data?.totalBudget}`,
+      text: `$${moneyFormat(data?.totalBudget)}`,
     },
     {
       icon: <IoLocationOutline className="text-xl" />,
@@ -129,7 +129,7 @@ const CampaignDetails = () => {
                     <span className="text-xs">{item?.duration}</span>
                   </p>
                   <span className="text-sm font-medium">
-                    Price: ${item?.amount}
+                    Price: ${moneyFormat(item?.amount)}
                   </span>
                 </div>
               ))}
