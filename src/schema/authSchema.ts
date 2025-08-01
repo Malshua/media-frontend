@@ -47,4 +47,28 @@ const userDetailsSchema = yup.object().shape({
   companyAddress: yup.string().required("Company address is required"),
 });
 
-export { loginSchema, resetPasswordSchema, userDetailsSchema };
+const ForgotSchema = yup.object().shape({
+  email: yup
+    .string()
+    .matches(emailRegex, "Invalid email format")
+    .required("Email is required"),
+});
+
+const PasswordSchema = yup.object().shape({
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .required("Password is required"),
+  confirm_password: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .required("Confirm Password is required"),
+});
+
+export {
+  loginSchema,
+  resetPasswordSchema,
+  userDetailsSchema,
+  ForgotSchema,
+  PasswordSchema,
+};

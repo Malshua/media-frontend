@@ -44,8 +44,11 @@ const SideBar = ({ open, setOpen }: any) => {
       className={`h-full scrollbar-hide flex flex-col bg-white shadow-md border-r w-60 relative py-5 duration-300`}
     >
       {/* profile */}
-      <div className={`flex items-center justify-center mb-5`}>
+      <div className={`flex flex-col items-center justify-center mb-5`}>
         <Image src={media_logo} alt="logo" height={100} width={100} />
+        <span className="text-xs font-semibold text-purple-700">
+          Coceptual Media
+        </span>
       </div>
 
       {/* links */}

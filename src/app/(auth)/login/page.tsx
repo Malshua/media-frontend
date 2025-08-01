@@ -12,6 +12,7 @@ import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { toast } from "react-toastify";
 import { media_logo } from "../../../../public/assets/images";
 import Image from "next/image";
+import Link from "next/link";
 
 interface LoginTypes {
   email: string;
@@ -123,26 +124,34 @@ const Page = () => {
               )}
             />
 
-            <Controller
-              control={control}
-              name="password"
-              render={({ field }) => (
-                <Input
-                  label="Password"
-                  type={show ? "text" : "password"}
-                  placeholder="Enter your password here"
-                  error={errors.password?.message}
-                  right_icon={
-                    show ? (
-                      <BsEyeSlashFill onClick={() => setShow(!show)} />
-                    ) : (
-                      <BsEyeFill onClick={() => setShow(!show)} />
-                    )
-                  }
-                  {...field}
-                />
-              )}
-            />
+            <div className="flex flex-col gap-2">
+              <Controller
+                control={control}
+                name="password"
+                render={({ field }) => (
+                  <Input
+                    label="Password"
+                    type={show ? "text" : "password"}
+                    placeholder="Enter your password here"
+                    error={errors.password?.message}
+                    right_icon={
+                      show ? (
+                        <BsEyeSlashFill onClick={() => setShow(!show)} />
+                      ) : (
+                        <BsEyeFill onClick={() => setShow(!show)} />
+                      )
+                    }
+                    {...field}
+                  />
+                )}
+              />
+              <Link
+                href={Routes.FORGOT_PASSWORD}
+                className="text-sm ml-auto justify-self-end hover:underline font-medium text-purple-500 hover:text-purple-600 cursor-default"
+              >
+                Forgot password?
+              </Link>
+            </div>
 
             <Button
               className="w-full bg-purple-600 hover:bg-purple-700 capitalize py-2.5 font-medium text-white"

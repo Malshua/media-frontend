@@ -1,6 +1,11 @@
 "use client";
 
-import { Button, Input, SelectDropdown } from "@/components/elements";
+import {
+  Button,
+  Input,
+  SelectDropdown,
+  TelephoneInput,
+} from "@/components/elements";
 import { useUserDetails } from "@/hooks/authHooks";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { userDetailsSchema } from "@/schema/authSchema";
@@ -120,16 +125,15 @@ const Page = () => {
           control={control}
           name="phone"
           render={({ field }) => (
-            <Input
-              type="tel"
-              placeholder="(555) 123-4567"
+            <TelephoneInput
               label="Phone Number"
-              error={errors?.phone?.message}
+              error={errors.phone?.message}
+              required
               {...field}
             />
           )}
         />
-
+        
         <Controller
           control={control}
           name="position"

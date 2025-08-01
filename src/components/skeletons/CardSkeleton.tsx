@@ -6,7 +6,7 @@ const CardSkeleton = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {count?.map((_, index) => (
-        <div key={index} className="bg-gray-400 rounded animate-pulse h-40" />
+        <div key={index} className="bg-gray-200 rounded animate-pulse h-40" />
       ))}
     </div>
   );

@@ -1,5 +1,10 @@
 "use client";
-import { Button, Input, SelectDropdown } from "@/components/elements";
+import {
+  Button,
+  Input,
+  SelectDropdown,
+  TelephoneInput,
+} from "@/components/elements";
 import { useUpdateDetails, useUpdatePassword } from "@/hooks/profileHooks";
 import { useAuth, useAuthActions } from "@/hooks/useAuthActions";
 import { changePasswordSchema, userSchema } from "@/schema/profileSchema";
@@ -219,11 +224,10 @@ const Profile = () => {
             control={control}
             name="phone"
             render={({ field }) => (
-              <Input
-                type="text"
-                placeholder="(555) 123-4567"
+              <TelephoneInput
                 label="Phone Number"
-                error={errors?.phone?.message}
+                error={errors.phone?.message}
+                required
                 {...field}
               />
             )}

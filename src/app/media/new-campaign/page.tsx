@@ -154,10 +154,7 @@ const NewCampaign = () => {
   const [currentChannel, setCurrentChannel] = useState<any>(null);
   const { RefetchCampaigns } = useInvalidateCampaigns();
 
-  const totalAmount = selectedItems?.reduce(
-    (sum, item) => sum + item.amount,
-    0
-  );
+  // console.log(selectedItems);
 
   const {
     control,
@@ -168,9 +165,10 @@ const NewCampaign = () => {
     resolver: yupResolver(newCampaign),
   });
 
+  console.log(errors);
+
   const start = formatDateAndTime(watch("startDate")).Date;
   const end = formatDateAndTime(watch("endDate")).Date;
-  const total = watch("totalBudget");
 
   const days = getDayDifference(start, end);
 
@@ -210,14 +208,14 @@ const NewCampaign = () => {
       // Initialize slider values for this option if not already set
       setSliderValues((prev) => ({
         ...prev,
-        [key]: { amount: 0, duration: 0 },
+        [key]: { amount: 10, duration: 0 }, // Initialize amount to minimum
       }));
 
       const baseData = {
         channel: channelId,
         option,
-        duration: 0, // Will be updated by slider
-        amount: 0, // Will be updated by slider
+        duration: "0 days",
+        amount: "₦10", // Initialize as string
       };
 
       const isSocial = channelId === "SOCIAL_MEDIA";
@@ -253,7 +251,7 @@ const NewCampaign = () => {
       },
     }));
 
-    // Update selectedItems with the new slider value
+    // Update selectedItems with the new slider value as strings
     setSelectedItems((prev) =>
       prev.map((item) =>
         item.channel === channelId && item.option === option
@@ -261,8 +259,12 @@ const NewCampaign = () => {
               ...item,
               [type]:
                 type === "amount"
-                  ? Math.round((value / 100) * 1000000)
-                  : Math.round((value / 100) * 30),
+                  ? value.toLocaleString("en-NG", {
+                      style: "currency",
+                      currency: "USD",
+                      maximumFractionDigits: 0,
+                    })
+                  : `${Math.round((value / 100) * 30)} days`,
             }
           : item
       )
@@ -270,20 +272,33 @@ const NewCampaign = () => {
   };
 
   const estimateReach = (amountValue: number, durationValue: number) => {
-    const baseReach = 0;
-    const amount = (amountValue / 100) * 1000000;
+    const baseReach = 100;
+    const amount = amountValue; // Use raw amount value (10 to 100,000)
     const duration = (durationValue / 100) * 30;
     return Math.round((amount * duration) / 1000 + baseReach).toLocaleString();
+  };
+
+  // Calculate total amount for a channel based on selected options
+  const getChannelTotalAmount = (channelId: string) => {
+    const channelItems = selectedItems.filter(
+      (item) => item.channel === channelId
+    );
+    const total = channelItems.reduce((sum, item) => {
+      // Parse the amount string (e.g., "₦50,000") to a number
+      const amount = parseFloat(item.amount.replace(/[^\d.]/g, ""));
+      return sum + (isNaN(amount) ? 0 : amount);
+    }, 0);
+
+    return total.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0,
+    });
   };
 
   const handleCreate = handleSubmit((data) => {
     if (selectedItems.length < 1) {
       toast.error("No media channels selected");
-      return;
-    }
-
-    if (Number(total) !== totalAmount) {
-      toast.error("Items you selected has to equal your total budget");
       return;
     }
 
@@ -298,8 +313,6 @@ const NewCampaign = () => {
       primaryGoal: data?.primaryGoal?.value,
       keyPerformanceIndicators: data?.keyPerformanceIndicators,
       targetAudience: data?.targetAudience?.value,
-      preferredTimeline: data?.preferredTimeline,
-      callToAction: data?.callToAction,
       instructionsRequirements: data?.instructionsRequirements,
       location: data?.location,
       mediaSelections: selectedItems,
@@ -409,9 +422,9 @@ const NewCampaign = () => {
             render={({ field }) => (
               <Input
                 type="text"
-                placeholder="What actions do you want users to take?"
                 label="Call to Action"
-                error={errors?.totalBudget?.message}
+                placeholder="What action do you want users to take?"
+                error={errors?.callToAction?.message}
                 {...field}
               />
             )}
@@ -535,14 +548,13 @@ const NewCampaign = () => {
             render={({ field }) => (
               <Input
                 type="text"
-                label="Preferred timeline"
+                label="Preferred Timeline"
                 placeholder="Any specific deadlines or timeline requirements?"
-                error={errors?.keyPerformanceIndicators?.message}
+                error={errors?.preferredTimeline?.message}
                 {...field}
               />
             )}
           />
-
           <Controller
             control={control}
             name="keyPerformanceIndicators"
@@ -573,7 +585,7 @@ const NewCampaign = () => {
                   className={clsx(
                     "flex flex-col rounded-lg border bg-white p-4 shadow-sm hover:shadow-md cursor-pointer",
                     selectedChannel === channel.id
-                      ? "border-purple-600 ring-2 ring-purple-100"
+                      ? "border-blue-600 ring-2 ring-blue-100"
                       : "border-gray-200"
                   )}
                   onClick={() => openModalForChannel(channel)}
@@ -585,7 +597,13 @@ const NewCampaign = () => {
                     {channel.description}
                   </p>
                   <span className="text-sm text-gray-500 italic">
-                    {channel.price}
+                    {selectedItems.some(
+                      (item) => item.channel === channel.id
+                    ) ? (
+                      getChannelTotalAmount(channel.id)
+                    ) : (
+                      <div></div>
+                    )}
                   </span>
                 </div>
               ))}
@@ -613,7 +631,7 @@ const NewCampaign = () => {
                         item.option === option
                     );
                     const sliderData = sliderValues[key] || {
-                      amount: 0,
+                      amount: 10,
                       duration: 0,
                     };
 
@@ -621,7 +639,7 @@ const NewCampaign = () => {
                       <div key={option} className="flex flex-col gap-1">
                         <label className="inline-flex items-center gap-2 text-sm text-gray-700">
                           <input
-                            className="h-4 w-4 accent-purple-600"
+                            className="h-4 w-4 accent-blue-600"
                             type="checkbox"
                             checked={isSelected}
                             onChange={() =>
@@ -637,7 +655,7 @@ const NewCampaign = () => {
                           <input
                             type="text"
                             placeholder="Enter your handle"
-                            className="w-full rounded border p-2 text-sm mt-2"
+                            className="w-full rounded border p-2 text-sm"
                             onChange={(e) =>
                               updateHandle(
                                 currentChannel.id,
@@ -663,7 +681,9 @@ const NewCampaign = () => {
                                   value
                                 )
                               }
-                              fullAmount={1000000}
+                              min={10}
+                              max={100000}
+                              step={10}
                               type="amount"
                             />
 
@@ -680,20 +700,24 @@ const NewCampaign = () => {
                                   value
                                 )
                               }
-                              fullAmount={30}
+                              min={0}
+                              max={100}
+                              step={1}
                               type="duration"
                             />
 
-                            <div className="text-purple-700 mt-2 font-medium text-sm">
-                              Estimated Reach:{" "}
-                              <span className="font-bold">
-                                {estimateReach(
-                                  sliderData.amount,
-                                  sliderData.duration
-                                )}{" "}
-                                people
-                              </span>
-                            </div>
+                            {currentChannel.id === "SOCIAL_MEDIA" && (
+                              <div className="text-blue-700 mt-2 font-medium text-sm">
+                                Estimated Reach:{" "}
+                                <span className="font-bold">
+                                  {estimateReach(
+                                    sliderData.amount,
+                                    sliderData.duration
+                                  )}{" "}
+                                  people
+                                </span>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
@@ -727,7 +751,7 @@ const NewCampaign = () => {
 
         <div className="w-fit flex items-center justify-center mt-3">
           <Button
-            className="bg-purple-600 hover:bg-purple-700 capitalize py-2.5 px-4 text-sm text-white font-medium"
+            className="bg-blue-600 hover:bg-blue-700 capitalize py-2.5 px-4 text-sm text-white font-medium"
             text="Create Campaign"
             onClick={handleCreate}
             loading={isSubmitting}

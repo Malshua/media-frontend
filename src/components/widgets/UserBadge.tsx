@@ -146,7 +146,8 @@ const UserBadge = () => {
 
   return (
     <div>
-      <div
+      <Link
+        href={Routes.PROFILE}
         // onClick={openUserModal}
         className="flex items-center gap-3 cursor-pointer"
       >
@@ -173,7 +174,7 @@ const UserBadge = () => {
             {user?.email}
           </span>
         </div> */}
-      </div>
+      </Link>
 
       {/* {openModal && (
         <>

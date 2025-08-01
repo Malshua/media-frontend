@@ -1,5 +1,5 @@
 import media_logo from "./media_logo.svg";
-
+import bell from "./Bell-illustration.svg";
 import Notify from "./24.png";
 import Folder from "./folder.png";
 import construction from "./construction.svg";
@@ -11,6 +11,7 @@ import OrangePatternTop from "./orange-pattern-top.png";
 import OrangePatternBottom from "./orange-pattern-bottom.png";
 
 export {
+  bell,
   construction,
   profile_avi,
   pdfimage,

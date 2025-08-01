@@ -4,39 +4,41 @@ import { motion } from "framer-motion";
 function SmoothSlider({
   value,
   setValue,
-  fullAmount,
+  min,
+  max,
+  step,
   type = "amount",
 }: {
   value: number;
   setValue: (value: number) => void;
-  fullAmount: number;
+  min: number;
+  max: number;
+  step: number;
   type?: "amount" | "duration";
 }) {
-  const min = 0;
-  const max = 100;
-  const actualValue = (value / 100) * fullAmount;
-
-  const clampedValue = Math.min(Math.max(value, 5), 95);
+  const clampedValue = Math.min(Math.max(value, min), max);
+  // Calculate percentage for the slider's visual fill
+  const percentage = ((clampedValue - min) / (max - min)) * 100;
 
   const formatLabel = () => {
     if (type === "amount") {
-      return actualValue.toLocaleString("en-NG", {
+      return clampedValue.toLocaleString("en-NG", {
         style: "currency",
-        currency: "NGN",
+        currency: "USD",
         maximumFractionDigits: 0,
       });
     } else {
-      return `${Math.round(actualValue)} days`;
+      return `${Math.round((clampedValue / 100) * 30)} days`;
     }
   };
 
   return (
     <div className="w-full mx-auto mt-3">
       <div className="relative">
-        {value > 0 && (
+        {value > min && (
           <motion.div
             initial={false}
-            animate={{ left: `${clampedValue}%` }}
+            animate={{ left: `${percentage}%` }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="absolute -top-6 transform -translate-x-1/2 text-sm font-medium bg-white px-3 py-1 rounded-md shadow"
           >
@@ -48,6 +50,7 @@ function SmoothSlider({
           type="range"
           min={min}
           max={max}
+          step={step}
           value={value}
           onChange={(e) => setValue(Number(e.target.value))}
           className="w-full appearance-none h-2 bg-gray-200 rounded-full outline-none 
@@ -61,7 +64,7 @@ function SmoothSlider({
             [&::-webkit-slider-thumb]:shadow 
             [&::-webkit-slider-thumb]:cursor-pointer"
           style={{
-            background: `linear-gradient(to right, #0f172a ${value}%, #e5e7eb ${value}%)`,
+            background: `linear-gradient(to right, #0f172a ${percentage}%, #e5e7eb ${percentage}%)`,
           }}
         />
       </div>
@@ -69,8 +72,8 @@ function SmoothSlider({
       <div className="flex justify-between text-sm text-gray-500 mt-3">
         {type === "amount" ? (
           <>
-            <span>₦0</span>
-            <span>₦1M</span>
+            <span>$10</span>
+            <span>$100K</span>
           </>
         ) : (
           <>

@@ -7,6 +7,7 @@ import {
 import { CardSkeleton2 } from "@/components/skeletons";
 import { useGetDashStats } from "@/hooks/dashboard";
 import { useAuth } from "@/hooks/useAuthActions";
+import { moneyFormat } from "@/utilities/helpers";
 import { Routes } from "@/utilities/routes";
 import Link from "next/link";
 import React, { useMemo } from "react";
@@ -29,7 +30,10 @@ const Dashboard = () => {
 
   const card_data = [
     { label: "Active Campaigns", value: `${info?.totalCampaigns || 0}` },
-    { label: "Budget Utilized", value: `$${info?.totalBudget || 0}` },
+    {
+      label: "Budget Utilized",
+      value: `$${moneyFormat(info?.totalBudget) || 0}`,
+    },
     { label: "Total Reach", value: "140K" },
     { label: "Avg. Engagement", value: "24%" },
   ];

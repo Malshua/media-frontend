@@ -3,6 +3,7 @@
 import { EmptyState, ProgressBar, Table } from "@/components/elements";
 import { TableSkeleton } from "@/components/skeletons";
 import { useGetCampaigns } from "@/hooks/campaignHooks";
+import { moneyFormat } from "@/utilities/helpers";
 import { Routes } from "@/utilities/routes";
 import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
@@ -56,7 +57,7 @@ const Campaigns = () => {
       header: () => <span>Budget</span>,
       cell: (info: any) => {
         const budget = info?.getValue();
-        return <div className="font-medium">${budget}</div>;
+        return <div className="font-medium">${moneyFormat(budget)}</div>;
       },
     }),
 

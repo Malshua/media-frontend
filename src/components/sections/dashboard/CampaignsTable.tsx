@@ -2,33 +2,12 @@
 import { Button, EmptyState, ProgressBar, Table } from "@/components/elements";
 import { TableSkeleton } from "@/components/skeletons";
 import { useGetCampaigns } from "@/hooks/campaignHooks";
+import { moneyFormat } from "@/utilities/helpers";
 import { Routes } from "@/utilities/routes";
 import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
 import React, { useMemo } from "react";
-
-const data = [
-  {
-    name: "Summer Product Launch",
-    status: "active",
-    budget: "$8,500",
-    performance: 80,
-  },
-  {
-    name: "Holiday Special",
-    status: "pending",
-    budget: "$12,000",
-    performance: 30,
-  },
-  {
-    name: "Brand Awareness",
-    status: "completed",
-    budget: "$4,000",
-    performance: 60,
-  },
-];
 
 const CampaignsTable = () => {
   const { data: campaigns, isLoading } = useGetCampaigns();
@@ -80,7 +59,7 @@ const CampaignsTable = () => {
       header: () => <span>Budget</span>,
       cell: (info: any) => {
         const budget = info?.getValue();
-        return <div className="font-medium">{budget}</div>;
+        return <div className="font-medium">${moneyFormat(budget)}</div>;
       },
     }),
 

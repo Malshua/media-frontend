@@ -6,6 +6,7 @@ import { BreadCrumbs } from "@/components/widgets";
 import MobileNav from "./MobileNav";
 import Image from "next/image";
 import { BellIcon } from "../../../../public/assets/icons";
+import { NotificationDialog } from "@/components/elements";
 
 const Header = ({ heading }: { heading?: string }) => {
   const unread_notifs = [];
@@ -20,12 +21,7 @@ const Header = ({ heading }: { heading?: string }) => {
 
         <div className="hidden lg:flex items-center gap-7 justify-end pr-5">
           <button className="relative">
-            <Image
-              src={BellIcon}
-              alt="notification bell"
-              width={22}
-              height={24}
-            />
+            <NotificationDialog />
 
             {unread_notifs?.length > 0 && (
               <span className="block absolute bg-[#b314c5] top-0 right-0 rounded-full h-3 w-3 border-2 border-white" />

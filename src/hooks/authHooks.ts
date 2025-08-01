@@ -31,3 +31,23 @@ export const useUserDetails = ({ token }: { token: string | null }) => {
 
   return mutation;
 };
+
+export const useForgotPassword = () => {
+  const endpoint = `${process.env.BASE_URL}/api/forgot-password`;
+  const mutation = useMutation({
+    mutationKey: ["forgot-password"],
+    mutationFn: (data) => serverRequest().post(endpoint, data),
+  });
+
+  return mutation;
+};
+
+export const useResetPassword = ({ token }: { token: string | null }) => {
+  const endpoint = `${process.env.BASE_URL}/api/reset-password?token=${token}`;
+  const mutation = useMutation({
+    mutationKey: ["reset-password"],
+    mutationFn: (data) => serverRequest().post(endpoint, data),
+  });
+
+  return mutation;
+};
