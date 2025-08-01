@@ -165,8 +165,6 @@ const NewCampaign = () => {
     resolver: yupResolver(newCampaign),
   });
 
-  console.log(errors);
-
   const start = formatDateAndTime(watch("startDate")).Date;
   const end = formatDateAndTime(watch("endDate")).Date;
 
@@ -259,11 +257,7 @@ const NewCampaign = () => {
               ...item,
               [type]:
                 type === "amount"
-                  ? value.toLocaleString("en-NG", {
-                      style: "currency",
-                      currency: "USD",
-                      maximumFractionDigits: 0,
-                    })
+                  ? value.toString()
                   : `${Math.round((value / 100) * 30)} days`,
             }
           : item

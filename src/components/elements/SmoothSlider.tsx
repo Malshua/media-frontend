@@ -22,7 +22,7 @@ function SmoothSlider({
 
   const formatLabel = () => {
     if (type === "amount") {
-      return clampedValue.toLocaleString("en-NG", {
+      return clampedValue.toLocaleString("en-US", {
         style: "currency",
         currency: "USD",
         maximumFractionDigits: 0,
