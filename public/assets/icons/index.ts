@@ -1,4 +1,3 @@
-import Logo from "./logo.png";
 import caretLeftOrange from "./caret-left-orange.svg";
 import caretRightOrange from "./caret-right-orange.svg";
 import HalfCircle from "./half-circle.svg";
@@ -18,7 +17,6 @@ export {
   searchWhiteIcon,
   caretLeftOrange,
   caretRightOrange,
-  Logo,
   HalfCircle,
   Spinner,
   dashboard_green,

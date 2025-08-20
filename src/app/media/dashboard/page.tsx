@@ -34,8 +34,8 @@ const Dashboard = () => {
       label: "Budget Utilized",
       value: `$${moneyFormat(info?.totalBudget) || 0}`,
     },
-    { label: "Total Reach", value: "140K" },
-    { label: "Avg. Engagement", value: "24%" },
+    { label: "Total Reach", value: "..." },
+    { label: "Avg. Engagement", value: "..%" },
   ];
 
   return (

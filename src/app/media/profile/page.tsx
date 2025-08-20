@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Button,
   Input,
@@ -96,11 +97,13 @@ const Profile = () => {
     setPreferences({ ...preferences, [key]: !preferences[key] });
   };
 
+  console.log(user?.phone.toString());
+
   useEffect(() => {
     reset({
       name: user?.name,
       email: user?.email,
-      phone: user?.phone,
+      phone: `+${user?.phone.toString()}`,
       position: user?.position,
       companyName: user?.companyName,
       industry: {
@@ -176,7 +179,7 @@ const Profile = () => {
 
           {/* Info and Button */}
           <div>
-            <div className="text-gray-900 font-semibold text-lg">
+            <div className="text-gray-900 font-semibold text-lg capitalize">
               {user?.name}
             </div>
             <div className="text-gray-500 text-sm mb-1.5">
