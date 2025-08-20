@@ -115,7 +115,7 @@ function NotificationDialog() {
                   >
                     <div className="flex items-center gap-2">
                       {!n.read && (
-                        <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                        <div className="w-2 h-2 bg-[#d480c8] rounded-full"></div>
                       )}
                       <p
                         className={cn(

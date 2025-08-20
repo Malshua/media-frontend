@@ -6,11 +6,13 @@ import {
   SelectDropdown,
   TelephoneInput,
 } from "@/components/elements";
+import { useUploadMedia } from "@/hooks/campaignHooks";
 import { useUpdateDetails, useUpdatePassword } from "@/hooks/profileHooks";
 import { useAuth, useAuthActions } from "@/hooks/useAuthActions";
 import { changePasswordSchema, userSchema } from "@/schema/profileSchema";
 import { getFirstLetters } from "@/utilities/helpers";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
@@ -19,14 +21,26 @@ import { toast } from "react-toastify";
 const Profile = () => {
   const { user } = useAuth();
   const [updating, setUpdating] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const name_initials = getFirstLetters(user?.name);
   const { updateUser } = useAuthActions();
   const [show, setShow] = useState(false);
   const [showOld, setShowOld] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imgFile, setImgFile] = useState<any>(null);
+  const [imgSrc, setImgSrc] = useState<string>();
 
   const { mutate: updatePassword } = useUpdatePassword();
+  const { mutate: mediaUpload } = useUploadMedia({
+    size: imgFile?.size,
+    type: imgFile?.type?.replace("image/", ""),
+  });
+
+  const uploadImg = (e: any) => {
+    setImgFile(e?.target.files[0]);
+    setImgSrc(URL?.createObjectURL(e.target.files[0]));
+  };
 
   const {
     control: updateControl,
@@ -97,8 +111,6 @@ const Profile = () => {
     setPreferences({ ...preferences, [key]: !preferences[key] });
   };
 
-  console.log(user?.phone.toString());
-
   useEffect(() => {
     reset({
       name: user?.name,
@@ -113,6 +125,25 @@ const Profile = () => {
       companyAddress: user?.companyAddress,
     });
   }, [user, reset]);
+
+  // upload new profile photo
+  const uploadPhoto = () => {
+    const formData: any = new FormData();
+    formData.append("ID", imgFile);
+
+    setIsUploading(true);
+
+    mediaUpload(formData, {
+      onSuccess: (response) => {
+        setIsUploading(false);
+        console.log(response);
+      },
+      onError: (error: any) => {
+        setIsUploading(false);
+        toast.error(error.response.data.message);
+      },
+    });
+  };
 
   const { mutate: update } = useUpdateDetails();
 
@@ -163,19 +194,31 @@ const Profile = () => {
 
         <div className="w-fit">
           <Button
-            className="bg-purple-500 hover:bg-purple-600 capitalize py-2.5 px-4 font-medium text-white text-xs md:text-sm"
+            className="bg-[#A1238E] hover:bg-[#59044c] capitalize py-2.5 px-4 font-medium text-white text-xs md:text-sm"
             text="Save Changes"
-            onClick={handleUpdate}
-            loading={updating}
+            onClick={uploadPhoto}
+            loading={isUploading}
           />
         </div>
       </div>
       <div className="bg-white p-4 md:p-6 rounded-xl shadow-md w-full mt-5 md:mt-10">
         <div className="flex items-center space-x-5 ">
           {/* Avatar */}
-          <div className="w-20 h-20 rounded-full bg-purple-600 flex items-center justify-center text-white text-2xl font-semibold">
-            {name_initials}
-          </div>
+          {imgSrc ? (
+            <div className="relative h-24 w-24 rounded-full overflow-hidden bg-white">
+              <Image
+                src={imgSrc}
+                alt="profile photo"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          ) : (
+            <div className="w-24 h-24 rounded-full bg-purple-600 flex items-center justify-center text-white text-3xl uppercase font-semibold">
+              {name_initials}
+            </div>
+          )}
 
           {/* Info and Button */}
           <div>
@@ -185,8 +228,15 @@ const Profile = () => {
             <div className="text-gray-500 text-sm mb-1.5">
               {user?.companyName}
             </div>
-            <button className="text-purple-600 border border-purple-500 px-4 py-2.5 rounded-sm text-sm hover:bg-purple-50 transition">
-              Change Photo
+
+            <button className="text-[#59044c] border cursor-pointer relative border-[#A1238E] px-4 py-2.5 rounded-sm text-sm hover:bg-[#ffa0f1] transition">
+              <input
+                onChange={uploadImg}
+                className="absolute opacity-0 w-full h-9"
+                type="file"
+                accept="image/png,image/jpeg"
+              />
+              <span>Change Photo</span>
             </button>
           </div>
         </div>
@@ -317,7 +367,7 @@ const Profile = () => {
               type="checkbox"
               checked={preferences.campaignUpdates}
               onChange={() => togglePreference("campaignUpdates")}
-              className="accent-purple-600 h-4 w-4"
+              className="accent-[#A1238E] h-4 w-4"
             />
             <span>Campaign status updates</span>
           </label>
@@ -326,7 +376,7 @@ const Profile = () => {
               type="checkbox"
               checked={preferences.weeklyReports}
               onChange={() => togglePreference("weeklyReports")}
-              className="accent-purple-600 h-4 w-4"
+              className="accent-[#A1238E] h-4 w-4"
             />
             <span>Weekly analytics reports</span>
           </label>
@@ -335,7 +385,7 @@ const Profile = () => {
               type="checkbox"
               checked={preferences.budgetAlerts}
               onChange={() => togglePreference("budgetAlerts")}
-              className="accent-purple-600 h-4 w-4"
+              className="accent-[#A1238E] h-4 w-4"
             />
             <span>Budget alerts</span>
           </label>
@@ -344,7 +394,7 @@ const Profile = () => {
               type="checkbox"
               checked={preferences.marketingTips}
               onChange={() => togglePreference("marketingTips")}
-              className="accent-purple-600 h-4 w-4"
+              className="accent-[#A1238E] h-4 w-4"
             />
             <span>Marketing tips and best practices</span>
           </label>
@@ -418,7 +468,7 @@ const Profile = () => {
           />
           <div className="h-fit mt-auto">
             <Button
-              className="bg-purple-500 hover:bg-purple-600 capitalize py-3 px-4 font-medium text-white text-xs md:text-sm"
+              className="bg-[#A1238E] hover:bg-[#59044c] capitalize py-3 px-4 font-medium text-white text-xs md:text-sm"
               text="Save password"
               onClick={handlePasswordChange}
               loading={isSubmitting}

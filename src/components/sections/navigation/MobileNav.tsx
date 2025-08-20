@@ -92,11 +92,11 @@ const MobileNav = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-white text-purple-600 flex items-center justify-center uppercase font-semibold border border-purple-600">
+            <div className="w-12 h-12 rounded-full bg-white text-[#A1238E] flex items-center justify-center uppercase font-semibold border border-[#A1238E]">
               {name_initials}
             </div>
             <div className="flex flex-col leading-5">
-              <span className="text-sm text-purple-500 font-semibold capitalize">
+              <span className="text-sm text-[#A1238E] font-semibold capitalize">
                 {name}
               </span>
               <span className="text-xs text-[#858484]">
@@ -113,7 +113,7 @@ const MobileNav = () => {
               onClick={handleMenu}
               className={`text-lg ${
                 pathname.includes(item?.href)
-                  ? "text-purple-600 font-semibold"
+                  ? "text-[#A1238E] font-semibold"
                   : "font-light text-[#808080] hover:text-secondary-default"
               }`}
             >

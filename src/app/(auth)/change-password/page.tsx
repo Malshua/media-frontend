@@ -117,7 +117,7 @@ const Page = () => {
             />
 
             <Button
-              className="w-full bg-purple-600 hover:bg-purple-700 capitalize py-2.5 font-medium text-white"
+              className="w-full bg-[#A1238E] hover:bg-[#59044c] capitalize py-2.5 font-medium text-white"
               loading={isSubmitting}
               onClick={handleChange}
               text="Submit"

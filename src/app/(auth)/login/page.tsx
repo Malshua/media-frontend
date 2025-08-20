@@ -105,7 +105,7 @@ const Page = () => {
               AI-Powered Campaign Management
             </p>
           </div>
-          <h2 className="md:text-xl text-purple-600 font-bold text-center mt-5">
+          <h2 className="md:text-xl text-[#A1238E] font-bold text-center mt-5">
             Login to Your Account
           </h2>
 
@@ -147,14 +147,14 @@ const Page = () => {
               />
               <Link
                 href={Routes.FORGOT_PASSWORD}
-                className="text-sm ml-auto justify-self-end hover:underline font-medium text-purple-500 hover:text-purple-600 cursor-default"
+                className="text-sm ml-auto justify-self-end hover:underline font-medium text-[#A1238E] hover:text-[#59044c] cursor-default"
               >
                 Forgot password?
               </Link>
             </div>
 
             <Button
-              className="w-full bg-purple-600 hover:bg-purple-700 capitalize py-2.5 font-medium text-white"
+              className="w-full bg-[#A1238E] hover:bg-[#59044c] capitalize py-2.5 font-medium text-white"
               loading={isSubmitting}
               onClick={handleLogin}
               text="Login"

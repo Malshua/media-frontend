@@ -133,7 +133,7 @@ const Page = () => {
             />
           )}
         />
-        
+
         <Controller
           control={control}
           name="position"
@@ -207,7 +207,7 @@ const Page = () => {
       </div>
 
       <Button
-        className="w-full bg-purple-600 hover:bg-purple-700 capitalize py-2.5 font-medium text-white mt-4"
+        className="w-full bg-[#A1238E] hover:bg-[#59044c] capitalize py-2.5 font-medium text-white mt-4"
         loading={isSubmitting}
         onClick={handleUserDetails}
         text="Submit"

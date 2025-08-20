@@ -22,7 +22,7 @@ const NavItem = ({ href, open, title }: navItemProps) => {
       <li
         className={`all__trans ${
           route.includes(href)
-            ? "border-l-4 border-purple-500 text-purple-600 font-semibold bg-purple-100"
+            ? "border-l-4 border-[#A1238E] text-[#59044c] font-semibold bg-purple-100"
             : " hover:bg-purple-100 text-gray-700"
         }`}
       >
@@ -46,7 +46,7 @@ const SideBar = ({ open, setOpen }: any) => {
       {/* profile */}
       <div className={`flex flex-col items-center justify-center mb-5`}>
         <Image src={media_logo} alt="logo" height={100} width={100} />
-        <span className="text-xs font-semibold text-purple-700">
+        <span className="text-xs font-semibold text-[#59044c]">
           Coceptual Media
         </span>
       </div>

@@ -1,6 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuth } from "./useAuthActions";
-import { serverRequest } from "@/utilities/serverRequest";
+import {
+  serverRequest,
+  serverRequestFormData,
+} from "@/utilities/serverRequest";
 
 export const useCreateCampaign = () => {
   const { token } = useAuth();
@@ -40,4 +43,22 @@ export const useGetSIngleCampaigns = ({
   });
 
   return query;
+};
+
+//upload media
+export const useUploadMedia = ({
+  type,
+  size,
+}: {
+  type: string;
+  size: string;
+}) => {
+  const { token } = useAuth();
+
+  const endpoint = `${process.env.BASE_URL}/api/upload-file?fileType=${type}&fileSize=${size}`;
+  const mutation = useMutation({
+    mutationFn: (data) => serverRequestFormData(token).put(endpoint, data),
+  });
+
+  return mutation;
 };

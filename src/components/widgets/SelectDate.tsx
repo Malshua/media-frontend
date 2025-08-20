@@ -29,7 +29,7 @@ function SelectDate({
   minDate,
   maxDate,
   error,
-  placeholder = "mm/dd/yyyy",
+  placeholder = "MM/DD/YYYY",
   disabled,
 }: SelectDateTypes) {
   return (

@@ -56,7 +56,7 @@ const ForgotPassword = () => {
             AI-Powered Campaign Management
           </p>
         </div>
-        <h2 className="text-purple-600 font-bold text-center mt-5">
+        <h2 className="text-[#A1238E] font-bold text-center mt-5">
           Enter email linked to your account
         </h2>
 
@@ -76,7 +76,7 @@ const ForgotPassword = () => {
           />
 
           <Button
-            className="w-full bg-purple-600 hover:bg-purple-700 capitalize py-2.5 font-medium text-white"
+            className="w-full bg-[#A1238E] hover:bg-[#59044c] capitalize py-2.5 font-medium text-white"
             loading={isSubmitting}
             onClick={handleForgot}
             text="Send Link"

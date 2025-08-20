@@ -9,8 +9,10 @@ import pdfimage from "./pdfimage.svg";
 import Avatar_image from "./avatar_image.png";
 import OrangePatternTop from "./orange-pattern-top.png";
 import OrangePatternBottom from "./orange-pattern-bottom.png";
+import defaultImg from "./default-img.svg";
 
 export {
+  defaultImg,
   bell,
   construction,
   profile_avi,

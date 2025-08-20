@@ -3,3 +3,4 @@ export { default as SearchWidget } from "./SearchWidget";
 export { default as DragnDrop } from "./DragnDrop";
 export { default as UserBadge } from "./UserBadge";
 export { default as BreadCrumbs } from "./BreadCrumbs";
+export { default as DragnDropMulti } from "./DragnDropMulti";

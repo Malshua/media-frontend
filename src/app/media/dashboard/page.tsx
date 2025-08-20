@@ -47,7 +47,7 @@ const Dashboard = () => {
 
         <Link href={Routes.NEW_CAMPAIGN} className="w-fit ml-auto">
           <Button
-            className="bg-purple-600 text-xs md:text-base hover:bg-purple-700 capitalize py-2.5 px-4 font-medium text-white"
+            className="bg-[#A1238E] text-xs md:text-base hover:bg-[#59044c] capitalize py-2.5 px-4 font-medium text-white"
             text="+ New Campaign"
           />
         </Link>

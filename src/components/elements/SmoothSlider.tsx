@@ -22,9 +22,9 @@ function SmoothSlider({
 
   const formatLabel = () => {
     if (type === "amount") {
-      return clampedValue.toLocaleString("en-US", {
+      return (clampedValue * 1500).toLocaleString("en-NG", {
         style: "currency",
-        currency: "USD",
+        currency: "NGN",
         maximumFractionDigits: 0,
       });
     } else {
@@ -72,8 +72,8 @@ function SmoothSlider({
       <div className="flex justify-between text-sm text-gray-500 mt-3">
         {type === "amount" ? (
           <>
-            <span>$10</span>
-            <span>$100K</span>
+            <span>₦15,000</span>
+            <span>₦150,000,000</span>
           </>
         ) : (
           <>

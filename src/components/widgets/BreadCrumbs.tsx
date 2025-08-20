@@ -165,13 +165,13 @@ const BreadCrumbs = () => {
             >
               {index !== 0 && <span>/</span>}
               {index === pathnames.length - 1 ? (
-                <span className="font-medium text-purple-700 text-sm">
+                <span className="font-medium text-[#59044c] text-sm">
                   {crumb.label}
                 </span>
               ) : (
                 <Link
                   href={crumb.href}
-                  className="all__trans hover:text-purple-500 text-sm"
+                  className="all__trans hover:text-[#A1238E] text-sm"
                 >
                   {crumb.label}
                 </Link>
