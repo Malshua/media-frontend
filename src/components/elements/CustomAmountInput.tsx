@@ -24,7 +24,7 @@ export const handleFormattedNumber = (
   e: ChangeEvent<HTMLInputElement>,
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
 ) => {
-  let rawValue = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+  const rawValue = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
 
   if (rawValue === "") {
     onChange({ ...e, target: { ...e.target, value: "" } }); // Allow clearing the input
