@@ -75,7 +75,6 @@ const Page = () => {
       },
       onError: (error: any) => {
         setIsSubmitting(false);
-        console.log(error);
         toast.error(error?.response?.data?.message);
       },
     });

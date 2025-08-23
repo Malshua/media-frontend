@@ -173,7 +173,6 @@ const Profile = () => {
         onError: (error: any) => {
           setUpdating(false);
           toast.error(error.response?.data?.error);
-          console.log(error);
         },
       });
     } else {

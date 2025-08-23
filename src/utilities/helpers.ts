@@ -119,34 +119,6 @@ export const converToBuffer = async ({
   return buffer;
 };
 
-// // Encryption Function
-// export const cryptographicEncryption = async ({
-//   dataToEncrypt,
-//   secretKey,
-//   iv,
-// }: EncryptionProps): Promise<string | undefined> => {
-//   try {
-//     const ivBuffer = await converToBuffer({
-//       stringValue: iv.toString('hex'),
-//       integerValue: 16,
-//     });
-//     const keyBuffer = await converToBuffer({
-//       stringValue: secretKey,
-//       integerValue: 32,
-//     });
-
-//     // const token = jwt.sign({ ...dataToEncrypt }, JWT_KEY);
-
-//     const cipher = crypto.createCipheriv('aes-256-cbc', keyBuffer, ivBuffer);
-//     let encryptedData = cipher.update(token, 'utf8', 'hex');
-//     encryptedData += cipher.final('hex');
-
-//     return encryptedData;
-//   } catch (err) {
-//     console.error('Encryption error:', err);
-//   }
-// };
-
 export const formatDateAndTime = (date: moment.MomentInput) => {
   const value = {
     Date: moment(date).format("DD MMMM, YYYY"),

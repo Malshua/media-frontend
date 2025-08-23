@@ -377,15 +377,13 @@ const NewCampaign = () => {
             },
             onError: (error: any) => {
               setIsSubmitting(false);
-              toast.error(error?.response?.data?.message);
-              console.log(error);
+              toast.error(error?.response?.data?.details[0]?.message);
             },
           });
         },
         onError: (err) => {
           setIsSubmitting(false);
           toast.error(err?.message);
-          console.log(err);
         },
       });
     } else {
@@ -425,8 +423,7 @@ const NewCampaign = () => {
         },
         onError: (error: any) => {
           setIsSubmitting(false);
-          toast.error(error?.response?.data?.message);
-          console.log(error);
+          toast.error(error?.response?.data?.details[0]?.message);
         },
       });
     }

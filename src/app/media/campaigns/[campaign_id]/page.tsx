@@ -1,4 +1,5 @@
 "use client";
+
 import { useGetSIngleCampaigns } from "@/hooks/campaignHooks";
 import { useParams } from "next/navigation";
 import { CiClock2 } from "react-icons/ci";
@@ -25,6 +26,10 @@ const CampaignDetails = () => {
     return singleCampaign?.data?.data;
   }, [singleCampaign]);
 
+  const fast = (data?.targetAudience ?? [])
+    .map((item: any) => item?.replace(/_/g, "-") ?? "")
+    .join(", ");
+
   const days = getDayDifference(data?.startDate, data?.endDate);
 
   const headData = [
@@ -36,7 +41,7 @@ const CampaignDetails = () => {
     {
       icon: <SlPeople className="text-xl" />,
       heading: "Target Audience",
-      text: `${data?.targetAudience.replace(/_/g, "-")}`,
+      text: `${fast}`,
     },
     {
       icon: <IoCalendarOutline className="text-xl" />,
@@ -46,7 +51,7 @@ const CampaignDetails = () => {
     {
       icon: <FiDollarSign className="text-xl" />,
       heading: "Total Budget",
-      text: `$${moneyFormat(data?.totalBudget)}`,
+      text: `₦${moneyFormat(data?.totalBudget)}`,
     },
     {
       icon: <IoLocationOutline className="text-xl" />,
@@ -129,7 +134,7 @@ const CampaignDetails = () => {
                     <span className="text-xs">{item?.duration}</span>
                   </p>
                   <span className="text-sm font-medium">
-                    Price: ${moneyFormat(item?.amount)}
+                    Price: ₦{moneyFormat(item?.amount)}
                   </span>
                 </div>
               ))}
