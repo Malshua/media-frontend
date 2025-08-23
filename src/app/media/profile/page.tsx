@@ -21,7 +21,6 @@ import { toast } from "react-toastify";
 const Profile = () => {
   const { user } = useAuth();
   const [updating, setUpdating] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
   const name_initials = getFirstLetters(user?.name);
   const { updateUser } = useAuthActions();
   const [show, setShow] = useState(false);
@@ -32,10 +31,7 @@ const Profile = () => {
   const [imgSrc, setImgSrc] = useState<string>();
 
   const { mutate: updatePassword } = useUpdatePassword();
-  const { mutate: mediaUpload } = useUploadMedia({
-    size: imgFile?.size,
-    type: imgFile?.type?.replace("image/", ""),
-  });
+  const { mutate: mediaUpload } = useUploadMedia();
 
   const uploadImg = (e: any) => {
     setImgFile(e?.target.files[0]);
@@ -90,21 +86,21 @@ const Profile = () => {
   });
 
   type PreferenceKey =
-    | "campaignUpdates"
-    | "weeklyReports"
+    | "campaignStatusUpdates"
+    | "weeklyAnalyticsReports"
     | "budgetAlerts"
-    | "marketingTips";
+    | "marketingTipsBestPractices";
 
   const [preferences, setPreferences] = useState<{
-    campaignUpdates: boolean;
-    weeklyReports: boolean;
+    campaignStatusUpdates: boolean;
+    weeklyAnalyticsReports: boolean;
     budgetAlerts: boolean;
-    marketingTips: boolean;
+    marketingTipsBestPractices: boolean;
   }>({
-    campaignUpdates: true,
-    weeklyReports: true,
+    campaignStatusUpdates: true,
+    weeklyAnalyticsReports: true,
     budgetAlerts: true,
-    marketingTips: false,
+    marketingTipsBestPractices: false,
   });
 
   const togglePreference = (key: PreferenceKey) => {
@@ -115,7 +111,9 @@ const Profile = () => {
     reset({
       name: user?.name,
       email: user?.email,
-      phone: `+${user?.phone.toString()}`,
+      phone: user?.phone?.toString().startsWith("+")
+        ? user.phone.toString()
+        : `+${user?.phone}`,
       position: user?.position,
       companyName: user?.companyName,
       industry: {
@@ -126,61 +124,97 @@ const Profile = () => {
     });
   }, [user, reset]);
 
-  // upload new profile photo
-  const uploadPhoto = () => {
-    const formData: any = new FormData();
-    formData.append("ID", imgFile);
+  // update user profile
+  const updateProfile = handleSubmit((data) => {
+    if (imgFile) {
+      const formData: any = new FormData();
+      formData.append("files", imgFile);
 
-    setIsUploading(true);
+      setUpdating(true);
 
-    mediaUpload(formData, {
-      onSuccess: (response) => {
-        setIsUploading(false);
-        console.log(response);
-      },
-      onError: (error: any) => {
-        setIsUploading(false);
-        toast.error(error.response.data.message);
-      },
-    });
-  };
+      mediaUpload(formData, {
+        onSuccess: (response) => {
+          const img = response?.data;
+
+          const payload: any = {
+            picture: img?.fileName,
+            fullName: data?.name,
+            email: data?.email,
+            phoneNumber: data?.phone,
+            position: data?.position,
+            companyName: data?.companyName,
+            companyAddress: data?.companyAddress,
+            industry: data?.industry?.value,
+            notificationPreferences: preferences,
+          };
+
+          update(payload, {
+            onSuccess: (response) => {
+              setUpdating(false);
+              toast.success("Update success!");
+              const updateData = {
+                name: data?.name,
+                email: data?.email,
+                phone: data?.phone,
+                position: data?.position,
+                companyName: data?.companyName,
+                companyAddress: data?.companyAddress,
+                industry: data?.industry?.value,
+              };
+
+              updateUser(updateData);
+            },
+            onError: (error: any) => {
+              setUpdating(false);
+              toast.error(error?.response?.data?.message);
+            },
+          });
+        },
+        onError: (error: any) => {
+          setUpdating(false);
+          toast.error(error.response?.data?.error);
+          console.log(error);
+        },
+      });
+    } else {
+      const payload: any = {
+        fullName: data?.name,
+        email: data?.email,
+        phoneNumber: data?.phone,
+        position: data?.position,
+        companyName: data?.companyName,
+        companyAddress: data?.companyAddress,
+        industry: data?.industry?.value,
+        notificationPreferences: preferences,
+      };
+
+      setUpdating(true);
+
+      update(payload, {
+        onSuccess: (response) => {
+          setUpdating(false);
+          toast.success("Update success!");
+          const updateData = {
+            name: data?.name,
+            email: data?.email,
+            phone: data?.phone,
+            position: data?.position,
+            companyName: data?.companyName,
+            companyAddress: data?.companyAddress,
+            industry: data?.industry?.value,
+          };
+
+          updateUser(updateData);
+        },
+        onError: (error: any) => {
+          setUpdating(false);
+          toast.error(error?.response?.data?.message);
+        },
+      });
+    }
+  });
 
   const { mutate: update } = useUpdateDetails();
-
-  const handleUpdate = handleSubmit((data) => {
-    const payload: any = {
-      name: data?.name,
-      email: data?.email,
-      phone: data?.phone,
-      position: data?.position,
-      companyName: data?.companyName,
-      companyAddress: data?.companyAddress,
-      industry: data?.industry?.value,
-    };
-
-    setUpdating(true);
-    update(payload, {
-      onSuccess: (response) => {
-        setUpdating(false);
-        toast.success("Update success!");
-        const updateData = {
-          name: data?.name,
-          email: data?.email,
-          phone: data?.phone,
-          position: data?.position,
-          companyName: data?.companyName,
-          companyAddress: data?.companyAddress,
-          industry: data?.industry?.value,
-        };
-
-        updateUser(updateData);
-      },
-      onError: (error: any) => {
-        setUpdating(false);
-        toast.error(error?.response?.data?.message);
-      },
-    });
-  });
 
   return (
     <div className="p-4 md:p-8 bg-[#f5f8fc]">
@@ -196,8 +230,8 @@ const Profile = () => {
           <Button
             className="bg-[#A1238E] hover:bg-[#59044c] capitalize py-2.5 px-4 font-medium text-white text-xs md:text-sm"
             text="Save Changes"
-            onClick={uploadPhoto}
-            loading={isUploading}
+            onClick={updateProfile}
+            loading={updating}
           />
         </div>
       </div>
@@ -365,8 +399,8 @@ const Profile = () => {
           <label className="flex items-center space-x-3">
             <input
               type="checkbox"
-              checked={preferences.campaignUpdates}
-              onChange={() => togglePreference("campaignUpdates")}
+              checked={preferences.campaignStatusUpdates}
+              onChange={() => togglePreference("campaignStatusUpdates")}
               className="accent-[#A1238E] h-4 w-4"
             />
             <span>Campaign status updates</span>
@@ -374,8 +408,8 @@ const Profile = () => {
           <label className="flex items-center space-x-3">
             <input
               type="checkbox"
-              checked={preferences.weeklyReports}
-              onChange={() => togglePreference("weeklyReports")}
+              checked={preferences.weeklyAnalyticsReports}
+              onChange={() => togglePreference("weeklyAnalyticsReports")}
               className="accent-[#A1238E] h-4 w-4"
             />
             <span>Weekly analytics reports</span>
@@ -392,8 +426,8 @@ const Profile = () => {
           <label className="flex items-center space-x-3">
             <input
               type="checkbox"
-              checked={preferences.marketingTips}
-              onChange={() => togglePreference("marketingTips")}
+              checked={preferences.marketingTipsBestPractices}
+              onChange={() => togglePreference("marketingTipsBestPractices")}
               className="accent-[#A1238E] h-4 w-4"
             />
             <span>Marketing tips and best practices</span>

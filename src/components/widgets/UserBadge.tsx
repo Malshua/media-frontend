@@ -1,4 +1,7 @@
+"use client";
+
 import {
+  getFileURL,
   getFirstLetters,
   getFullDate,
   textReplacer,
@@ -151,21 +154,21 @@ const UserBadge = () => {
         // onClick={openUserModal}
         className="flex items-center gap-3 cursor-pointer"
       >
-        {user?.picture ? (
+        {/* {user?.picture ? (
           <div className="w-12 h-12">
             <Image
-              src={user?.picture}
+              src={getFileURL(user?.picture)}
               className="w-12 h-12 rounded-full border border-secondary-default object-cover"
               width={52}
               height={52}
               alt="profile photo"
             />
           </div>
-        ) : (
-          <div className="w-16 h-16 rounded-full border border-[#A1238E] bg-secondary-default text-[#A1238E] text-xl flex items-center justify-center uppercase font-semibold">
-            {name_initials}
-          </div>
-        )}
+        ) : ( */}
+        <div className="w-16 h-16 rounded-full border border-[#A1238E] bg-secondary-default text-[#A1238E] text-xl flex items-center justify-center uppercase font-semibold">
+          {name_initials}
+        </div>
+        {/* )} */}
         {/* <div className="flex flex-col gap-1 leading-5">
           <span className="text-sm text-primary-light font-semibold capitalize">
             {user?.name}

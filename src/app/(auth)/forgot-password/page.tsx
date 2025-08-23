@@ -22,8 +22,6 @@ const ForgotPassword = () => {
     resolver: yupResolver(ForgotSchema),
   });
 
-  console.log(errors);
-
   const { mutate: ForgotPassword } = useForgotPassword();
 
   const handleForgot = handleSubmit((data) => {

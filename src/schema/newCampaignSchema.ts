@@ -29,9 +29,15 @@ const newCampaign = yup.object().shape({
     .shape(objectShape)
     .required("Primary goal is required"),
   targetAudience: yup
-    .object()
-    .shape(objectShape)
-    .required("Target audience is required"),
+    .array()
+    .of(yup.string())
+    .transform((value, originalValue) => {
+      if (Array.isArray(originalValue)) {
+        return originalValue.map((item: any) => item.value);
+      }
+      return [];
+    })
+    .min(1, "At least one target audience is required"),
   location: yup.string().required("Location is required"),
   keyPerformanceIndicators: yup
     .string()

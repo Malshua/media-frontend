@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { media_logo } from "../../../../public/assets/images";
+import { toast } from "react-toastify";
 
 const Page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -72,9 +73,10 @@ const Page = () => {
         login(login_data);
         push(Routes?.DASHBOARD);
       },
-      onError: (error) => {
+      onError: (error: any) => {
         setIsSubmitting(false);
         console.log(error);
+        toast.error(error?.response?.data?.message);
       },
     });
   });

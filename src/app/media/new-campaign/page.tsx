@@ -1,6 +1,7 @@
 "use client";
 import {
   Button,
+  CustomAmountInput,
   DurationSelector,
   Input,
   Modal,
@@ -13,6 +14,7 @@ import clsx from "clsx";
 import { Label } from "@/components/ui/label";
 import SelectDate from "@/components/widgets/SelectDate";
 import {
+  createFormData,
   formatDateAndTime,
   getDayDifference,
   sanitizePrice,
@@ -21,7 +23,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { newCampaign } from "@/schema/newCampaignSchema";
 import { toast } from "react-toastify";
-import { useCreateCampaign } from "@/hooks/campaignHooks";
+import { useCreateCampaign, useUploadMedia } from "@/hooks/campaignHooks";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/utilities/routes";
 import { useInvalidateCampaigns } from "@/hooks/useInvalidateQueries";
@@ -29,6 +31,7 @@ import { DialogTitle } from "@/components/ui/dialog";
 import DragnDropMulti, {
   FileMetadata,
 } from "@/components/widgets/DragnDropMulti";
+import { handleFormattedNumber } from "@/components/elements/CustomAmountInput";
 
 const mediaChannels = [
   {
@@ -59,10 +62,10 @@ const mediaChannels = [
     description: "TV ads on local or national networks.",
     price: "₦7,500,000+",
     options: [
-      "AIT",
-      "TVC",
+      "ait",
+      "tvc",
       "channels",
-      "NTA",
+      "nta",
       "galaxy_tv",
       "silverbird_tv",
       "arise_tv",
@@ -191,12 +194,17 @@ const NewCampaign = () => {
     resolver: yupResolver(newCampaign),
   });
 
+  const watched = watch("targetAudience");
+
+  const day = watched?.map((item: any) => item.value) || [];
+
   const start = formatDateAndTime(watch("startDate")).Date;
   const end = formatDateAndTime(watch("endDate")).Date;
 
   const days = getDayDifference(start, end);
 
   const { mutate: createcampaign } = useCreateCampaign();
+  const { mutate: mediaUpload } = useUploadMedia();
 
   const sanitizePrice = (price: string) => {
     return price.replace(/[^\d]/g, "");
@@ -281,7 +289,7 @@ const NewCampaign = () => {
               ...item,
               [type]:
                 type === "amount"
-                  ? `₦${(value * 1500).toLocaleString()}`
+                  ? `${value * 1500}`
                   : `${Math.round((value / 100) * 30)} days`,
             }
           : item
@@ -319,45 +327,109 @@ const NewCampaign = () => {
   });
 
   const handleCreate = handleSubmit((data) => {
-    if (selectedItems.length < 1) {
-      toast.error("No media channels selected");
-      return;
+    if (files.length > 0) {
+      const formData: any = createFormData(files);
+      setIsSubmitting(true);
+
+      mediaUpload(formData, {
+        onSuccess: (res) => {
+          const file = res?.data?.files;
+
+          if (selectedItems.length < 1) {
+            toast.error("No media channels selected");
+            return;
+          }
+
+          const payload: any = {
+            campaignName: data?.campaignName,
+            campaignType: data?.campaignType?.value,
+            startDate: start,
+            endDate: end,
+            budget: data?.totalBudget,
+            totalBudget: data?.totalBudget,
+            campaignDescription: data?.campaignDescription,
+            primaryGoal: data?.primaryGoal?.value,
+            keyPerformanceIndicators: data?.keyPerformanceIndicators,
+            targetAudience: day,
+            instructionsRequirements: data?.instructionsRequirements,
+            location: data?.location,
+            mediaSelections: selectedItems,
+            designRequest: [
+              ...(creativeDesigns?.banner ? ["banner"] : []),
+              ...(creativeDesigns?.audio ? ["audio"] : []),
+              ...(creativeDesigns?.video ? ["video"] : []),
+            ],
+            mediaUpload: file.map((f: any) => ({
+              fileUrl: f.fileUrl,
+              fileName: f.fileName,
+              fileSize: f.fileSize,
+              fileType: f.fileType,
+              uploadedAt: new Date().toISOString(),
+            })),
+          };
+
+          createcampaign(payload, {
+            onSuccess: (response) => {
+              setIsSubmitting(false);
+              toast.success(response?.data?.message);
+              RefetchCampaigns();
+              push(Routes.CAMPAIGNS);
+            },
+            onError: (error: any) => {
+              setIsSubmitting(false);
+              toast.error(error?.response?.data?.message);
+              console.log(error);
+            },
+          });
+        },
+        onError: (err) => {
+          setIsSubmitting(false);
+          toast.error(err?.message);
+          console.log(err);
+        },
+      });
+    } else {
+      if (selectedItems.length < 1) {
+        toast.error("No media channels selected");
+        return;
+      }
+
+      const payload: any = {
+        campaignName: data?.campaignName,
+        campaignType: data?.campaignType?.value,
+        startDate: start,
+        endDate: end,
+        budget: data?.totalBudget,
+        totalBudget: data?.totalBudget,
+        campaignDescription: data?.campaignDescription,
+        primaryGoal: data?.primaryGoal?.value,
+        keyPerformanceIndicators: data?.keyPerformanceIndicators,
+        targetAudience: day,
+        instructionsRequirements: data?.instructionsRequirements,
+        location: data?.location,
+        mediaSelections: selectedItems,
+        designRequest: [
+          ...(creativeDesigns?.banner ? ["banner"] : []),
+          ...(creativeDesigns?.audio ? ["audio"] : []),
+          ...(creativeDesigns?.video ? ["video"] : []),
+        ],
+      };
+
+      setIsSubmitting(true);
+      createcampaign(payload, {
+        onSuccess: (response) => {
+          setIsSubmitting(false);
+          toast.success(response?.data?.message);
+          RefetchCampaigns();
+          push(Routes.CAMPAIGNS);
+        },
+        onError: (error: any) => {
+          setIsSubmitting(false);
+          toast.error(error?.response?.data?.message);
+          console.log(error);
+        },
+      });
     }
-
-    const payload: any = {
-      campaignName: data?.campaignName,
-      campaignType: data?.campaignType?.value,
-      startDate: start,
-      endDate: end,
-      budget: data?.totalBudget,
-      totalBudget: data?.totalBudget,
-      campaignDescription: data?.campaignDescription,
-      primaryGoal: data?.primaryGoal?.value,
-      keyPerformanceIndicators: data?.keyPerformanceIndicators,
-      targetAudience: data?.targetAudience?.value,
-      instructionsRequirements: data?.instructionsRequirements,
-      location: data?.location,
-      mediaSelections: selectedItems,
-      creativeDesigns: [
-        ...(creativeDesigns?.banner ? ["banner"] : []),
-        ...(creativeDesigns?.audio ? ["audio"] : []),
-        ...(creativeDesigns?.video ? ["video"] : []),
-      ],
-    };
-
-    setIsSubmitting(true);
-    createcampaign(payload, {
-      onSuccess: (response) => {
-        setIsSubmitting(false);
-        toast.success(response?.data?.message);
-        RefetchCampaigns();
-        push(Routes.CAMPAIGNS);
-      },
-      onError: (error: any) => {
-        setIsSubmitting(false);
-        toast.error(error?.response?.data?.message);
-      },
-    });
   });
 
   const handleCreativeDesignChange = (type: string) => {
@@ -486,12 +558,15 @@ const NewCampaign = () => {
           <Controller
             control={control}
             name="totalBudget"
-            render={({ field }) => (
-              <Input
+            render={({ field: { onChange, value, ...field } }) => (
+              <CustomAmountInput
+                label="Total Budget (NGN)"
                 type="text"
                 placeholder="e.g. ₦7,500,000"
-                label="Total Budget (NGN)"
-                error={errors?.totalBudget?.message}
+                value={value ? Number(value).toLocaleString() : ""}
+                onChange={(e) => handleFormattedNumber(e, onChange)}
+                error={errors.totalBudget?.message}
+                required
                 {...field}
               />
             )}
@@ -554,10 +629,7 @@ const NewCampaign = () => {
                 ]}
                 placeholder="select primary audience"
                 label="Target Audience"
-                error={
-                  errors?.targetAudience?.message ||
-                  errors?.targetAudience?.value?.message
-                }
+                error={errors?.targetAudience?.message}
                 {...field}
               />
             )}

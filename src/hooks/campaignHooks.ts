@@ -46,16 +46,10 @@ export const useGetSIngleCampaigns = ({
 };
 
 //upload media
-export const useUploadMedia = ({
-  type,
-  size,
-}: {
-  type: string;
-  size: string;
-}) => {
+export const useUploadMedia = () => {
   const { token } = useAuth();
 
-  const endpoint = `${process.env.BASE_URL}/api/upload-file?fileType=${type}&fileSize=${size}`;
+  const endpoint = `${process.env.BASE_URL}/api/upload-file`;
   const mutation = useMutation({
     mutationFn: (data) => serverRequestFormData(token).put(endpoint, data),
   });

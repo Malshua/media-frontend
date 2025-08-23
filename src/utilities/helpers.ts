@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import copy from "copy-to-clipboard";
 import moment from "moment";
+import { FileMetadata } from "@/components/widgets/DragnDropMulti";
 
 interface EncryptionProps {
   dataToEncrypt: Record<string, unknown>; // Define the type more specifically
@@ -22,6 +23,30 @@ export const getFirstLetters = (str: string | undefined): string => {
     .map((word) => word.charAt(0))
     .join("");
 };
+
+export const createFormData = (pdfFiles: FileMetadata[]) => {
+  const formData = new FormData();
+
+  pdfFiles.forEach(({ file }) => {
+    if (file) {
+      formData.append("files", file);
+    }
+  });
+
+  return formData;
+};
+
+export const getFileURL = (key?: string | string[]) => {
+  const file = `https://coceptual-bucket.s3.eu-north-1.amazonaws.com/${
+    key || ""
+  }`;
+  return file;
+};
+
+// export const getImage = (key?: string | undefined | null) => {
+//   const img: any = key ? `${process.env.SRC_URL}/${key}` : logo;
+//   return img;
+// };
 
 export const getDayDifference = (start: string, end: string): string => {
   const startDate = new Date(start);

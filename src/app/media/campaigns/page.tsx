@@ -57,7 +57,7 @@ const Campaigns = () => {
       header: () => <span>Budget</span>,
       cell: (info: any) => {
         const budget = info?.getValue();
-        return <div className="font-medium">${moneyFormat(budget)}</div>;
+        return <div className="font-medium">₦{moneyFormat(budget)}</div>;
       },
     }),
 

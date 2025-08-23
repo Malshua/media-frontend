@@ -117,7 +117,7 @@ const DurationSelector = ({
                 }
                 placeholder="Select duration"
               />
-              {["days", "weeks", "months"].includes(selectedUnit) && (
+              {!["3 months", "6 months", "12 months"].includes(value) && (
                 <Input
                   type="number"
                   value={selectedValue === "" ? "" : selectedValue}

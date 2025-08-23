@@ -8,6 +8,7 @@ export { default as TabView } from "./TabView";
 export { default as TelephoneInput } from "./TelephoneInput";
 export { default as NotificationDialog } from "./NotificationDialog";
 export { default as DurationSelector } from "./DurationSelector";
+export { default as CustomAmountInput } from "./CustomAmountInput";
 export { default as Wrapper } from "./Wrapper";
 export { default as RadioButton } from "./RadioButton";
 export { default as CustomInput } from "./CustomInput";

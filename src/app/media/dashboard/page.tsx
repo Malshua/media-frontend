@@ -12,13 +12,6 @@ import { Routes } from "@/utilities/routes";
 import Link from "next/link";
 import React, { useMemo } from "react";
 
-const card_data = [
-  { label: "Active Campaigns", value: "5" },
-  { label: "Budget Utilized", value: "$24,500" },
-  { label: "Total Reach", value: "140K" },
-  { label: "Avg. Engagement", value: "24%" },
-];
-
 const Dashboard = () => {
   const { user } = useAuth();
 
@@ -32,7 +25,7 @@ const Dashboard = () => {
     { label: "Active Campaigns", value: `${info?.totalCampaigns || 0}` },
     {
       label: "Budget Utilized",
-      value: `$${moneyFormat(info?.totalBudget) || 0}`,
+      value: `₦${moneyFormat(info?.totalBudget) || 0}`,
     },
     { label: "Total Reach", value: "..." },
     { label: "Avg. Engagement", value: "..%" },

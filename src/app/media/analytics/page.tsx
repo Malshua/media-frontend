@@ -138,8 +138,8 @@ const Analytics = () => {
                 <div className="flex justify-between text-xs md:text-sm text-gray-700 mb-1">
                   <span>{item.label}</span>
                   <span className="">
-                    {item.unit === "$"
-                      ? `$${item.current.toLocaleString()} / $${item.goal.toLocaleString()}`
+                    {item.unit === "₦"
+                      ? `₦${item.current.toLocaleString()} / $${item.goal.toLocaleString()}`
                       : `${item.current.toLocaleString()} / ${item.goal.toLocaleString()} ${
                           item.unit
                         }`}
