@@ -17,7 +17,7 @@ const CampaignsTable = () => {
     return campaigns?.data?.campaigns;
   }, [campaigns]);
 
-  const data = info?.slice(0, 3);
+  const data = info?.slice(-3).reverse();
 
   const columnHelper = createColumnHelper();
 
