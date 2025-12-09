@@ -19,7 +19,7 @@ const Header = ({ heading }: { heading?: string }) => {
           <BreadCrumbs />
         </div>
 
-        <div className="hidden lg:flex items-center gap-7 justify-end pr-5">
+        <div className="hidden md:flex items-center gap-7 justify-end pr-5">
           <button className="relative">
             <NotificationDialog />
 
@@ -29,14 +29,14 @@ const Header = ({ heading }: { heading?: string }) => {
           </button>
         </div>
 
-        <div className="block lg:hidden">
+        <div className="block md:hidden">
           <MobileNav />
         </div>
       </div>
 
       {/* Bottom Line - visible only on lg+ screens */}
       <div
-        className={`hidden lg:block border-t-2 mt-3 border-[#cc6cd9] mx-20`}
+        className={`hidden md:block border-t-2 mt-3 border-[#cc6cd9] mx-20`}
       ></div>
     </div>
   );

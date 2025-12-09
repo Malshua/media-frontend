@@ -3,10 +3,10 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 import { Routes } from "@/utilities/routes";
 import { media_logo } from "../../public/assets/images";
+import { useRouter } from "next/navigation";
 
 const Error = () => {
   const router = useRouter();
@@ -36,7 +36,7 @@ const Error = () => {
               Internal Server Error
             </h2>
 
-            <div className="text-muted mb-8">
+            <div className="mb-8">
               Hello, we&apos;re sorry this happened but the fault isn&apos;t
               yours, it is ours😓.
               <br /> Try accessing the page later.
@@ -44,7 +44,7 @@ const Error = () => {
 
             <div className="w-fit mx-auto">
               <button
-                onClick={() => router.reload()}
+                onClick={() => router.refresh()}
                 className="block w-full py-2 px-8 bg-primary text-white text-center rounded-lg"
               >
                 Try again

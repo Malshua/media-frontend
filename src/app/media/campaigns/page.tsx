@@ -9,7 +9,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
 import React, { useMemo } from "react";
 
-const Campaigns = () => {
+function Campaigns() {
   const { data: campaigns, isLoading } = useGetCampaigns();
 
   const info = useMemo(() => {
@@ -108,6 +108,6 @@ const Campaigns = () => {
       )}
     </div>
   );
-};
+}
 
 export default Campaigns;

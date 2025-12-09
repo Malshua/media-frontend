@@ -133,7 +133,7 @@ const BreadCrumbs = () => {
   };
 
   return (
-    <div className="hidden flex-1 flex-col gap-1 lg:flex">
+    <div className="hidden flex-1 flex-col gap-1 md:flex">
       <div className="flex items-center gap-2">
         {pathname == Routes.DASHBOARD ? <UserBadge /> : ""}
         <div className="flex flex-col gap-1">

@@ -16,6 +16,8 @@ const MobileNav = () => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  const firstRoute = pathname.split("/")[1] || "";
+
   const name = user?.name || "";
   const email = user?.email || "";
 
@@ -62,8 +64,9 @@ const MobileNav = () => {
       <div
         className={`fixed z-20 top-0 left-0 right-0 w-full flex justify-between items-center px-3 py-3 all__trans bg-white`}
       >
-        <div className={`flex items-center justify-center `}>
+        <div className="flex items-center gap-4">
           <Image src={media_logo} alt="logo" height={60} width={60} />
+          <p className="capitalize text-xl font-semibold">{firstRoute}</p>
         </div>
 
         <div className="mr-2 flex">

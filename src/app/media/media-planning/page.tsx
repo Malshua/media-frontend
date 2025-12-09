@@ -1,11 +1,11 @@
 "use client";
-import UnderConstruction from "@/components/widgets/UnderConstruction";
+import { MediaPlanTable } from "@/components/sections/media-planning";
 import React from "react";
 
 const MediaPlanning = () => {
   return (
     <div className="mt-10">
-      <UnderConstruction />
+      <MediaPlanTable />
     </div>
   );
 };

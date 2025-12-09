@@ -9,11 +9,11 @@ import { TbTargetArrow } from "react-icons/tb";
 import { SlPeople } from "react-icons/sl";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaToolbox } from "react-icons/fa";
-import { FiDollarSign } from "react-icons/fi";
 import { IoLocationOutline } from "react-icons/io5";
 import React, { useMemo } from "react";
 import { getDayDifference, moneyFormat } from "@/utilities/helpers";
 import { PageLoader } from "@/components/elements";
+import { FaNairaSign } from "react-icons/fa6";
 
 const CampaignDetails = () => {
   const { campaign_id } = useParams();
@@ -49,7 +49,7 @@ const CampaignDetails = () => {
       text: `${days}`,
     },
     {
-      icon: <FiDollarSign className="text-xl" />,
+      icon: <FaNairaSign className="text-xl" />,
       heading: "Total Budget",
       text: `₦${moneyFormat(data?.totalBudget)}`,
     },
@@ -67,8 +67,8 @@ const CampaignDetails = () => {
           <PageLoader />
         </div>
       ) : (
-        <div className="mx-3 my-5 border rounded-sm p-3 md:p-10">
-          <div className="flex items-start justify-between flex-wrap">
+        <div className="mx-3 mb-5 mt-10 border rounded-sm p-3 md:p-10">
+          <div className="flex items-start gap-3 justify-between flex-wrap">
             <div>
               <h1 className="text-base md:text-xl font-semibold">
                 {data?.campaignName}

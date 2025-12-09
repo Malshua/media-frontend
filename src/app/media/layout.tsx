@@ -13,7 +13,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
     <div className="bg-primary-soft">
       <div className="relative flex h-screen">
-        <div className="hidden lg:block relative">
+        <div className="hidden md:block relative">
           <SideBar open={open} setOpen={setOpen} />
         </div>
 
