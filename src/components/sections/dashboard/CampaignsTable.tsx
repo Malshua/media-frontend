@@ -1,5 +1,12 @@
 "use client";
-import { Button, EmptyState, ProgressBar, Table } from "@/components/elements";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { EmptyState, ProgressBar, Table } from "@/components/elements";
 import { TableSkeleton } from "@/components/skeletons";
 import { useGetCampaigns } from "@/hooks/campaignHooks";
 import { moneyFormat } from "@/utilities/helpers";
@@ -8,6 +15,9 @@ import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { MoreVertical } from "lucide-react";
+import { GetStatusBadge } from "@/components/widgets";
 
 const CampaignsTable = () => {
   const { data: campaigns, isLoading } = useGetCampaigns();
@@ -100,10 +110,9 @@ const CampaignsTable = () => {
           Recent Campaigns
         </h1>
         <Link className="w-fit" href={Routes.CAMPAIGNS}>
-          <Button
-            className="bg-[#A1238E] text-sm md:text-base hover:bg-[#59044c] capitalize py-2.5 px-4 font-medium hover:underline text-white"
-            text="View All"
-          />
+          <Button className="bg-[#A1238E] text-sm md:text-base hover:bg-[#59044c] capitalize py-2.5 px-4 font-medium hover:underline text-white">
+            View All
+          </Button>
         </Link>
       </div>
       {isLoading ? (
@@ -111,7 +120,67 @@ const CampaignsTable = () => {
       ) : info?.length < 1 ? (
         <EmptyState />
       ) : (
-        <Table columns={columns} data={data} />
+        <div>
+          <div className="hidden md:block">
+            <Table columns={columns} data={info} />
+          </div>
+          <div className="block md:hidden">
+            {info?.map((ro: any, i: number) => {
+              return (
+                <div
+                  key={i}
+                  className="border px-2 py-4 rounded-md flex items-start justify-between"
+                >
+                  <div className="">
+                    <div className="flex flex-col gap-1">
+                      <div className="font-semibold text-lg">
+                        {ro?.campaignName}
+                      </div>
+
+                      <div className="whitespace-nowrap capitalize text-green-800 font-medium">
+                        {ro?.campaignType.replace(/_/g, " ")}
+                      </div>
+
+                      <div className="w-fit py-1 flex items-center gap-2 rounded-2xl capitalize">
+                        ₦{moneyFormat(ro?.budget)}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-end gap-10">
+                    <>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open menu</span>
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <Link
+                            href={`${Routes?.MEDIA_PLANNING}/${ro?.id}`}
+                            className="text-[#A1238E] font-medium underline cursor-default hover:text-[#59044c]"
+                          >
+                            <DropdownMenuItem>View details</DropdownMenuItem>
+                          </Link>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </>
+                    <div className="pr-2">
+                      {
+                        <GetStatusBadge
+                          status={
+                            ro?.adminApprovalStatus ? "active" : "inactive"
+                          }
+                        />
+                      }
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       )}
     </div>
   );

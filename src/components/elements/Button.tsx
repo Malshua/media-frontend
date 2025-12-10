@@ -26,11 +26,11 @@ const Button = React.forwardRef(function Button(
 ): JSX.Element {
   return (
     <button
-      className={`w-full rounded all__trans flex items-center justify-center disabled:opacity-40 transition-transform duration-300 ${
+      className={` rounded all__trans flex items-center justify-center disabled:opacity-40 transition-transform duration-300 ${
         loading || disabled ? "" : "hover:scale-[1.01]"
       } ${
         className ||
-        `text-white px-6 py-[10px] font-semibold ${
+        `w-full text-white px-6 py-[10px] font-semibold ${
           loading
             ? "bg-primary-default/60"
             : "bg-primary-default hover:bg-primary-default/80"

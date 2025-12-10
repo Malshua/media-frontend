@@ -141,3 +141,15 @@ export const subtractYears = (date: any, years: number) => {
   date.setFullYear(date.getFullYear() - years);
   return date;
 };
+
+export function capitalizeFirstLetter(word: any) {
+  if (word) return word?.charAt(0).toUpperCase() + word?.slice(1);
+}
+
+export function capitalizeFirstLetters(word: string): string {
+  if (!word) return "";
+  return word
+    .split(" ")
+    .map((w) => w.charAt(0).toUpperCase() + w?.slice(1))
+    .join(" ");
+}

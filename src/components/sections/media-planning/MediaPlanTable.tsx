@@ -75,7 +75,7 @@ function MediaPlanTable() {
         const value = info?.row?.original;
         return (
           <Link
-            href={`${Routes?.MEDIA_PLANNING}/${value?.mediaPlanId}`}
+            href={`${Routes?.MEDIA_PLANNING}/${value?.campaignId}`}
             className="text-[#A1238E] font-medium underline cursor-default hover:text-[#59044c]"
           >
             View Details
@@ -135,7 +135,7 @@ function MediaPlanTable() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <Link
-                            href={`${Routes?.MEDIA_PLANNING}/${ro?.mediaPlanId}`}
+                            href={`${Routes?.MEDIA_PLANNING}/${ro?.campaignId}`}
                             className="text-[#A1238E] font-medium underline cursor-default hover:text-[#59044c]"
                           >
                             <DropdownMenuItem>View details</DropdownMenuItem>
