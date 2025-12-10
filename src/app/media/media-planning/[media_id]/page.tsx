@@ -73,6 +73,8 @@ function SingleMediaPlan() {
     });
   };
 
+  console.log(isOpen);
+
   return (
     <>
       {isLoading ? (
@@ -99,7 +101,7 @@ function SingleMediaPlan() {
               />
             </div>
           )}
-          <RevisePlan isOpen={isOpen} setIsOpen={setIsOpen} data={plan} />
+          <RevisePlan openModal={isOpen} setOpenModal={setIsOpen} data={plan} />
           <div className="w-full mx-auto max-w-6xl p-6 space-y-8">
             {/* HEADER */}
             <div className="bg-white shadow rounded-xl p-6">

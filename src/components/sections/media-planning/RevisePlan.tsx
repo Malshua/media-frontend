@@ -1,5 +1,6 @@
 "use client";
-import { Button, Modal, TextArea } from "@/components/elements";
+import { Button, TextArea } from "@/components/elements";
+import { Modal } from "@/components/widgets";
 import { useRequestRevision } from "@/hooks/mediaHooks";
 import { useInvalidateMedia } from "@/hooks/useInvalidateQueries";
 import { Routes } from "@/utilities/routes";
@@ -56,7 +57,7 @@ const RevisePlan = ({ openModal, setOpenModal, data }: any) => {
         openModal={() => setOpenModal(false)}
         backgroundColor="bg-white"
       >
-        <div className="flex w-96 flex-col gap-5 p-3">
+        <div className="flex sm:w-96 flex-col gap-5 p-3">
           <h2 className="text-lg font-bold text-red-600">Revise Media Plan</h2>
 
           <Controller
