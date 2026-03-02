@@ -14,12 +14,12 @@ interface CustomInputProps
 }
 
 const CLASSES = {
-  base: "border rounded p-2.5 w-full outline-none transition-all duration-200 text-sm",
-  default: "border-gray-300",
+  base: "border rounded p-2.5 w-full outline-none transition-all duration-200 text-sm bg-transparent",
+  default: "border-border",
   focus: "focus:border-maj-blue",
   error: "border-red-500",
-  disabled: "bg-gray-50 cursor-not-allowed",
-  label: "mb-1 font-medium text-gray-800 text-sm",
+  disabled: "bg-muted cursor-not-allowed",
+  label: "mb-1 font-medium text-foreground text-sm",
   errorText: "ml-1 text-red-500 text-xs mt-1 font-medium",
   iconWrapper: "absolute top-1/2 -translate-y-1/2",
   inputWithIcon: "pl-10",

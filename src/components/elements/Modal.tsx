@@ -31,7 +31,7 @@ const Modal = ({
         <DialogOverlay className="fixed inset-0 bg-dark-1/40 z-40" />
         <DialogContent
           className={`fixed z-50 w-full sm:max-w-xl max-h-[70vh] overflow-y-auto rounded-lg p-6 shadow-lg scrollbar-hide ${
-            backgroundColor || "bg-white"
+            backgroundColor || "bg-card"
           }`}
         >
           {/* {closeBtn && (

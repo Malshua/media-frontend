@@ -9,7 +9,7 @@ const TableSkeleton = () => {
         {[...Array(5)]?.map((_, index) => (
           <div
             key={index}
-            className="w-full h-12 bg-gray-200 rounded animate-pulse"
+            className="w-full h-12 bg-muted rounded animate-pulse"
           />
         ))}
       </div>

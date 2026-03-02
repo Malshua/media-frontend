@@ -16,7 +16,7 @@ const TabMenu: React.FC<TabMenuProp> = ({ label, active, onClick }) => {
     <p
       className={`text-sm px-4 py-2 text-dark-1 font-medium rounded-lg all__trans cursor-pointer whitespace-nowrap ${
         active
-          ? "bg-white text-primary-default font-semibold"
+          ? "bg-card text-primary-default font-semibold"
           : "hover:text-primary-default"
       }`}
       onClick={onClick}

@@ -32,7 +32,7 @@ const TextArea = React.forwardRef(function TextArea(
           {label && (
             <div className="flex items-center gap-0.5 text-sm">
               <label
-                className={`${labelClassName || 'text-[#2D3748]'} text-left`}
+                className={`${labelClassName || 'text-foreground'} text-left`}
               >
                 {label}
               </label>
@@ -49,8 +49,8 @@ const TextArea = React.forwardRef(function TextArea(
       )}
 
       <textarea
-        className={`all__trans w-full rounded-md border border-gray-300 px-4 py-2.5 text-sm focus:border-primary-default focus:outline-0 ${
-          disabled ? 'bg-gray-200' : 'bg-transparent'
+        className={`all__trans w-full rounded-md border border-border px-4 py-2.5 text-sm focus:border-primary-default focus:outline-0 ${
+          disabled ? 'bg-muted' : 'bg-transparent'
         } ${className || 'h-32'}`}
         ref={ref}
         placeholder={placeholder}

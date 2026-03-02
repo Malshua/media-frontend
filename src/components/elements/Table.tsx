@@ -60,11 +60,11 @@ const Table = ({
   });
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-card">
       {/* pagination */}
 
       {top && (
-        <div className="bg-white w-full pb-6 px-6 flex items-center justify-between">
+        <div className="bg-card w-full pb-6 px-6 flex items-center justify-between">
           {count && (
             <div className="text-sm text-muted">
               Showing {data?.length} out of {count} results
@@ -89,7 +89,7 @@ const Table = ({
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="text-left text-sm text-[#2f3742] font-bold uppercase whitespace-nowrap border-b border-gray-200 py-5 px-5"
+                    className="text-left text-sm text-foreground font-bold uppercase whitespace-nowrap border-b border-border py-5 px-5"
                   >
                     {header.isPlaceholder
                       ? null
@@ -102,13 +102,13 @@ const Table = ({
               </tr>
             ))}
           </thead>
-          <tbody className="bg-white">
+          <tbody className="bg-card">
             {table?.getRowModel().rows.map((row) => (
               <tr key={row.id} className="relative border-y border-light">
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="text-sm text-gray-700 font-normal capitalize whitespace-nowrap py-[14px] px-5 border-b border-gray-200"
+                    className="text-sm text-muted-foreground font-normal capitalize whitespace-nowrap py-[14px] px-5 border-b border-border"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>

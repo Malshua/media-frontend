@@ -10,7 +10,7 @@ function SectionCard({
   children: ReactNode;
 }) {
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+    <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
       <h2 className="text-xl font-semibold flex items-center gap-2 mb-4">
         {icon && <span className="text-primary">{icon}</span>} {title}
       </h2>

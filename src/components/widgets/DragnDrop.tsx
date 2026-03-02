@@ -21,7 +21,7 @@ const DragnDrop = ({
       {!files.name ? (
         <>
           {' '}
-          <div className="border-2 border-dashed flex flex-col justify-center items-center rounded-sm bg-white p-5 border-tertiary-gray relative border-[#33C3E0]">
+           <div className="border-2 border-dashed flex flex-col justify-center items-center rounded-sm bg-card p-5 border-tertiary-gray relative border-[#33C3E0]">
             <span className="text-4xl text-[#8CBCD6] ">
               <BiSolidCloudUpload />
             </span>

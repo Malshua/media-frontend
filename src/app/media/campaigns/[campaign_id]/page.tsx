@@ -74,14 +74,16 @@ const CampaignDetails = () => {
         </div>
       ) : (
         <>
-          <div className="mt-10 mx-5 flex justify-end">
-            <Link
-              href={`${Routes?.MEDIA_PLANNING}/${campaign_id}`}
-              className="text-sm font-medium py-1.5 px-3.5 bg-green-600 rounded-lg text-white"
-            >
-              View Media Plan
-            </Link>
-          </div>
+          {data?.adminApprovalStatus === 'approved' && data?.aiPlanStatus !== 'not_generated' && (
+            <div className="mt-10 mx-5 flex justify-end">
+              <Link
+                href={`${Routes?.MEDIA_PLANNING}/${campaign_id}`}
+                className="text-sm font-medium py-1.5 px-3.5 bg-green-600 rounded-lg text-white"
+              >
+                View Media Plan
+              </Link>
+            </div>
+          )}
           <div className=" mb-5 mx-3 mt-5 border rounded-sm p-3 md:p-10">
             <div className="flex items-start gap-3 justify-between flex-wrap">
               <div className="space-y-1.5">
@@ -145,7 +147,7 @@ const CampaignDetails = () => {
                 {data?.mediaSelections?.map((item: any, i: number) => (
                   <div key={i} className="flex flex-col gap-1.5">
                     <p>{item?.channel.replace(/_/g, " ")}</p>
-                    <p className="px-2.5 py-1 bg-gray-100 rounded-full w-fit text-sm font-medium">
+                    <p className="px-2.5 py-1 bg-muted rounded-full w-fit text-sm font-medium">
                       {item?.option.replace(/_/g, " ")}
                     </p>
                     <p>

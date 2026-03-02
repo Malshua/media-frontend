@@ -17,7 +17,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
           <SideBar open={open} setOpen={setOpen} />
         </div>
 
-        <div className="flex-1 overflow-x-hidden mt-12 lg:mt-0 mb-20 lg:mb-0 bg-white">
+        <div className="flex-1 overflow-x-hidden mt-12 lg:mt-0 mb-20 lg:mb-0 bg-background">
           <Header />
           {children}
         </div>

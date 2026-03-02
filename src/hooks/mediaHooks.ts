@@ -9,7 +9,7 @@ import {
 export const useGetMediaPlans = () => {
   const { token } = useAuth();
 
-  const endpoint = `${process.env.BASE_URL}/api/media-plans`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/media-plans`;
   const query = useQuery({
     queryKey: ["media-plans"],
     queryFn: () => serverRequest(token).get(endpoint),
@@ -25,7 +25,7 @@ export const useGetMediaPlan = ({
 }) => {
   const { token } = useAuth();
 
-  const endpoint = `${process.env.BASE_URL}/api/media-plans/${mediaPlanId}`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/media-plans/${mediaPlanId}`;
   const query = useQuery({
     queryKey: ["single-plan"],
     queryFn: () => serverRequest(token).get(endpoint),
@@ -41,7 +41,7 @@ export const useGetPlan = ({
 }) => {
   const { token } = useAuth();
 
-  const endpoint = `${process.env.BASE_URL}/api/campaigns/${campaignId}/media-plan`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns/${campaignId}/media-plan`;
   const query = useQuery({
     queryKey: ["campaign-plan"],
     queryFn: () => serverRequest(token).get(endpoint),
@@ -58,7 +58,7 @@ export const useApproveMediaPlan = ({
   campaignId: string | string[] | undefined;
 }) => {
   const { token } = useAuth();
-  const endpoint = `${process.env.BASE_URL}/api/campaigns/${campaignId}/media-plans/${mediaPlanId}/approve`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns/${campaignId}/media-plans/${mediaPlanId}/approve`;
   const mutation = useMutation({
     mutationFn: (data) => serverRequest(token).post(endpoint, data),
   });
@@ -74,10 +74,44 @@ export const useRequestRevision = ({
   campaignId: string | string[] | undefined;
 }) => {
   const { token } = useAuth();
-  const endpoint = `${process.env.BASE_URL}/api/campaigns/${campaignId}/media-plans/${mediaPlanId}/request-revision`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns/${campaignId}/media-plans/${mediaPlanId}/request-revision`;
   const mutation = useMutation({
     mutationFn: (data) => serverRequest(token).post(endpoint, data),
   });
 
   return mutation;
+};
+
+export const useSubmitFeedback = ({
+  mediaPlanId,
+  campaignId,
+}: {
+  mediaPlanId: string | string[] | undefined;
+  campaignId: string | string[] | undefined;
+}) => {
+  const { token } = useAuth();
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns/${campaignId}/media-plans/${mediaPlanId}/feedback`;
+  const mutation = useMutation({
+    mutationFn: (data) => serverRequest(token).post(endpoint, data),
+  });
+
+  return mutation;
+};
+
+export const useGetFeedback = ({
+  mediaPlanId,
+  campaignId,
+}: {
+  mediaPlanId: string | string[] | undefined;
+  campaignId: string | string[] | undefined;
+}) => {
+  const { token } = useAuth();
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns/${campaignId}/media-plans/${mediaPlanId}/feedback`;
+  const query = useQuery({
+    queryKey: ["plan-feedback", mediaPlanId],
+    queryFn: () => serverRequest(token).get(endpoint),
+    enabled: !!mediaPlanId && !!campaignId,
+  });
+
+  return query;
 };

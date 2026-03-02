@@ -50,7 +50,7 @@ const Input = React.forwardRef(function Input(
           {label && (
             <div className="text-sm flex items-center gap-2">
               <label
-                className={`${labelClassName || "text-gray-800"} text-left`}
+                className={`${labelClassName || "text-foreground"} text-left`}
               >
                 {label}
               </label>
@@ -73,14 +73,14 @@ const Input = React.forwardRef(function Input(
       )}
 
       <div
-        className={`all__trans w-full border border-gray-300 focus-within:bg-white rounded text-sm md:text-base p-3 flex items-center gap-2 ${
-          disabled && "bg-gray-100"
-        } focus-within:border-purple-400 focus-within:ring-4 focus-within:ring-purple-100`}
+        className={`all__trans w-full border border-border focus-within:bg-background rounded text-sm md:text-base p-3 flex items-center gap-2 ${
+          disabled && "bg-muted"
+        } focus-within:border-purple-400 focus-within:ring-4 focus-within:ring-purple-100 dark:focus-within:ring-purple-900`}
       >
         {left_icon && <div>{left_icon}</div>}
         <input
-          className={`w-full outline-0 all__trans text-sm placeholder:text-gray-500 caret-gray-600 ${
-            disabled ? "bg-gray-100" : "bg-transparent"
+          className={`w-full outline-0 all__trans text-sm placeholder:text-muted-foreground caret-foreground ${
+            disabled ? "bg-muted" : "bg-transparent"
           }`}
           ref={ref}
           value={value}
@@ -93,7 +93,7 @@ const Input = React.forwardRef(function Input(
           {...props}
         />
         {right_icon && (
-          <div className="cursor-pointer text-gray-800">{right_icon}</div>
+          <div className="cursor-pointer text-muted-foreground">{right_icon}</div>
         )}
       </div>
 

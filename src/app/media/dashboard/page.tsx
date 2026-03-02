@@ -32,9 +32,9 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="p-4 md:p-8 bg-[#f5f8fc] mt-5 sm:mt-0">
+    <div className="p-4 md:p-8 bg-muted/50 mt-5 sm:mt-0">
       <div className="flex items-center justify-between mb-5">
-        <p className="hidden md:block md:text-xl font-medium text-gray-800">
+        <p className="hidden md:block md:text-xl font-medium text-foreground">
           Campaigns overview.
         </p>
 
@@ -53,12 +53,12 @@ const Dashboard = () => {
           card_data.map((item, i) => (
             <div
               key={i}
-              className="bg-white flex flex-col gap-3 py-8 px-6 shadow-md items-center rounded-md"
+              className="bg-card flex flex-col gap-3 py-8 px-6 shadow-md items-center rounded-md"
             >
-              <span className="text-purple-600 font-bold text-2xl">
+              <span className="text-purple-600 dark:text-purple-400 font-bold text-2xl">
                 {item?.value}
               </span>
-              <span className="text-gray-600">{item?.label}</span>
+              <span className="text-muted-foreground">{item?.label}</span>
             </div>
           ))
         )}

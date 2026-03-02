@@ -93,7 +93,7 @@ const CustomSelect = React.forwardRef(function CustomSelect(
       {label && (
         <label
           className={`${
-            labelClassName || "text-gray-600"
+            labelClassName || "text-muted-foreground"
           } block mb-2 text-left text-sm`}
         >
           {label}

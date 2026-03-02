@@ -437,7 +437,7 @@ const NewCampaign = () => {
   };
 
   return (
-    <div className="p-5 md:p-8 bg-[#f5f8fc] text-gray-800">
+    <div className="p-5 md:p-8 bg-muted/50 text-foreground">
       <div className="space-y-1">
         <h1 className="text-2xl font-bold">Create New Campaign</h1>
         <p className="font-medium text-sm">
@@ -445,8 +445,8 @@ const NewCampaign = () => {
         </p>
       </div>
 
-      <div className="bg-white p-5 shadow-md rounded-lg mt-10">
-        <h1 className="text-xl font-bold border-b border-gray-200 pb-3">
+      <div className="bg-card p-5 shadow-md rounded-lg mt-10">
+        <h1 className="text-xl font-bold border-b border-border pb-3">
           Campaign Details
         </h1>
 
@@ -547,7 +547,7 @@ const NewCampaign = () => {
           />
         </div>
 
-        <h1 className="text-xl font-bold border-b border-gray-200 pb-3 mt-10">
+        <h1 className="text-xl font-bold border-b border-border pb-3 mt-10">
           Budget and Goals
         </h1>
 
@@ -675,7 +675,7 @@ const NewCampaign = () => {
         </div>
 
         <div className="mt-5">
-          <h1 className="text-xl font-bold border-b border-gray-200 pb-3">
+          <h1 className="text-xl font-bold border-b border-border pb-3">
             Campaign Details
           </h1>
           <p className="text-sm md:text-base py-4">
@@ -687,20 +687,20 @@ const NewCampaign = () => {
                 <div
                   key={channel.id}
                   className={clsx(
-                    "flex flex-col rounded-lg border bg-white p-4 shadow-sm hover:shadow-md cursor-pointer",
+                    "flex flex-col rounded-lg border bg-card p-4 shadow-sm hover:shadow-md cursor-pointer",
                     selectedChannel === channel.id
-                      ? "border-[#A1238E] ring-2 ring-blue-100"
-                      : "border-gray-200"
+                      ? "border-[#A1238E] ring-2 ring-blue-100 dark:ring-purple-900"
+                      : "border-border"
                   )}
                   onClick={() => openModalForChannel(channel)}
                 >
-                  <h3 className="font-semibold text-gray-800 mb-1">
+                  <h3 className="font-semibold text-foreground mb-1">
                     {channel.title}
                   </h3>
-                  <p className="text-sm text-gray-600 mb-2">
+                  <p className="text-sm text-muted-foreground mb-2">
                     {channel.description}
                   </p>
-                  <span className="text-sm text-gray-500 italic">
+                  <span className="text-sm text-muted-foreground italic">
                     {selectedItems.some(
                       (item) => item.channel === channel.id
                     ) ? (
@@ -722,7 +722,7 @@ const NewCampaign = () => {
                 <div className="space-y-4">
                   <DialogTitle>{currentChannel.title} Options</DialogTitle>
 
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-muted-foreground">
                     {currentChannel.description}
                   </p>
                   {currentChannel.options.map((option: string) => {
@@ -739,7 +739,7 @@ const NewCampaign = () => {
 
                     return (
                       <div key={option} className="flex flex-col gap-1">
-                        <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+                        <label className="inline-flex items-center gap-2 text-sm text-foreground">
                           <input
                             className="h-4 w-4 accent-[#59044c]"
                             type="checkbox"
@@ -770,7 +770,7 @@ const NewCampaign = () => {
 
                         {isSelected && (
                           <div className="pt-4 pl-6">
-                            <label className="text-sm font-medium text-gray-700">
+                            <label className="text-sm font-medium text-foreground">
                               {currentChannel.id === "SOCIAL_MEDIA"
                                 ? "Campaign Budget"
                                 : "Amount"}
@@ -805,7 +805,7 @@ const NewCampaign = () => {
                               />
                             ) : (
                               <>
-                                <label className="text-sm font-medium text-gray-700 mt-4 block">
+                                <label className="text-sm font-medium text-foreground mt-4 block">
                                   Duration (Days)
                                 </label>
                                 <SmoothSlider
@@ -856,7 +856,7 @@ const NewCampaign = () => {
           </div>
         </div>
         <div className="mt-10">
-          <h1 className="text-xl font-bold border-b border-gray-200 pb-3">
+          <h1 className="text-xl font-bold border-b border-border pb-3">
             Additional Information
           </h1>
 
@@ -877,11 +877,11 @@ const NewCampaign = () => {
         </div>
 
         <div className="mt-10">
-          <h1 className="text-xl font-bold border-b border-gray-200 pb-3">
+          <h1 className="text-xl font-bold border-b border-border pb-3">
             Request Creative Designs
           </h1>
           <div className="mt-5 space-y-4 space-x-4">
-            <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+            <label className="inline-flex items-center gap-2 text-sm text-foreground">
               <input
                 type="checkbox"
                 checked={creativeDesigns.banner}
@@ -890,7 +890,7 @@ const NewCampaign = () => {
               />
               <span>Banner</span>
             </label>
-            <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+            <label className="inline-flex items-center gap-2 text-sm text-foreground">
               <input
                 type="checkbox"
                 checked={creativeDesigns.audio}
@@ -899,7 +899,7 @@ const NewCampaign = () => {
               />
               <span>Audio</span>
             </label>
-            <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+            <label className="inline-flex items-center gap-2 text-sm text-foreground">
               <input
                 type="checkbox"
                 checked={creativeDesigns.video}
@@ -912,7 +912,7 @@ const NewCampaign = () => {
         </div>
 
         <div className="mt-10">
-          <h1 className="text-xl font-bold border-b border-gray-200 pb-3">
+          <h1 className="text-xl font-bold border-b border-border pb-3">
             Upload Creative Designs
           </h1>
           <div className="mt-5">

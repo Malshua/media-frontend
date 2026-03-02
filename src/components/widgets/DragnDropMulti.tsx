@@ -32,7 +32,7 @@ const DragnDropMulti = ({
       <h3 className="text-sm font-semibold mb-2">{title}</h3>
 
       {/* Upload Box (Always Visible) */}
-      <div className="border-2 border-dashed flex flex-col justify-center items-center rounded-sm bg-white p-5 border-tertiary-gray relative border-[#A1238E]">
+      <div className="border-2 border-dashed flex flex-col justify-center items-center rounded-sm bg-card p-5 border-tertiary-gray relative border-[#A1238E]">
         <span className="text-4xl text-[#59044c]">
           <BiSolidCloudUpload />
         </span>
@@ -60,8 +60,8 @@ const DragnDropMulti = ({
               className="flex items-center justify-between gap-4 p-2 border rounded-lg"
             >
               <div className="flex gap-5 items-center">
-                <div className="bg-[#F1F5F9] p-3.5 rounded">
-                  <LucideFileText className="text-[#171717]" />
+                <div className="bg-muted p-3.5 rounded">
+                  <LucideFileText className="text-foreground" />
                 </div>
                 <div className="text-xs flex flex-col gap-1">
                   <h1 className="font-medium text-xs">

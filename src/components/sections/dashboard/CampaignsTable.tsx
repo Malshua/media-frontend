@@ -104,9 +104,9 @@ const CampaignsTable = () => {
   ];
 
   return (
-    <div className="bg-white p-5 shadow-sm rounded-lg px-3">
+    <div className="bg-card p-5 shadow-sm rounded-lg px-3">
       <div className="flex items-center justify-between mb-5 md:px-4">
-        <h1 className="font-bold text-base md:text-lg text-gray-700">
+        <h1 className="font-bold text-base md:text-lg text-foreground">
           Recent Campaigns
         </h1>
         <Link className="w-fit" href={Routes.CAMPAIGNS}>

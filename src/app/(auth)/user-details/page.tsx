@@ -86,11 +86,11 @@ const Page = () => {
         <div className={`flex items-center justify-center `}>
           <Image src={media_logo} alt="logo" height={100} width={100} />
         </div>
-        <p className="text-gray-800 text-sm md:text-base font-medium mt-1">
+        <p className="text-foreground text-sm md:text-base font-medium mt-1">
           AI-Powered Campaign Management
         </p>
       </div>
-      <h1 className="text-xl font-bold border-b border-gray-200 pb-3 mt-10">
+      <h1 className="text-xl font-bold border-b border-border pb-3 mt-10">
         Personal Information
       </h1>
       <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -149,7 +149,7 @@ const Page = () => {
           )}
         />
       </div>
-      <h1 className="text-xl font-bold border-b border-gray-200 pb-3 mt-10">
+      <h1 className="text-xl font-bold border-b border-border pb-3 mt-10">
         Company Information
       </h1>
       <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">

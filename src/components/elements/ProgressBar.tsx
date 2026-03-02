@@ -11,7 +11,7 @@ const ProgressBar = ({
   value,
   height = "h-2",
   color = "bg-[#A1238E]",
-  backgroundColor = "bg-gray-200",
+  backgroundColor = "bg-muted",
 }: ProgressBarProps) => {
   const clampedValue = Math.max(0, Math.min(100, value)); // Ensure 0-100
 

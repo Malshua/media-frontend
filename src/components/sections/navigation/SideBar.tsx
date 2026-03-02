@@ -22,8 +22,8 @@ const NavItem = ({ href, open, title }: navItemProps) => {
       <li
         className={`all__trans ${
           route.includes(href)
-            ? "border-l-4 border-[#A1238E] text-[#59044c] font-semibold bg-purple-100"
-            : " hover:bg-purple-100 text-gray-700"
+            ? "border-l-4 border-[#A1238E] text-[#A1238E] dark:text-purple-300 font-semibold bg-purple-100 dark:bg-purple-900/30"
+            : " hover:bg-purple-100 dark:hover:bg-purple-900/20 text-gray-700 dark:text-gray-300"
         }`}
       >
         <div
@@ -41,18 +41,18 @@ const NavItem = ({ href, open, title }: navItemProps) => {
 const SideBar = ({ open, setOpen }: any) => {
   return (
     <div
-      className={`h-full scrollbar-hide flex flex-col bg-white shadow-md border-r w-60 relative py-5 duration-300`}
+      className={`h-full scrollbar-hide flex flex-col bg-background shadow-md border-r w-60 relative py-5 duration-300`}
     >
       {/* profile */}
       <div className={`flex flex-col items-center justify-center mb-5`}>
         <Image src={media_logo} alt="logo" height={100} width={100} />
-        <span className="text-xs font-semibold text-[#59044c]">
+        <span className="text-xs font-semibold text-[#59044c] dark:text-purple-300">
           Coceptual Media
         </span>
       </div>
 
       {/* links */}
-      <div className="border-t border-gray-200 ">
+      <div className="border-t border-border ">
         {/* main */}
         <ul className="pb-8 pt-5 border-b border-[#EDF2F7]/50">
           <NavItem href={Routes.DASHBOARD} open={open} title="Dashboard" />

@@ -5,7 +5,7 @@ import { serverRequest } from "@/utilities/serverRequest";
 export const useUpdateDetails = () => {
   const { token } = useAuth();
 
-  const endpoint = `${process.env.BASE_URL}/api/update-details`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/update-details`;
   const mutation = useMutation({
     mutationKey: ["update-details"],
     mutationFn: (data) => serverRequest(token).patch(endpoint, data),
@@ -16,7 +16,7 @@ export const useUpdateDetails = () => {
 export const useUpdatePassword = () => {
   const { token } = useAuth();
 
-  const endpoint = `${process.env.BASE_URL}/api/update-password`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/update-password`;
   const mutation = useMutation({
     mutationKey: ["update-password"],
     mutationFn: (data) => serverRequest(token).patch(endpoint, data),

@@ -32,7 +32,7 @@ const SearchWidget = ({
     <form onSubmit={searchTable}>
       <div className="flex items-center">
         {/* Input container with clear button */}
-        <div className="flex flex-1 items-center border border-primary-soft rounded focus-within:border-primary-default transition-all ease-in-out duration-300 focus:bg-white w-56">
+        <div className="flex flex-1 items-center border border-primary-soft rounded focus-within:border-primary-default transition-all ease-in-out duration-300 focus:bg-background w-56">
           <input
             type="text"
             onChange={(e) => setSearchText(e.target.value)}

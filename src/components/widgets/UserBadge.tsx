@@ -63,11 +63,11 @@ const UserModal = ({
     value: string | ReactNode;
   }) => {
     return (
-      <div className="text-[#2E353A] grid grid-cols-2 gap-5">
+      <div className="text-foreground grid grid-cols-2 gap-5">
         <div className="mb-1 text-sm font-semibold capitalize">
           {textReplacer(label, "_")}
         </div>
-        <div className="text-xs sm:text-sm text-[#A8B5CC] capitalize">
+        <div className="text-xs sm:text-sm text-muted-foreground capitalize">
           {value || "N/A"}
         </div>
       </div>
@@ -85,7 +85,7 @@ const UserModal = ({
   }, [user]);
 
   return (
-    <div className="absolute top-28 right-0 lg:left-80 z-50 w-80 lg:w-96 shadow-lg border rounded-lg bg-white cursor-default">
+    <div className="absolute top-28 right-0 lg:left-80 z-50 w-80 lg:w-96 shadow-lg border rounded-lg bg-card cursor-default">
       <div className="py-6 px-8 flex flex-col gap-8">
         <div>
           {user ? (

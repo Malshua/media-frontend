@@ -36,7 +36,7 @@ const SelectDate = ({
       {label && (
         <div className="mb-2 flex items-center gap-2 text-sm">
           <div className="text-sm flex items-center gap-1">
-            <label className="text-gray-600 font-medium">{label}</label>
+            <label className="text-muted-foreground font-medium">{label}</label>
             {required && <span className="text-red-500">*</span>}
           </div>
           {!required && <em className="text-xs "></em>}
@@ -47,7 +47,7 @@ const SelectDate = ({
 
       <div>
         <DatePicker
-          className="!w-full text-sm border border-gray-300 rounded px-3 py-3 placeholder:text-sm"
+          className="!w-full text-sm border border-border rounded px-3 py-3 placeholder:text-sm bg-transparent"
           onChange={onChange}
           selected={selectedDate}
           placeholderText={placeholder}

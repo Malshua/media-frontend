@@ -69,7 +69,7 @@ function NotificationDialog() {
               onClick={() => setViewUnread(true)}
               className={cn(
                 "pb-1",
-                viewUnread ? "border-b-2 border-black" : "text-gray-500"
+                viewUnread ? "border-b-2 border-foreground" : "text-muted-foreground"
               )}
             >
               Unread{" "}
@@ -81,7 +81,7 @@ function NotificationDialog() {
               onClick={() => setViewUnread(false)}
               className={cn(
                 "pb-1",
-                !viewUnread ? "border-b-2 border-black" : "text-gray-500"
+                !viewUnread ? "border-b-2 border-foreground" : "text-muted-foreground"
               )}
             >
               All
@@ -120,7 +120,7 @@ function NotificationDialog() {
                       <p
                         className={cn(
                           "text-sm",
-                          !n.read ? "" : "text-[#787774]"
+                          !n.read ? "" : "text-muted-foreground"
                         )}
                       >
                         <span className="font-semibold">{n.user}</span>{" "}
@@ -130,8 +130,8 @@ function NotificationDialog() {
                     </div>
                     <span
                       className={cn(
-                        "text-xs text-gray-500",
-                        !n.read ? "" : "text-[#CBCACA]"
+                        "text-xs text-muted-foreground",
+                        !n.read ? "" : "text-muted-foreground/60"
                       )}
                     >
                       {n.time} •

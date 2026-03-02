@@ -18,7 +18,7 @@ const TabMenu: React.FC<TabMenuProps> = ({ label, active, onClick }) => (
     className={`px-1 py-2 all__trans cursor-pointer whitespace-nowrap text-sm ${
       active
         ? 'text-primary-default border-b-2 border-primary-default font-medium'
-        : 'text-gray-600'
+        : 'text-muted-foreground'
     }`}
     onClick={onClick}
   >
@@ -42,7 +42,7 @@ const TabView: React.FC<TabProps> = ({ data, initialTab = data[0].id }) => {
 
   return (
     <div>
-      <nav className="flex gap-4 w-full overflow-x-auto border-b border-gray-400">
+      <nav className="flex gap-4 w-full overflow-x-auto border-b border-border">
         {data.map((item) => (
           <TabMenu
             key={item.id}

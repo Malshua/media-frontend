@@ -3,7 +3,7 @@ import { useAuth } from "./useAuthActions";
 import { serverRequest } from "@/utilities/serverRequest";
 
 export const useLogin = () => {
-  const endpoint = `${process.env.BASE_URL}/api/login`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/login`;
   const mutation = useMutation({
     mutationKey: ["login"],
     mutationFn: (data) => serverRequest().post(endpoint, data),
@@ -13,7 +13,7 @@ export const useLogin = () => {
 };
 
 export const useChangePassword = ({ token }: { token: string | null }) => {
-  const endpoint = `${process.env.BASE_URL}/api/change-password`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/change-password`;
   const mutation = useMutation({
     mutationKey: ["change-password"],
     mutationFn: (data) => serverRequest(token).post(endpoint, data),
@@ -23,7 +23,7 @@ export const useChangePassword = ({ token }: { token: string | null }) => {
 };
 
 export const useUserDetails = ({ token }: { token: string | null }) => {
-  const endpoint = `${process.env.BASE_URL}/api/user-details`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/user-details`;
   const mutation = useMutation({
     mutationKey: ["user-details"],
     mutationFn: (data) => serverRequest(token).post(endpoint, data),
@@ -33,7 +33,7 @@ export const useUserDetails = ({ token }: { token: string | null }) => {
 };
 
 export const useForgotPassword = () => {
-  const endpoint = `${process.env.BASE_URL}/api/forgot-password`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/forgot-password`;
   const mutation = useMutation({
     mutationKey: ["forgot-password"],
     mutationFn: (data) => serverRequest().post(endpoint, data),
@@ -43,7 +43,7 @@ export const useForgotPassword = () => {
 };
 
 export const useResetPassword = ({ token }: { token: string | null }) => {
-  const endpoint = `${process.env.BASE_URL}/api/reset-password?token=${token}`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/reset-password?token=${token}`;
   const mutation = useMutation({
     mutationKey: ["reset-password"],
     mutationFn: (data) => serverRequest().post(endpoint, data),

@@ -7,12 +7,13 @@ import MobileNav from "./MobileNav";
 import Image from "next/image";
 import { BellIcon } from "../../../../public/assets/icons";
 import { NotificationDialog } from "@/components/elements";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const Header = ({ heading }: { heading?: string }) => {
   const unread_notifs = [];
 
   return (
-    <div className="bg-[#ffffff] pt-5">
+    <div className="bg-background pt-5">
       {/* Header Content */}
       <div className="flex justify-between items-start gap-2 px-5">
         <div className="flex-1">
@@ -20,6 +21,7 @@ const Header = ({ heading }: { heading?: string }) => {
         </div>
 
         <div className="hidden md:flex items-center gap-7 justify-end pr-5">
+          <ThemeToggle />
           <button className="relative">
             <NotificationDialog />
 

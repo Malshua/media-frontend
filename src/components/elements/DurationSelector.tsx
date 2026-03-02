@@ -106,7 +106,7 @@ const DurationSelector = ({
 
         return (
           <div className="pt-4">
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-foreground">
               Duration
             </label>
             <div className="flex gap-2 items-center mt-2">

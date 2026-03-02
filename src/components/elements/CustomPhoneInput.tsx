@@ -23,7 +23,7 @@ const CustomPhoneInput: React.FC<PhoneInputProps> = ({
   return (
     <div>
       {label && (
-        <label className="mb-1 font-medium text-gray-800 text-sm">
+        <label className="mb-1 font-medium text-foreground text-sm">
           {label}
         </label>
       )}

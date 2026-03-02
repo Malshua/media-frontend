@@ -55,7 +55,7 @@ const RevisePlan = ({ openModal, setOpenModal, data }: any) => {
       <Modal
         open={openModal}
         openModal={() => setOpenModal(false)}
-        backgroundColor="bg-white"
+        backgroundColor="bg-card"
       >
         <div className="flex sm:w-96 flex-col gap-5 p-3">
           <h2 className="text-lg font-bold text-red-600">Revise Media Plan</h2>

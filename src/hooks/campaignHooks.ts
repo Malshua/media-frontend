@@ -9,7 +9,7 @@ import {
 export const useCreateCampaign = () => {
   const { token } = useAuth();
 
-  const endpoint = `${process.env.BASE_URL}/api/user-campaign`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/user-campaign`;
   const mutation = useMutation({
     mutationKey: ["create-campaign"],
     mutationFn: (data) => serverRequest(token).post(endpoint, data),
@@ -21,7 +21,7 @@ export const useCreateCampaign = () => {
 export const useGetCampaigns = () => {
   const { token } = useAuth();
 
-  const endpoint = `${process.env.BASE_URL}/api/campaigns`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns`;
   const query = useQuery({
     queryKey: ["campaigns"],
     queryFn: () => serverRequest(token).get(endpoint),
@@ -37,7 +37,7 @@ export const useGetSIngleCampaigns = ({
 }) => {
   const { token } = useAuth();
 
-  const endpoint = `${process.env.BASE_URL}/api/campaign/${campaign_id}`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/campaign/${campaign_id}`;
   const query = useQuery({
     queryKey: ["single-campaign"],
     queryFn: () => serverRequest(token).get(endpoint),
@@ -50,7 +50,7 @@ export const useGetSIngleCampaigns = ({
 export const useUploadMedia = () => {
   const { token } = useAuth();
 
-  const endpoint = `${process.env.BASE_URL}/api/upload-file`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/api/upload-file`;
   const mutation = useMutation({
     mutationFn: (data) => serverRequestFormData(token).put(endpoint, data),
   });

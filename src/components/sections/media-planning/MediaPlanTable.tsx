@@ -86,9 +86,9 @@ function MediaPlanTable() {
   ];
 
   return (
-    <div className="bg-white p-5 shadow-sm rounded-lg px-3 mx-4">
+    <div className="bg-card p-5 shadow-sm rounded-lg px-3 mx-4">
       <div className=" mb-5 md:px-4">
-        <h1 className="font-bold text-base md:text-lg text-gray-700">
+        <h1 className="font-bold text-base md:text-lg text-foreground">
           Media Plans
         </h1>
       </div>

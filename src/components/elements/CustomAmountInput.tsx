@@ -96,14 +96,14 @@ const CustomAmountInput = React.forwardRef<HTMLInputElement, InputTypes>(
         )}
 
         <div
-          className={`all__trans w-full border border-gray-300 focus-within:border-primary-default focus-within:bg-white rounded text-sm md:text-base px-3 py-2.5 flex items-center gap-2 ${
-            disabled ? "bg-gray-100" : ""
+          className={`all__trans w-full border border-border focus-within:border-primary-default focus-within:bg-background rounded text-sm md:text-base px-3 py-2.5 flex items-center gap-2 ${
+            disabled ? "bg-muted" : ""
           }`}
         >
           {left_icon && <div>{left_icon}</div>}
           <input
             className={`w-full outline-0 all__trans text-sm ${
-              disabled ? "bg-gray-100" : "bg-transparent"
+              disabled ? "bg-muted" : "bg-transparent"
             } ${inputClassName}`}
             ref={ref}
             value={value}

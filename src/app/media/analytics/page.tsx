@@ -1,189 +1,185 @@
 "use client";
-import { SelectDropdown } from "@/components/elements";
-import React from "react";
 
-const stats = [
-  {
-    title: "Total Impressions",
-    value: "2.4M",
-    change: "↑ 12% vs. previous period",
-    changeColor: "text-green-500",
-  },
-  {
-    title: "Engagements",
-    value: "342K",
-    change: "↑ 8% vs. previous period",
-    changeColor: "text-green-500",
-  },
-  {
-    title: "Conversion Rate",
-    value: "3.2%",
-    change: "↓ 1% vs. previous period",
-    changeColor: "text-red-500",
-  },
-  {
-    title: "ROI",
-    value: "245%",
-    change: "↑ 15% vs. previous period",
-    changeColor: "text-green-500",
-  },
-];
+import {
+  SocialConnections,
+  PerformanceChart,
+  ChannelPerformanceChart,
+  AudienceDemographics,
+  StatsCards,
+  CampaignGoals,
+} from "@/components/sections/analytics";
+import { useGetSocialMetrics, useSeedMockMetrics, useGetRecommendations } from "@/hooks/socialHooks";
+import React, { Suspense } from "react";
+import { Database, RefreshCw, AlertCircle, Sparkles, BarChart3, DollarSign, Users, FileText, Clock } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
-const progressData = [
-  { label: "Website Traffic", current: 80000, goal: 100000, unit: "visitors" },
-  { label: "Lead Generation", current: 2400, goal: 3000, unit: "leads" },
-  {
-    label: "Social Media Engagement",
-    current: 45000,
-    goal: 50000,
-    unit: "engagements",
-  },
-  { label: "Budget Utilization", current: 18500, goal: 24500, unit: "$" },
-];
+const typeIcons: Record<string, React.ReactNode> = {
+  performance: <BarChart3 className="w-5 h-5 text-blue-500" />,
+  budget: <DollarSign className="w-5 h-5 text-green-500" />,
+  audience: <Users className="w-5 h-5 text-purple-500" />,
+  content: <FileText className="w-5 h-5 text-amber-500" />,
+  timing: <Clock className="w-5 h-5 text-pink-500" />,
+  info: <Sparkles className="w-5 h-5 text-muted-foreground" />,
+};
 
 const Analytics = () => {
+  const { data: metricsData, isLoading, error } = useGetSocialMetrics();
+  const seedMock = useSeedMockMetrics();
+  const { data: recsData, isLoading: recsLoading, isFetching: recsFetching } = useGetRecommendations();
+  const queryClient = useQueryClient();
+
+  const connections = metricsData?.data?.data?.connections ?? [];
+  const aggregated = metricsData?.data?.data?.aggregated ?? null;
+  const recommendations = recsData?.data?.data?.recommendations ?? [];
+  const recsGeneratedAt = recsData?.data?.data?.generatedAt ?? null;
+
+  const hasMetrics = connections.some(
+    (c: any) =>
+      c.platformMetricsData &&
+      typeof c.platformMetricsData === 'object' &&
+      Object.keys(c.platformMetricsData).length > 0 &&
+      (c.platformMetricsData.impressions > 0 || c.platformMetricsData.reach > 0 || c.platformMetricsData.engagement > 0)
+  );
+  const hasConnections = connections.length > 0;
+
   return (
-    <div className="p-5 md:p-8 bg-[#f5f8fc] text-gray-800">
-      <div className="flex flex-col md:flex-row gap-5  md:items-center justify-between">
+    <div className="p-5 md:p-8 bg-muted/50 text-foreground">
+      {/* Connected Social Accounts */}
+      <Suspense fallback={null}>
+        <SocialConnections />
+      </Suspense>
+
+      {/* Header */}
+      <div className="flex flex-col md:flex-row gap-5 md:items-center justify-between mt-2">
         <div className="space-y-1">
           <h1 className="text-2xl font-bold">Campaign Analytics</h1>
-          <p className="font-medium text-sm">
+          <p className="font-medium text-sm text-muted-foreground">
             Monitor performance and gain insights from your campaigns.
           </p>
         </div>
-        <div className="w-60">
-          <SelectDropdown
-            options={[
-              { label: "All Campaigns", value: "all campaigns" },
-              {
-                label: "Summer Product Launch",
-                value: "summer product launch",
-              },
-              {
-                label: "Holiday Special",
-                value: "holiday special",
-              },
-              {
-                label: "Brand Awareness",
-                value: "brand awareness",
-              },
-            ]}
-          />
-          <SelectDropdown
-            options={[
-              { label: "Last 7 days", value: "last 7 days" },
-              { label: "Last 30 days", value: "last 30 days" },
-              { label: "Last 90 days", value: "last 90 days" },
-              {
-                label: "Custom Range",
-                value: "custom range",
-              },
-            ]}
-          />
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-10">
-        {stats.map((stat, index) => (
-          <div
-            key={index}
-            className="bg-white shadow-md rounded-md p-6 flex flex-col items-center"
+        {/* Seed mock data button — visible when connections exist but no metrics */}
+        {hasConnections && !hasMetrics && !isLoading && (
+          <button
+            onClick={() => seedMock.mutate()}
+            disabled={seedMock.isPending}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition disabled:opacity-50"
           >
-            <div className="text-gray-600 text-sm mb-2">{stat.title}</div>
-            <div className="text-[#A1238E] text-2xl font-bold">
-              {stat.value}
-            </div>
-            <div className={`text-sm mt-2 ${stat.changeColor}`}>
-              {stat.change}
-            </div>
-          </div>
-        ))}
+            {seedMock.isPending ? (
+              <RefreshCw className="w-4 h-4 animate-spin" />
+            ) : (
+              <Database className="w-4 h-4" />
+            )}
+            {seedMock.isPending ? "Seeding..." : "Load Demo Metrics"}
+          </button>
+        )}
       </div>
 
-      <div className="min-h-screen space-y-6 mt-10">
-        {/* Performance Overview */}
-        <div className="bg-white shadow-md rounded-xl p-6 min-h-[300px]">
-          <h2 className="text-lg font-semibold mb-2">Performance Overview</h2>
-          <p className="text-gray-500 text-center mt-20">
-            Performance chart will be displayed here.
-          </p>
+      {/* Error state */}
+      {error && (
+        <div className="mt-6 flex items-center gap-3 bg-destructive/10 text-destructive rounded-xl p-4">
+          <AlertCircle className="w-5 h-5 flex-shrink-0" />
+          <p className="text-sm">Failed to load metrics. Please try again later.</p>
         </div>
+      )}
 
-        {/* Channel + Audience Section */}
+      {/* Stats Cards */}
+      <div className="mt-8">
+        <StatsCards aggregated={aggregated} />
+      </div>
+
+      {/* Charts */}
+      <div className="space-y-6 mt-8">
+        {/* Performance Overview Line Chart */}
+        <PerformanceChart monthlyTrend={aggregated?.monthlyTrend ?? []} />
+
+        {/* Channel Performance + Audience Distribution */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white shadow-md rounded-xl p-6 min-h-[300px]">
-            <h2 className="text-lg font-semibold mb-2">Channel Performance</h2>
-            <p className="text-gray-500 text-center mt-20">
-              Channel performance chart will be displayed here.
-            </p>
-          </div>
-          <div className="bg-white shadow-md rounded-xl p-6 min-h-[300px]">
-            <h2 className="text-lg font-semibold mb-2">
-              Audience Demographics
-            </h2>
-            <p className="text-gray-500 text-center mt-20">
-              Demographics chart will be displayed here.
-            </p>
-          </div>
+          <ChannelPerformanceChart connections={connections} />
+          <AudienceDemographics connections={connections} />
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-md w-full">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Campaign Goals Progress
-          </h2>
-          {progressData.map((item, index) => {
-            const percent = (item.current / item.goal) * 100;
-            return (
-              <div key={index} className="mb-5">
-                <div className="flex justify-between text-xs md:text-sm text-gray-700 mb-1">
-                  <span>{item.label}</span>
-                  <span className="">
-                    {item.unit === "₦"
-                      ? `₦${item.current.toLocaleString()} / $${item.goal.toLocaleString()}`
-                      : `${item.current.toLocaleString()} / ${item.goal.toLocaleString()} ${
-                          item.unit
-                        }`}
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    className="bg-[#59044c] h-2 rounded-full"
-                    style={{ width: `${percent}%` }}
-                  ></div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        {/* Campaign Goals */}
+        <CampaignGoals aggregated={aggregated} />
 
-        <div className="bg-white py-5 shadow-md rounded-lg px-5 md:px-10">
-          <div className=" mb-5">
-            <h1 className="font-semibold md:text-lg text-gray-700">
-              AI-Generated Recommendations
-            </h1>
+        {/* AI Recommendations — GPT-4 powered */}
+        <div className="bg-card py-5 shadow-md rounded-lg px-5 md:px-10">
+          <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              <h1 className="font-semibold md:text-lg text-foreground">
+                AI-Generated Recommendations
+              </h1>
+            </div>
+            {hasMetrics && (
+              <button
+                onClick={() =>
+                  queryClient.invalidateQueries({
+                    queryKey: ["social-recommendations"],
+                  })
+                }
+                disabled={recsFetching}
+                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition px-3 py-1.5 rounded-lg border border-border hover:border-primary/30"
+              >
+                <RefreshCw
+                  className={`w-3.5 h-3.5 ${recsFetching ? "animate-spin" : ""}`}
+                />
+                {recsFetching ? "Analyzing..." : "Refresh"}
+              </button>
+            )}
           </div>
-          <div className="text-gray-700 text-sm md:text-base space-y-2.5">
-            <p>
-              <span className="font-bold">Insight:</span> Your audience
-              engagement is highest between 6-8 PM on weekdays. Consider
-              scheduling more content during these peak hours.
+
+          {recsLoading ? (
+            <div className="space-y-3">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div
+                  key={i}
+                  className="animate-pulse flex items-start gap-3 p-3 rounded-lg bg-muted/50"
+                >
+                  <div className="w-5 h-5 rounded-full bg-muted flex-shrink-0 mt-0.5" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-muted rounded w-1/3" />
+                    <div className="h-3 bg-muted rounded w-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : recommendations.length > 0 ? (
+            <div className="space-y-3">
+              {recommendations.map((rec: any, idx: number) => (
+                <div
+                  key={idx}
+                  className="flex items-start gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+                >
+                  <div className="flex-shrink-0 mt-0.5">
+                    {typeIcons[rec.type] || typeIcons.info}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-sm text-foreground">
+                      {rec.title}
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-0.5">
+                      {rec.body}
+                    </p>
+                  </div>
+                </div>
+              ))}
+              {recsGeneratedAt && (
+                <p className="text-xs text-muted-foreground text-right mt-2">
+                  Generated{" "}
+                  {new Date(recsGeneratedAt).toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+              )}
+            </div>
+          ) : (
+            <p className="text-muted-foreground text-sm text-center py-4">
+              Connect social accounts and load metrics to see AI-generated
+              recommendations.
             </p>
-            <p>
-              <span className="font-bold">Insight:</span> Video content is
-              outperforming image posts by 43%. Allocate more resources to video
-              production for higher engagement.
-            </p>
-            <p>
-              <span className="font-bold">Insight:</span> Mobile users account
-              for 78% of all campaign interactions. Ensure all landing pages are
-              optimized for mobile experience.
-            </p>
-            <p>
-              <span className="font-bold">Insight:</span> Based on current
-              performance, increasing Facebook ad spend by 20% could yield a 35%
-              increase in conversions based on historical data.
-            </p>
-          </div>
+          )}
         </div>
       </div>
     </div>

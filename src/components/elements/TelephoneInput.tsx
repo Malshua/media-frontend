@@ -29,7 +29,7 @@ const TelephoneInput = ({
     <div>
       {label && (
         <div className="mb-2 flex items-center gap-2 text-sm">
-          <label className="text-gray-600 font-medium">{label}</label>
+          <label className="text-muted-foreground font-medium">{label}</label>
 
           {!required && <em className="text-xs"></em>}
 
@@ -42,13 +42,13 @@ const TelephoneInput = ({
       )}
 
       <div
-        className={`all__trans w-full border border-gray-300 focus-within:border-primary-default focus-within:bg-white rounded text-sm md:text-base p-3 flex items-center gap-2 ${
-          disabled && "bg-gray-200"
+        className={`all__trans w-full border border-border focus-within:border-primary-default focus-within:bg-background rounded text-sm md:text-base p-3 flex items-center gap-2 ${
+          disabled && "bg-muted"
         }`}
       >
         <PhoneInput
           className={`w-full all__trans text-sm ${
-            disabled ? "bg-gray-200" : "bg-transparent"
+            disabled ? "bg-muted" : "bg-transparent"
           }`}
           value={value}
           onChange={onChange}

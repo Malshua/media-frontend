@@ -59,7 +59,7 @@ const ResetPassword = () => {
           <div className={`flex items-center justify-center `}>
             <Image src={media_logo} alt="logo" height={100} width={100} />
           </div>
-          <p className="text-gray-800 text-sm md:text-base font-medium mt-1">
+          <p className="text-foreground text-sm md:text-base font-medium mt-1">
             AI-Powered Campaign Management
           </p>
         </div>

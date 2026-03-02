@@ -101,9 +101,9 @@ function Campaigns() {
   ];
 
   return (
-    <div className="bg-white p-5 shadow-sm rounded-lg mx-4 mt-10">
+    <div className="bg-card p-5 shadow-sm rounded-lg mx-4 mt-10">
       <div className="flex items-center justify-between mb-5 md:px-4">
-        <h1 className="font-bold text-base md:text-lg text-gray-700">
+        <h1 className="font-bold text-base md:text-lg text-foreground">
           All Campaigns
         </h1>
         <div></div>

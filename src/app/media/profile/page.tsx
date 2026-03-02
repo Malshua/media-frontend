@@ -216,9 +216,9 @@ const Profile = () => {
   const { mutate: update } = useUpdateDetails();
 
   return (
-    <div className="p-4 md:p-8 bg-[#f5f8fc]">
+    <div className="p-4 md:p-8 bg-muted/50">
       <div className="flex md:items-center flex-col md:flex-row justify-between mb-6 gap-5">
-        <div className="text-gray-800 space-y-1">
+        <div className="text-foreground space-y-1">
           <h1 className="text-xl md:text-3xl font-bold">Your Profile</h1>
           <p className="text-xs md:text-sm font-medium">
             Manage your account information and preferences.
@@ -234,11 +234,11 @@ const Profile = () => {
           />
         </div>
       </div>
-      <div className="bg-white p-4 md:p-6 rounded-xl shadow-md w-full mt-5 md:mt-10">
+      <div className="bg-card p-4 md:p-6 rounded-xl shadow-md w-full mt-5 md:mt-10">
         <div className="flex items-center space-x-5 ">
           {/* Avatar */}
           {imgSrc ? (
-            <div className="relative h-24 w-24 rounded-full overflow-hidden bg-white">
+            <div className="relative h-24 w-24 rounded-full overflow-hidden bg-card">
               <Image
                 src={imgSrc}
                 alt="profile photo"
@@ -255,10 +255,10 @@ const Profile = () => {
 
           {/* Info and Button */}
           <div>
-            <div className="text-gray-900 font-semibold text-lg capitalize">
+            <div className="text-foreground font-semibold text-lg capitalize">
               {user?.name}
             </div>
-            <div className="text-gray-500 text-sm mb-1.5">
+            <div className="text-muted-foreground text-sm mb-1.5">
               {user?.companyName}
             </div>
 
@@ -273,7 +273,7 @@ const Profile = () => {
             </button>
           </div>
         </div>
-        <h1 className="text-xl font-bold border-b border-gray-200 pb-3 mt-14">
+        <h1 className="text-xl font-bold border-b border-border pb-3 mt-14">
           Personal Information
         </h1>
 
@@ -334,7 +334,7 @@ const Profile = () => {
           />
         </div>
 
-        <h1 className="text-xl font-bold border-b border-gray-200 pb-3 mt-14">
+        <h1 className="text-xl font-bold border-b border-border pb-3 mt-14">
           Company Information
         </h1>
 
@@ -391,10 +391,10 @@ const Profile = () => {
           />
         </div>
 
-        <h3 className="text-xl font-bold border-b border-gray-200 pb-3 mt-14">
+        <h3 className="text-xl font-bold border-b border-border pb-3 mt-14">
           Notification Preferences
         </h3>
-        <div className="space-y-5 text-sm text-gray-700 mt-5">
+        <div className="space-y-5 text-sm text-muted-foreground mt-5">
           <label className="flex items-center space-x-3">
             <input
               type="checkbox"
@@ -433,7 +433,7 @@ const Profile = () => {
           </label>
         </div>
 
-        <h1 className="text-xl font-bold border-b border-gray-200 pb-3 mt-14">
+        <h1 className="text-xl font-bold border-b border-border pb-3 mt-14">
           Security
         </h1>
 

@@ -140,7 +140,7 @@ const BreadCrumbs = () => {
           <span className="text-2xl font-semibold capitalize text-primary-default">
             {title}
           </span>
-          <span className="text-sm text-[#808080]">{description}</span>
+          <span className="text-sm text-muted-foreground">{description}</span>
         </div>
       </div>
 
@@ -148,7 +148,7 @@ const BreadCrumbs = () => {
         {pathnames?.length > 1 && (
           <button
             onClick={back}
-            className="mr-1 flex items-center gap-3 font-medium text-[#667185]"
+            className="mr-1 flex items-center gap-3 font-medium text-muted-foreground"
           >
             <span className="rounded border p-0.5 text-lg">
               <IoIosArrowRoundBack />
@@ -161,11 +161,11 @@ const BreadCrumbs = () => {
           {pathnames?.map((crumb: any, index: number) => (
             <div
               key={index}
-              className="flex items-center gap-1 capitalize text-[#98A2B3]"
+              className="flex items-center gap-1 capitalize text-muted-foreground"
             >
               {index !== 0 && <span>/</span>}
               {index === pathnames.length - 1 ? (
-                <span className="font-medium text-[#59044c] text-sm">
+                <span className="font-medium text-[#59044c] dark:text-purple-300 text-sm">
                   {crumb.label}
                 </span>
               ) : (

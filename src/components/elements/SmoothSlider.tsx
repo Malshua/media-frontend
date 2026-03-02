@@ -40,7 +40,7 @@ function SmoothSlider({
             initial={false}
             animate={{ left: `${percentage}%` }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="absolute -top-6 transform -translate-x-1/2 text-sm font-medium bg-white px-3 py-1 rounded-md shadow"
+            className="absolute -top-6 transform -translate-x-1/2 text-sm font-medium bg-card px-3 py-1 rounded-md shadow"
           >
             {formatLabel()}
           </motion.div>
@@ -53,23 +53,23 @@ function SmoothSlider({
           step={step}
           value={value}
           onChange={(e) => setValue(Number(e.target.value))}
-          className="w-full appearance-none h-2 bg-gray-200 rounded-full outline-none 
+          className="w-full appearance-none h-2 bg-muted rounded-full outline-none 
             [&::-webkit-slider-thumb]:appearance-none 
             [&::-webkit-slider-thumb]:w-5 
             [&::-webkit-slider-thumb]:h-5 
-            [&::-webkit-slider-thumb]:bg-white 
+            [&::-webkit-slider-thumb]:bg-background 
             [&::-webkit-slider-thumb]:rounded-full 
             [&::-webkit-slider-thumb]:border 
-            [&::-webkit-slider-thumb]:border-gray-800 
+            [&::-webkit-slider-thumb]:border-foreground 
             [&::-webkit-slider-thumb]:shadow 
             [&::-webkit-slider-thumb]:cursor-pointer"
           style={{
-            background: `linear-gradient(to right, #0f172a ${percentage}%, #e5e7eb ${percentage}%)`,
+            background: `linear-gradient(to right, var(--foreground) ${percentage}%, var(--muted) ${percentage}%)`,
           }}
         />
       </div>
 
-      <div className="flex justify-between text-sm text-gray-500 mt-3">
+      <div className="flex justify-between text-sm text-muted-foreground mt-3">
         {type === "amount" ? (
           <>
             <span>₦15,000</span>
