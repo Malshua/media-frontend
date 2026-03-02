@@ -1,41 +1,57 @@
-import { BiLoaderCircle } from 'react-icons/bi';
-import clsx from 'clsx';
+import Image from "next/image";
+import { halfCircle } from "../../../public/assets/icons";
+import React, { JSX } from "react";
 
-interface ButtonProps {
-  children: React.ReactNode;
-  color?: string;
-  background?: string;
-  className?: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+interface ButtonTypes {
+  text: string;
   loading?: boolean;
   disabled?: boolean;
+  loadinIcon?: string;
+  className?: string;
+  onClick?: () => void;
+  iconClassName?: string;
 }
 
-const Button = ({
-  children,
-  color,
-  background,
-  className,
-  onClick,
-  disabled,
-  loading,
-}: ButtonProps) => {
+const Button = React.forwardRef(function Button(
+  {
+    text,
+    loading,
+    disabled,
+    loadinIcon,
+    className,
+    onClick,
+    iconClassName,
+  }: ButtonTypes,
+  ref
+): JSX.Element {
   return (
     <button
-      type="button"
+      className={` rounded all__trans flex items-center justify-center disabled:opacity-40 transition-transform duration-300 ${
+        loading || disabled ? "" : "hover:scale-[1.01]"
+      } ${
+        className ||
+        `w-full text-white px-6 py-[10px] font-semibold ${
+          loading
+            ? "bg-primary-default/60"
+            : "bg-primary-default hover:bg-primary-default/80"
+        }`
+      }`}
       onClick={onClick}
-      className={clsx(
-        'all__trans flex w-full cursor-pointer items-center justify-center gap-2 px-6 py-2 hover:-translate-y-1',
-        background ?? 'bg-primary-default hover:bg-primary-default',
-        color ?? 'text-white',
-        className
-      )}
       disabled={disabled || loading}
     >
-      {loading && <BiLoaderCircle className="animate-spin text-2xl" />}
-      <div>{children}</div>
+      {loading && (
+        <Image
+          src={loadinIcon || halfCircle}
+          className={`animate-spin mr-2 ${iconClassName}`}
+          alt="spinner icon"
+          width={18}
+          height={18}
+          priority={true}
+        />
+      )}
+      <span>{text}</span>
     </button>
   );
-};
+});
 
 export default Button;

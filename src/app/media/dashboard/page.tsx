@@ -1,0 +1,77 @@
+"use client";
+import { Button } from "@/components/elements";
+import {
+  CampaignsTable,
+  GeneratedHighlights,
+} from "@/components/sections/dashboard";
+import { CardSkeleton2 } from "@/components/skeletons";
+import { useGetDashStats } from "@/hooks/dashboard";
+import { useAuth } from "@/hooks/useAuthActions";
+import { moneyFormat } from "@/utilities/helpers";
+import { Routes } from "@/utilities/routes";
+import Link from "next/link";
+import React, { useMemo } from "react";
+
+const Dashboard = () => {
+  const { user } = useAuth();
+
+  const { data: stats, isLoading } = useGetDashStats();
+
+  const info = useMemo(() => {
+    return stats?.data?.data;
+  }, [stats]);
+
+  const card_data = [
+    { label: "Active Campaigns", value: `${info?.totalCampaigns || 0}` },
+    {
+      label: "Budget Utilized",
+      value: `₦${moneyFormat(info?.totalBudget) || 0}`,
+    },
+    { label: "Total Reach", value: "..." },
+    { label: "Avg. Engagement", value: "..%" },
+  ];
+
+  return (
+    <div className="p-4 md:p-8 bg-muted/50 mt-5 sm:mt-0">
+      <div className="flex items-center justify-between mb-5">
+        <p className="hidden md:block md:text-xl font-medium text-foreground">
+          Campaigns overview.
+        </p>
+
+        <Link href={Routes.NEW_CAMPAIGN} className="w-fit ml-auto">
+          <Button
+            className="bg-[#A1238E] text-xs md:text-base hover:bg-[#59044c] capitalize py-2.5 px-4 font-medium text-white"
+            text="+ New Campaign"
+          />
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-7">
+        {isLoading ? (
+          <CardSkeleton2 count={4} />
+        ) : (
+          card_data.map((item, i) => (
+            <div
+              key={i}
+              className="bg-card flex flex-col gap-3 py-8 px-6 shadow-md items-center rounded-md"
+            >
+              <span className="text-purple-600 dark:text-purple-400 font-bold text-2xl">
+                {item?.value}
+              </span>
+              <span className="text-muted-foreground">{item?.label}</span>
+            </div>
+          ))
+        )}
+      </div>
+
+      <div className="mt-10">
+        <CampaignsTable />
+      </div>
+      <div className="mt-10">
+        <GeneratedHighlights />
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;

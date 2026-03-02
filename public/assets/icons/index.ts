@@ -1,25 +1,25 @@
-import hero_check_icon from "./hero-check-icon.svg";
-import facebook from "./facebook-icon.svg";
-import twitter from "./twitter-icon.svg";
-import instagram from "./instagram-icon.svg";
-import linkedin from "./linkedIn-icon.svg";
-import create_icon from "./create-icon.svg";
-import discover_icon from "./discover-icon.svg";
-import prepare_icon from "./prepare-icon.svg";
-import reach_icon from "./reach-icon.svg";
-import setup_icon from "./setup-icon.svg";
-import watch_icon from "./watch-icon.svg";
+import caretLeftOrange from "./caret-left-orange.svg";
+import caretRightOrange from "./caret-right-orange.svg";
+import HalfCircle from "./half-circle.svg";
+import Spinner from "./spinner.svg";
+import BellIcon from "./bell-icon.svg";
+import halfCircle from "./half-circle.svg";
+import infoOrange from "./info-orange-icon.svg";
+import searchWhiteIcon from "./search-icon-white.svg";
+import dashboard_green from "./dashboard_green_icon.svg";
+import dashboard_blue from "./dashboard_icon_blue.svg";
+import dashboard_yellow from "./dashboard_icon_yellow.svg";
 
 export {
-  create_icon,
-  reach_icon,
-  setup_icon,
-  prepare_icon,
-  watch_icon,
-  discover_icon,
-  hero_check_icon,
-  facebook,
-  twitter,
-  instagram,
-  linkedin,
+  BellIcon,
+  halfCircle,
+  infoOrange,
+  searchWhiteIcon,
+  caretLeftOrange,
+  caretRightOrange,
+  HalfCircle,
+  Spinner,
+  dashboard_green,
+  dashboard_blue,
+  dashboard_yellow,
 };
