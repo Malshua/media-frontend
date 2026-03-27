@@ -2,7 +2,7 @@ import React from "react";
 
 const GeneratedHighlights = () => {
   return (
-    <div className="bg-card py-5 shadow-md rounded-lg px-5 md:px-10">
+    <div className="bg-card py-5 shadow-md rounded-lg px-3 md:px-10">
       <div className=" mb-5">
         <h1 className="font-semibold text-lg text-foreground">
           AI-Generated Insights

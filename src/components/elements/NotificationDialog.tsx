@@ -62,7 +62,7 @@ function NotificationDialog() {
       <PopoverTrigger asChild>
         <IoNotifications className="h-5 w-5" />
       </PopoverTrigger>
-      <PopoverContent className="w-[360px] p-0 mr-10">
+      <PopoverContent className="w-[calc(100vw-2rem)] sm:w-[360px] p-0 mr-2 sm:mr-10">
         <div className="flex justify-between items-center border-b px-4 pt-2">
           <div className="flex gap-4 text-sm font-semibold">
             <button

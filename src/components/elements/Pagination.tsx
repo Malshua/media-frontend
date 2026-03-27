@@ -32,19 +32,19 @@ const Pagination = ({
   };
 
   return (
-    <div className="flex items-center text-sm text-dark-1 font-medium">
+    <div className="flex items-center text-sm text-dark-1 font-medium overflow-x-auto max-w-full">
       <button
         onClick={() => {
           setFirst(first - sliceDigit);
           setLast(last - sliceDigit);
         }}
-        className="w-10 h-10 flex items-center justify-center rounded-l border"
+        className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-l border flex-shrink-0"
         disabled={first === 0}
       >
         <Image src={caretLeftOrange} alt="Carret" />
       </button>
       {first > 0 && (
-        <div className="mx-1 w-10 h-10 flex items-center justify-center border rounded">
+        <div className="mx-0.5 md:mx-1 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border rounded flex-shrink-0 text-xs md:text-sm">
           ...
         </div>
       )}
@@ -56,7 +56,7 @@ const Pagination = ({
                 num === currentPage
                   ? "bg-primary-soft text-primary-default"
                   : ""
-              } mx-1 rounded w-10 h-10 border hover:text-primary-default hover:bg-alt-green/80 transition-all ease-in-out duration-300`}
+              } mx-0.5 md:mx-1 rounded w-8 h-8 md:w-10 md:h-10 text-xs md:text-sm border hover:text-primary-default hover:bg-alt-green/80 transition-all ease-in-out duration-300 flex-shrink-0`}
               onClick={() => {
                 setCurrentPage(num);
               }}
@@ -67,7 +67,7 @@ const Pagination = ({
           );
         })}
       {last < totalPage && (
-        <div className="w-10 h-10 flex items-center justify-center border">
+        <div className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border flex-shrink-0 text-xs md:text-sm">
           ...
         </div>
       )}
@@ -76,7 +76,7 @@ const Pagination = ({
           setFirst(first + sliceDigit);
           setLast(last + sliceDigit);
         }}
-        className="mx-1 w-10 h-10 flex items-center justify-center rounded-r border"
+        className="mx-0.5 md:mx-1 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-r border flex-shrink-0"
         disabled={last >= totalPage}
       >
         <Image src={caretRightOrange} alt="Caret" />

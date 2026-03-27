@@ -22,7 +22,7 @@ interface CampaignGoalsProps {
 function CampaignGoals({ aggregated }: CampaignGoalsProps) {
   if (!aggregated) {
     return (
-      <div className="bg-card shadow-md rounded-xl p-6 min-h-[200px] flex items-center justify-center">
+      <div className="bg-card rounded-2xl p-4 md:p-6 min-h-[200px] flex items-center justify-center">
         <p className="text-muted-foreground text-sm">Loading goals...</p>
       </div>
     );
@@ -69,8 +69,8 @@ function CampaignGoals({ aggregated }: CampaignGoalsProps) {
   }
 
   return (
-    <div className="bg-card shadow-md rounded-xl p-6">
-      <h2 className="text-lg font-semibold mb-4">Campaign Goals</h2>
+    <div className="bg-card rounded-2xl p-4 md:p-6">
+      <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Campaign Goals</h2>
       <div className="space-y-4">
         {goals.map((goal) => {
           const pct = Math.min((goal.current / goal.target) * 100, 100);

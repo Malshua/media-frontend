@@ -237,17 +237,14 @@ function SocialConnections() {
       </Modal>
 
       {/* Social Connections Section */}
-      <div className="bg-card shadow-md rounded-xl p-6 mb-6">
-        <div className="flex items-center justify-between mb-5">
-          <div>
-            <h2 className="text-lg font-semibold text-foreground">
-              Connected Social Accounts
-            </h2>
-            <p className="text-sm text-muted-foreground mt-0.5">
-              Connect your social media accounts to track campaign performance
-              metrics.
-            </p>
-          </div>
+      <div className="bg-card rounded-2xl p-4 md:p-6 mb-4">
+        <div className="mb-4">
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+            Connected Accounts
+          </h2>
+          <p className="text-xs text-muted-foreground mt-1">
+            Connect social accounts to track performance.
+          </p>
         </div>
 
         {isLoading ? (

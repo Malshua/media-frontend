@@ -60,7 +60,7 @@ const Table = ({
   });
 
   return (
-    <div className="w-full bg-card">
+    <div className="w-full bg-card overflow-hidden">
       {/* pagination */}
 
       {top && (
@@ -89,7 +89,7 @@ const Table = ({
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="text-left text-sm text-foreground font-bold uppercase whitespace-nowrap border-b border-border py-5 px-5"
+                    className="text-left text-sm text-foreground font-bold uppercase whitespace-nowrap border-b border-border py-5 px-3 md:px-5"
                   >
                     {header.isPlaceholder
                       ? null
@@ -108,7 +108,7 @@ const Table = ({
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="text-sm text-muted-foreground font-normal capitalize whitespace-nowrap py-[14px] px-5 border-b border-border"
+                    className="text-sm text-muted-foreground font-normal capitalize whitespace-nowrap py-[14px] px-3 md:px-5 border-b border-border"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>

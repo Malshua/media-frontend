@@ -44,8 +44,8 @@ function AudienceDemographics({ connections }: AudienceDemographicsProps) {
 
   if (withFollowers.length === 0) {
     return (
-      <div className="bg-card shadow-md rounded-xl p-6 min-h-[300px] flex items-center justify-center">
-        <p className="text-muted-foreground text-sm">
+      <div className="bg-card rounded-2xl p-4 md:p-6 min-h-[250px] flex items-center justify-center">
+        <p className="text-muted-foreground text-sm text-center">
           No audience data available yet.
         </p>
       </div>
@@ -108,8 +108,8 @@ function AudienceDemographics({ connections }: AudienceDemographicsProps) {
   };
 
   return (
-    <div className="bg-card shadow-md rounded-xl p-6">
-      <h2 className="text-lg font-semibold mb-2">Audience Distribution</h2>
+    <div className="bg-card rounded-2xl p-4 md:p-6">
+      <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">Audience Distribution</h2>
       <p className="text-xs text-muted-foreground mb-4">
         Total followers:{" "}
         <span className="font-medium text-foreground">

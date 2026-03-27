@@ -10,7 +10,6 @@ import { getFirstLetters, truncateText } from "@/utilities/helpers";
 import { Routes } from "@/utilities/routes";
 import { usePathname } from "next/navigation";
 import { media_logo } from "../../../../public/assets/images";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const MobileNav = () => {
   const { user } = useAuth();
@@ -65,13 +64,11 @@ const MobileNav = () => {
       <div
         className={`fixed z-20 top-0 left-0 right-0 w-full flex justify-between items-center px-3 py-3 all__trans bg-background`}
       >
-        <div className="flex items-center gap-4">
-          <Image src={media_logo} alt="logo" height={60} width={60} />
-          <p className="capitalize text-xl font-semibold">{firstRoute}</p>
+        <div className="flex items-center">
+          <Image src={media_logo} alt="logo" height={36} width={36} />
         </div>
 
-        <div className="mr-2 flex items-center gap-2">
-          <ThemeToggle />
+        <div className="mr-2 flex items-center">
           <button
             onClick={handleMenu}
             className={`text-foreground inline-flex items-center justify-center rounded-md text-2xl`}

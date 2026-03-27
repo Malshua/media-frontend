@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { FaStarOfLife } from "react-icons/fa";
 import Select from "react-select";
 
@@ -41,6 +41,15 @@ const SelectDropdown = React.forwardRef(function SelectDropdown(
   }: SelectDropdownTypes,
   ref
 ) {
+  const [isDark, setIsDark] = useState(false);
+  useEffect(() => {
+    const root = document.documentElement;
+    setIsDark(root.classList.contains("dark"));
+    const obs = new MutationObserver(() => setIsDark(root.classList.contains("dark")));
+    obs.observe(root, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
+
   // select dropdown custom styles
   const selectCustomStyles = {
     menu: (provided: any) => ({
@@ -52,39 +61,70 @@ const SelectDropdown = React.forwardRef(function SelectDropdown(
       scrollBehavior: "smooth",
       WebkitOverflowScrolling: "touch",
       overflow: "visible",
+      backgroundColor: isDark ? "#1c1c1e" : provided.backgroundColor,
+      border: isDark ? "1px solid rgba(255,255,255,0.1)" : undefined,
+      borderRadius: "8px",
     }),
 
     placeholder: (provided: any) => ({
       ...provided,
-      color: "#868789",
+      color: isDark ? "#6b7280" : "#868789",
     }),
 
     control: (provided: any, state: { isFocused: any }) => ({
       ...provided,
       minHeight: "46px",
       fontSize: "14px",
-      border: `1px solid ${state.isFocused ? "#28A745" : "#E7EDF2"}`,
-      color: "#E7EDF2",
+      border: `1px solid ${state.isFocused ? "#A1238E" : isDark ? "rgba(255,255,255,0.12)" : "#E7EDF2"}`,
+      backgroundColor: isDark ? "rgba(255,255,255,0.06)" : provided.backgroundColor,
       borderRadius: "6px",
       textTransform: textTransform || "capitalize",
-      // backgroundColor: "#e6e9f0",
+      boxShadow: state.isFocused ? "0 0 0 1px #A1238E" : "none",
+      "&:hover": { borderColor: state.isFocused ? "#A1238E" : isDark ? "rgba(255,255,255,0.2)" : "#ccd1d9" },
     }),
 
     option: (provided: any, state: { isSelected: any; isFocused: any }) => ({
       ...provided,
       backgroundColor: state.isSelected
-        ? "#002366"
+        ? "#A1238E"
         : state.isFocused
-        ? "#e6e9f0"
-        : "",
+        ? isDark ? "rgba(255,255,255,0.08)" : "#e6e9f0"
+        : isDark ? "#1c1c1e" : "",
+      color: state.isSelected ? "#fff" : isDark ? "#e5e5e5" : provided.color,
     }),
 
-    singleValue: (provided: any, state: { isDisabled: any }) => {
-      const opacity = state.isDisabled ? 0.5 : 1;
-      const transition = "opacity 300ms";
+    singleValue: (provided: any, state: { isDisabled: any }) => ({
+      ...provided,
+      opacity: state.isDisabled ? 0.5 : 1,
+      transition: "opacity 300ms",
+      color: isDark ? "#f5f5f5" : provided.color,
+    }),
 
-      return { ...provided, opacity, transition };
-    },
+    input: (provided: any) => ({
+      ...provided,
+      color: isDark ? "#f5f5f5" : provided.color,
+    }),
+
+    multiValue: (provided: any) => ({
+      ...provided,
+      backgroundColor: isDark ? "rgba(161,35,142,0.25)" : "#e6e9f0",
+    }),
+
+    multiValueLabel: (provided: any) => ({
+      ...provided,
+      color: isDark ? "#e5e5e5" : provided.color,
+    }),
+
+    multiValueRemove: (provided: any) => ({
+      ...provided,
+      color: isDark ? "#a3a3a3" : provided.color,
+      ":hover": { backgroundColor: isDark ? "rgba(255,255,255,0.1)" : "#ffbdad", color: isDark ? "#fff" : "#de350b" },
+    }),
+
+    noOptionsMessage: (provided: any) => ({
+      ...provided,
+      color: isDark ? "#6b7280" : provided.color,
+    }),
   };
 
   return (

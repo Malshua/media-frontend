@@ -40,9 +40,9 @@ interface PerformanceChartProps {
 function PerformanceChart({ monthlyTrend }: PerformanceChartProps) {
   if (!monthlyTrend || monthlyTrend.length === 0) {
     return (
-      <div className="bg-card shadow-md rounded-xl p-6 min-h-[300px] flex items-center justify-center">
-        <p className="text-muted-foreground text-sm">
-          No performance data available. Connect a social account and seed metrics to see trends.
+      <div className="bg-card rounded-2xl p-4 md:p-6 min-h-[250px] flex items-center justify-center">
+        <p className="text-muted-foreground text-sm text-center">
+          No performance data available yet.
         </p>
       </div>
     );
@@ -147,9 +147,9 @@ function PerformanceChart({ monthlyTrend }: PerformanceChartProps) {
   };
 
   return (
-    <div className="bg-card shadow-md rounded-xl p-6">
-      <h2 className="text-lg font-semibold mb-4">Performance Overview</h2>
-      <div className="h-[320px]">
+    <div className="bg-card rounded-2xl p-4 md:p-6">
+      <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Performance Overview</h2>
+      <div className="h-[280px] md:h-[320px]">
         <Line data={data} options={options} />
       </div>
     </div>

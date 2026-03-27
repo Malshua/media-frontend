@@ -145,19 +145,19 @@ function SingleMediaPlan() {
             const parsedBigIdea = parseBigIdea(plan.bigIdea);
 
             return (
-              <div key={plan.id} className="w-full mx-auto max-w-6xl p-6 space-y-8">
+              <div key={plan.id} className="w-full mx-auto max-w-6xl p-3 md:p-6 space-y-8 overflow-hidden">
                 {/* VERSION SEPARATOR — shown between plans */}
                 {index > 0 && (
                   <hr className="border-t-2 border-dashed border-muted-foreground/30" />
                 )}
 
                 {/* HEADER */}
-                <div className="bg-card shadow rounded-xl p-6">
-                  <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-bold text-foreground flex items-center gap-2">
+                <div className="bg-card shadow rounded-xl p-3 md:p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <h1 className="text-lg md:text-xl font-bold text-foreground flex items-center gap-2">
                       <FaBullhorn className="text-primary" /> {plan?.title}
                     </h1>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       {versionLabel && (
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
                           {versionLabel}

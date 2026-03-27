@@ -55,8 +55,8 @@ function ChannelPerformanceChart({ connections }: ChannelPerformanceChartProps) 
 
   if (withMetrics.length === 0) {
     return (
-      <div className="bg-card shadow-md rounded-xl p-6 min-h-[300px] flex items-center justify-center">
-        <p className="text-muted-foreground text-sm">
+      <div className="bg-card rounded-2xl p-4 md:p-6 min-h-[250px] flex items-center justify-center">
+        <p className="text-muted-foreground text-sm text-center">
           No channel data available yet.
         </p>
       </div>
@@ -124,9 +124,9 @@ function ChannelPerformanceChart({ connections }: ChannelPerformanceChartProps) 
   };
 
   return (
-    <div className="bg-card shadow-md rounded-xl p-6">
-      <h2 className="text-lg font-semibold mb-4">Channel Performance</h2>
-      <div className="h-[320px]">
+    <div className="bg-card rounded-2xl p-4 md:p-6">
+      <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Channel Performance</h2>
+      <div className="h-[280px] md:h-[320px]">
         <Bar data={data} options={options} />
       </div>
     </div>

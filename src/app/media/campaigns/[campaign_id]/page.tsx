@@ -122,7 +122,7 @@ const CampaignDetails = () => {
 
             <div className="py-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 border-b">
               {headData.map((item, i) => (
-                <div className="flex items-center gap-2" key={i}>
+                <div className="flex items-center gap-2 min-w-0" key={i}>
                   <span>{item?.icon}</span>
 
                   <div>

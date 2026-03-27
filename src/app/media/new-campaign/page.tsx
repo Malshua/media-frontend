@@ -11,6 +11,27 @@ import {
 } from "@/components/elements";
 import React, { useRef, useState } from "react";
 import clsx from "clsx";
+import { motion } from "framer-motion";
+import {
+  FileText,
+  Target,
+  Megaphone,
+  MessageSquare,
+  Palette,
+  Upload as UploadIcon,
+  Share2,
+  Search,
+  Monitor,
+  Tv2,
+  Radio as RadioIcon,
+  Newspaper,
+  MapPin,
+  Mail,
+  Check,
+  Image as ImageIcon,
+  Music,
+  Video,
+} from "lucide-react";
 import { Label } from "@/components/ui/label";
 import SelectDate from "@/components/widgets/SelectDate";
 import {
@@ -148,6 +169,31 @@ const mediaChannels = [
     ],
   },
 ];
+
+const channelIcons: Record<string, React.ReactNode> = {
+  SOCIAL_MEDIA: <Share2 size={20} />,
+  SEARCH_ADS: <Search size={20} />,
+  DISPLAY_ADVERTISING: <Monitor size={20} />,
+  TELEVISION: <Tv2 size={20} />,
+  RADIO: <RadioIcon size={20} />,
+  PRINT_MEDIA: <Newspaper size={20} />,
+  OUTDOOR_BILLBOARD: <MapPin size={20} />,
+  EMAIL_MARKETING: <Mail size={20} />,
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.08,
+      type: "spring" as const,
+      stiffness: 300,
+      damping: 30,
+    },
+  }),
+};
 
 const NewCampaign = () => {
   const [selectedChannel, setSelectedChannel] = useState<string | null>(null);
@@ -437,339 +483,438 @@ const NewCampaign = () => {
   };
 
   return (
-    <div className="p-5 md:p-8 bg-muted/50 text-foreground">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold">Create New Campaign</h1>
-        <p className="font-medium text-sm">
+    <div className="px-4 md:px-8 py-6 md:py-8">
+      {/* Page Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      >
+        <h1 className="text-2xl font-bold text-foreground">
+          Create New Campaign
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">
           Fill in the details to start your next successful campaign.
         </p>
-      </div>
+      </motion.div>
 
-      <div className="bg-card p-5 shadow-md rounded-lg mt-10">
-        <h1 className="text-xl font-bold border-b border-border pb-3">
-          Campaign Details
-        </h1>
-
-        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
-          <Controller
-            control={control}
-            name="campaignName"
-            render={({ field }) => (
-              <Input
-                type="text"
-                placeholder="e.g Summer product launch"
-                label="Campaign Name"
-                error={errors?.campaignName?.message}
-                {...field}
+      <div className="mt-8 space-y-6">
+        {/* Section 1: Campaign Details */}
+        <motion.div
+          custom={0}
+          initial="hidden"
+          animate="visible"
+          variants={sectionVariants}
+          className="bg-card rounded-2xl p-4 md:p-6"
+        >
+          <div className="flex items-center gap-2.5 mb-5">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/40">
+              <FileText
+                size={18}
+                className="text-purple-600 dark:text-purple-400"
               />
-            )}
-          />
+            </div>
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+              Campaign Details
+            </h2>
+          </div>
 
-          <Controller
-            control={control}
-            name="campaignType"
-            render={({ field }) => (
-              <SelectDropdown
-                options={[
-                  { label: "brand awareness", value: "brand_awareness" },
-                  { label: "product launch", value: "product_launch" },
-                  { label: "promotion/sale", value: "promotion_sales" },
-                  { label: "event marketing", value: "event_marketing" },
-                  { label: "lead generation", value: "lead_generation" },
-                ]}
-                placeholder="select campaign type"
-                label="Campaign Type"
-                error={
-                  errors?.campaignType?.message ||
-                  errors?.campaignType?.value?.message
-                }
-                {...field}
-              />
-            )}
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <Controller
+              control={control}
+              name="campaignName"
+              render={({ field }) => (
+                <Input
+                  type="text"
+                  placeholder="e.g Summer product launch"
+                  label="Campaign Name"
+                  error={errors?.campaignName?.message}
+                  {...field}
+                />
+              )}
+            />
 
-          <div className="w-full">
+            <Controller
+              control={control}
+              name="campaignType"
+              render={({ field }) => (
+                <SelectDropdown
+                  options={[
+                    { label: "brand awareness", value: "brand_awareness" },
+                    { label: "product launch", value: "product_launch" },
+                    { label: "promotion/sale", value: "promotion_sales" },
+                    { label: "event marketing", value: "event_marketing" },
+                    { label: "lead generation", value: "lead_generation" },
+                  ]}
+                  placeholder="select campaign type"
+                  label="Campaign Type"
+                  error={
+                    errors?.campaignType?.message ||
+                    errors?.campaignType?.value?.message
+                  }
+                  {...field}
+                />
+              )}
+            />
+
+            <div className="w-full">
+              <div className="space-y-2">
+                <Label>Start Date</Label>
+                <Controller
+                  control={control}
+                  name="startDate"
+                  render={({ field }) => (
+                    <SelectDate
+                      selectedDate={field.value}
+                      onChange={field.onChange}
+                      error={errors.startDate?.message}
+                    />
+                  )}
+                />
+              </div>
+            </div>
+
             <div className="space-y-2">
-              <Label>Start Date</Label>
+              <Label>End Date</Label>
               <Controller
                 control={control}
-                name="startDate"
+                name="endDate"
                 render={({ field }) => (
                   <SelectDate
                     selectedDate={field.value}
                     onChange={field.onChange}
-                    error={errors.startDate?.message}
+                    error={errors?.endDate?.message}
                   />
                 )}
               />
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <Label>End Date</Label>
             <Controller
               control={control}
-              name="endDate"
+              name="callToAction"
               render={({ field }) => (
-                <SelectDate
-                  selectedDate={field.value}
-                  onChange={field.onChange}
-                  error={errors?.endDate?.message}
+                <TextArea
+                  label="Call to Action"
+                  placeholder="What action do you want users to take?"
+                  error={errors?.callToAction?.message}
+                  {...field}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="campaignDescription"
+              render={({ field }) => (
+                <TextArea
+                  label="Campaign Description"
+                  placeholder="Describe your objectives, target audience, and key messages.."
+                  error={errors?.campaignDescription?.message}
+                  {...field}
                 />
               )}
             />
           </div>
+        </motion.div>
 
-          <Controller
-            control={control}
-            name="callToAction"
-            render={({ field }) => (
-              <TextArea
-                label="Call to Action"
-                placeholder="What action do you want users to take?"
-                error={errors?.callToAction?.message}
-                {...field}
+        {/* Section 2: Budget & Goals */}
+        <motion.div
+          custom={1}
+          initial="hidden"
+          animate="visible"
+          variants={sectionVariants}
+          className="bg-card rounded-2xl p-4 md:p-6"
+        >
+          <div className="flex items-center gap-2.5 mb-5">
+            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/40">
+              <Target
+                size={18}
+                className="text-emerald-600 dark:text-emerald-400"
               />
-            )}
-          />
+            </div>
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+              Budget & Goals
+            </h2>
+          </div>
 
-          <Controller
-            control={control}
-            name="campaignDescription"
-            render={({ field }) => (
-              <TextArea
-                label="Campaign Description"
-                placeholder="Describe your objectives, target audience, and key messages.."
-                error={errors?.campaignDescription?.message}
-                {...field}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <Controller
+              control={control}
+              name="totalBudget"
+              render={({ field: { onChange, value, ...field } }) => (
+                <CustomAmountInput
+                  label="Total Budget (NGN)"
+                  type="text"
+                  placeholder="e.g. ₦7,500,000"
+                  value={value ? Number(value).toLocaleString() : ""}
+                  onChange={(e) => handleFormattedNumber(e, onChange)}
+                  error={errors.totalBudget?.message}
+                  required
+                  {...field}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="primaryGoal"
+              render={({ field }) => (
+                <SelectDropdown
+                  options={[
+                    { label: "brand awareness", value: "brand_awareness" },
+                    { label: "website traffic", value: "website_traffic" },
+                    {
+                      label: "sales conversions",
+                      value: "sales_conversions",
+                    },
+                    { label: "engagement", value: "engagement" },
+                    { label: "lead generation", value: "lead_generation" },
+                  ]}
+                  placeholder="select primary goal"
+                  label="Primary Goal"
+                  error={
+                    errors?.primaryGoal?.message ||
+                    errors?.primaryGoal?.value?.message
+                  }
+                  {...field}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="targetAudience"
+              render={({ field }) => (
+                <SelectDropdown
+                  multiSelect
+                  options={[
+                    {
+                      label: "young adults (18 - 24)",
+                      value: "young_adults_18_24",
+                    },
+                    {
+                      label: "adults (25 - 34)",
+                      value: "adults_25_34",
+                    },
+                    {
+                      label: "adults (35 - 44)",
+                      value: "adults_35_44",
+                    },
+                    {
+                      label: "adults (45 - 54)",
+                      value: "adults_45_54",
+                    },
+                    {
+                      label: "seniors (55+)",
+                      value: "seniors_55_plus",
+                    },
+                    {
+                      label: "Business Professionals",
+                      value: "business_professionals",
+                    },
+                  ]}
+                  placeholder="select primary audience"
+                  label="Target Audience"
+                  error={errors?.targetAudience?.message}
+                  {...field}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="location"
+              render={({ field }) => (
+                <Input
+                  type="text"
+                  placeholder="e.g. Lagos, Abuja"
+                  label="Target Locations"
+                  error={errors?.location?.message}
+                  {...field}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="preferredTimeline"
+              render={({ field }) => (
+                <Input
+                  type="text"
+                  label="Preferred Timeline"
+                  placeholder="Any specific deadlines or timeline requirements?"
+                  error={errors?.preferredTimeline?.message}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="keyPerformanceIndicators"
+              render={({ field }) => (
+                <Input
+                  type="text"
+                  label="Key Performance Indicators (KPIs)"
+                  placeholder="List the specific metrics you want to track"
+                  error={errors?.keyPerformanceIndicators?.message}
+                  {...field}
+                />
+              )}
+            />
+          </div>
+        </motion.div>
+
+        {/* Section 3: Media Channels */}
+        <motion.div
+          custom={2}
+          initial="hidden"
+          animate="visible"
+          variants={sectionVariants}
+          className="bg-card rounded-2xl p-4 md:p-6"
+        >
+          <div className="flex items-center gap-2.5 mb-2">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/40">
+              <Megaphone
+                size={18}
+                className="text-blue-600 dark:text-blue-400"
               />
-            )}
-          />
-        </div>
-
-        <h1 className="text-xl font-bold border-b border-border pb-3 mt-10">
-          Budget and Goals
-        </h1>
-
-        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
-          <Controller
-            control={control}
-            name="totalBudget"
-            render={({ field: { onChange, value, ...field } }) => (
-              <CustomAmountInput
-                label="Total Budget (NGN)"
-                type="text"
-                placeholder="e.g. ₦7,500,000"
-                value={value ? Number(value).toLocaleString() : ""}
-                onChange={(e) => handleFormattedNumber(e, onChange)}
-                error={errors.totalBudget?.message}
-                required
-                {...field}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="primaryGoal"
-            render={({ field }) => (
-              <SelectDropdown
-                options={[
-                  { label: "brand awareness", value: "brand_awareness" },
-                  { label: "website traffic", value: "website_traffic" },
-                  { label: "sales conversions", value: "sales_conversions" },
-                  { label: "engagement", value: "engagement" },
-                  { label: "lead generation", value: "lead_generation" },
-                ]}
-                placeholder="select primary goal"
-                label="Primary Goal"
-                error={
-                  errors?.primaryGoal?.message ||
-                  errors?.primaryGoal?.value?.message
-                }
-                {...field}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="targetAudience"
-            render={({ field }) => (
-              <SelectDropdown
-                multiSelect
-                options={[
-                  {
-                    label: "young adults (18 - 24)",
-                    value: "young_adults_18_24",
-                  },
-                  {
-                    label: "adults (25 - 34)",
-                    value: "adults_25_34",
-                  },
-                  {
-                    label: "adults (35 - 44)",
-                    value: "adults_35_44",
-                  },
-                  {
-                    label: "adults (45 - 54)",
-                    value: "adults_45_54",
-                  },
-                  {
-                    label: "seniors (55+)",
-                    value: "seniors_55_plus",
-                  },
-                  {
-                    label: "Business Professionals",
-                    value: "business_professionals",
-                  },
-                ]}
-                placeholder="select primary audience"
-                label="Target Audience"
-                error={errors?.targetAudience?.message}
-                {...field}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="location"
-            render={({ field }) => (
-              <Input
-                type="text"
-                placeholder="e.g. Lagos, Abuja"
-                label="Target Locations"
-                error={errors?.location?.message}
-                {...field}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="preferredTimeline"
-            render={({ field }) => (
-              <Input
-                type="text"
-                label="Preferred Timeline"
-                placeholder="Any specific deadlines or timeline requirements?"
-                error={errors?.preferredTimeline?.message}
-                {...field}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name="keyPerformanceIndicators"
-            render={({ field }) => (
-              <Input
-                type="text"
-                label="Key Performance Indicators (KPIs)"
-                placeholder="List the specific metrics you want to track"
-                error={errors?.keyPerformanceIndicators?.message}
-                {...field}
-              />
-            )}
-          />
-        </div>
-
-        <div className="mt-5">
-          <h1 className="text-xl font-bold border-b border-border pb-3">
-            Campaign Details
-          </h1>
-          <p className="text-sm md:text-base py-4">
-            Select the media channels you want to include in your campaign:
+            </div>
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+              Media Channels
+            </h2>
+          </div>
+          <p className="text-xs text-muted-foreground mb-4">
+            Select the channels you want to include in your campaign
           </p>
-          <div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {mediaChannels.map((channel) => (
-                <div
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+            {mediaChannels.map((channel) => {
+              const selectedCount = selectedItems.filter(
+                (item) => item.channel === channel.id
+              ).length;
+              const isActive = selectedCount > 0;
+              return (
+                <motion.div
                   key={channel.id}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   className={clsx(
-                    "flex flex-col rounded-lg border bg-card p-4 shadow-sm hover:shadow-md cursor-pointer",
-                    selectedChannel === channel.id
-                      ? "border-[#A1238E] ring-2 ring-blue-100 dark:ring-purple-900"
-                      : "border-border"
+                    "relative flex flex-col rounded-xl border p-3.5 cursor-pointer transition-colors",
+                    isActive
+                      ? "border-purple-500 bg-purple-50/50 dark:bg-purple-900/20 dark:border-purple-500/60"
+                      : "border-border bg-background hover:border-foreground/20"
                   )}
                   onClick={() => openModalForChannel(channel)}
                 >
-                  <h3 className="font-semibold text-foreground mb-1">
+                  <div className="flex items-start justify-between mb-2.5">
+                    <div
+                      className={clsx(
+                        "p-2 rounded-lg",
+                        isActive
+                          ? "bg-purple-100 text-purple-600 dark:bg-purple-900/50 dark:text-purple-400"
+                          : "bg-muted text-muted-foreground"
+                      )}
+                    >
+                      {channelIcons[channel.id]}
+                    </div>
+                    {isActive && (
+                      <span className="flex items-center gap-1 text-xs font-medium text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/40 px-2 py-0.5 rounded-full">
+                        <Check size={12} /> {selectedCount}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="font-semibold text-foreground text-sm mb-1">
                     {channel.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-2">
+                  <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
                     {channel.description}
                   </p>
-                  <span className="text-sm text-muted-foreground italic">
-                    {selectedItems.some(
-                      (item) => item.channel === channel.id
-                    ) ? (
-                      getChannelTotalAmount(channel.id)
-                    ) : (
-                      <div></div>
+                  <div className="mt-auto flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">
+                      From {channel.price}
+                    </span>
+                    {isActive && (
+                      <span className="text-xs font-semibold text-purple-600 dark:text-purple-400">
+                        {getChannelTotalAmount(channel.id)}
+                      </span>
                     )}
-                  </span>
-                </div>
-              ))}
-            </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
 
-            <Modal
-              open={modalOpen}
-              openModal={() => setModalOpen(false)}
-              closeBtn
-            >
-              {currentChannel && (
-                <div className="space-y-4">
-                  <DialogTitle>{currentChannel.title} Options</DialogTitle>
+          <Modal
+            open={modalOpen}
+            openModal={() => setModalOpen(false)}
+            closeBtn
+          >
+            {currentChannel && (
+              <div className="space-y-4">
+                <DialogTitle className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400">
+                    {channelIcons[currentChannel.id]}
+                  </div>
+                  {currentChannel.title} Options
+                </DialogTitle>
 
-                  <p className="text-sm text-muted-foreground">
-                    {currentChannel.description}
-                  </p>
-                  {currentChannel.options.map((option: string) => {
-                    const key = `${currentChannel.id}-${option}`;
-                    const isSelected = selectedItems.some(
-                      (item) =>
-                        item.channel === currentChannel.id &&
-                        item.option === option
-                    );
-                    const sliderData = sliderValues[key] || {
-                      amount: 10,
-                      duration: 0,
-                    };
+                <p className="text-sm text-muted-foreground">
+                  {currentChannel.description}
+                </p>
+                {currentChannel.options.map((option: string) => {
+                  const key = `${currentChannel.id}-${option}`;
+                  const isSelected = selectedItems.some(
+                    (item) =>
+                      item.channel === currentChannel.id &&
+                      item.option === option
+                  );
+                  const sliderData = sliderValues[key] || {
+                    amount: 10,
+                    duration: 0,
+                  };
 
-                    return (
-                      <div key={option} className="flex flex-col gap-1">
-                        <label className="inline-flex items-center gap-2 text-sm text-foreground">
-                          <input
-                            className="h-4 w-4 accent-[#59044c]"
-                            type="checkbox"
-                            checked={isSelected}
-                            onChange={() =>
-                              toggleOption(currentChannel.id, option)
-                            }
-                          />
-                          <span className="capitalize">
-                            {option.replace(/_/g, " ")}
-                          </span>
-                        </label>
+                  return (
+                    <div
+                      key={option}
+                      className={clsx(
+                        "rounded-lg border p-3 transition-colors",
+                        isSelected
+                          ? "border-purple-200 bg-purple-50/50 dark:border-purple-800 dark:bg-purple-900/10"
+                          : "border-border"
+                      )}
+                    >
+                      <label className="inline-flex items-center gap-2 text-sm font-medium text-foreground cursor-pointer">
+                        <input
+                          className="h-4 w-4 accent-[#59044c]"
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() =>
+                            toggleOption(currentChannel.id, option)
+                          }
+                        />
+                        <span className="capitalize">
+                          {option.replace(/_/g, " ")}
+                        </span>
+                      </label>
 
-                        {currentChannel.id === "SOCIAL_MEDIA" && isSelected && (
-                          <input
-                            type="text"
-                            placeholder="Enter your handle"
-                            className="w-full rounded border p-2 text-sm"
-                            onChange={(e) =>
-                              updateHandle(
-                                currentChannel.id,
-                                option,
-                                e.target.value
-                              )
-                            }
-                          />
-                        )}
+                      {currentChannel.id === "SOCIAL_MEDIA" && isSelected && (
+                        <input
+                          type="text"
+                          placeholder="Enter your handle"
+                          className="w-full mt-2 rounded-lg border border-border bg-background p-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+                          onChange={(e) =>
+                            updateHandle(
+                              currentChannel.id,
+                              option,
+                              e.target.value
+                            )
+                          }
+                        />
+                      )}
 
-                        {isSelected && (
-                          <div className="pt-4 pl-6">
+                      {isSelected && (
+                        <div className="pt-3 pl-6 space-y-3">
+                          <div>
                             <label className="text-sm font-medium text-foreground">
                               {currentChannel.id === "SOCIAL_MEDIA"
                                 ? "Campaign Budget"
@@ -790,152 +935,201 @@ const NewCampaign = () => {
                               step={10}
                               type="amount"
                             />
-
-                            {currentChannel.id === "RADIO" ||
-                            currentChannel.id === "TELEVISION" ? (
-                              <DurationSelector
-                                channelId={currentChannel.id}
-                                option={option}
-                                selectedItems={selectedItems}
-                                setSelectedItems={setSelectedItems}
-                                sliderValues={sliderValues}
-                                setSliderValues={setSliderValues}
-                                control={control}
-                                name={`duration_${currentChannel.id}_${option}`}
-                              />
-                            ) : (
-                              <>
-                                <label className="text-sm font-medium text-foreground mt-4 block">
-                                  Duration (Days)
-                                </label>
-                                <SmoothSlider
-                                  value={sliderData.duration}
-                                  setValue={(value) =>
-                                    updateSliderValue(
-                                      currentChannel.id,
-                                      option,
-                                      "duration",
-                                      value
-                                    )
-                                  }
-                                  min={0}
-                                  max={100}
-                                  step={1}
-                                  type="duration"
-                                />
-                              </>
-                            )}
-
-                            {currentChannel.id === "SOCIAL_MEDIA" && (
-                              <div className="text-[#59044c] mt-2 font-medium text-sm">
-                                Estimated Reach:{" "}
-                                <span className="font-bold">
-                                  {estimateReach(
-                                    sliderData.amount,
-                                    sliderData.duration
-                                  )}{" "}
-                                  people
-                                </span>
-                              </div>
-                            )}
                           </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                  <div className="mt-4 flex justify-end">
-                    <Button
-                      className="bg-[#A1238E] hover:bg-[#59044c] w-fit capitalize py-2 px-4 text-sm text-white font-medium"
-                      text="Okay"
-                      onClick={() => setModalOpen(false)}
-                    />
-                  </div>
+
+                          {currentChannel.id === "RADIO" ||
+                          currentChannel.id === "TELEVISION" ? (
+                            <DurationSelector
+                              channelId={currentChannel.id}
+                              option={option}
+                              selectedItems={selectedItems}
+                              setSelectedItems={setSelectedItems}
+                              sliderValues={sliderValues}
+                              setSliderValues={setSliderValues}
+                              control={control}
+                              name={`duration_${currentChannel.id}_${option}`}
+                            />
+                          ) : (
+                            <div>
+                              <label className="text-sm font-medium text-foreground block">
+                                Duration (Days)
+                              </label>
+                              <SmoothSlider
+                                value={sliderData.duration}
+                                setValue={(value) =>
+                                  updateSliderValue(
+                                    currentChannel.id,
+                                    option,
+                                    "duration",
+                                    value
+                                  )
+                                }
+                                min={0}
+                                max={100}
+                                step={1}
+                                type="duration"
+                              />
+                            </div>
+                          )}
+
+                          {currentChannel.id === "SOCIAL_MEDIA" && (
+                            <div className="text-purple-600 dark:text-purple-400 font-medium text-sm">
+                              Estimated Reach:{" "}
+                              <span className="font-bold">
+                                {estimateReach(
+                                  sliderData.amount,
+                                  sliderData.duration
+                                )}{" "}
+                                people
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+                <div className="mt-4 flex justify-end">
+                  <Button
+                    className="bg-[#A1238E] hover:bg-[#59044c] w-fit capitalize py-2 px-5 text-sm text-white font-medium rounded-lg"
+                    text="Done"
+                    onClick={() => setModalOpen(false)}
+                  />
                 </div>
-              )}
-            </Modal>
-          </div>
-        </div>
-        <div className="mt-10">
-          <h1 className="text-xl font-bold border-b border-border pb-3">
-            Additional Information
-          </h1>
+              </div>
+            )}
+          </Modal>
+        </motion.div>
 
-          <div className="mt-5">
-            <Controller
-              control={control}
-              name="instructionsRequirements"
-              render={({ field }) => (
-                <TextArea
-                  label="Special Instructions or Requirements"
-                  placeholder="Any additional information we should know..."
-                  error={errors?.instructionsRequirements?.message}
-                  {...field}
-                />
-              )}
-            />
-          </div>
-        </div>
-
-        <div className="mt-10">
-          <h1 className="text-xl font-bold border-b border-border pb-3">
-            Request Creative Designs
-          </h1>
-          <div className="mt-5 space-y-4 space-x-4">
-            <label className="inline-flex items-center gap-2 text-sm text-foreground">
-              <input
-                type="checkbox"
-                checked={creativeDesigns.banner}
-                onChange={() => handleCreativeDesignChange("banner")}
-                className="h-4 w-4 accent-[#59044c]"
-              />
-              <span>Banner</span>
-            </label>
-            <label className="inline-flex items-center gap-2 text-sm text-foreground">
-              <input
-                type="checkbox"
-                checked={creativeDesigns.audio}
-                onChange={() => handleCreativeDesignChange("audio")}
-                className="h-4 w-4 accent-[#59044c]"
-              />
-              <span>Audio</span>
-            </label>
-            <label className="inline-flex items-center gap-2 text-sm text-foreground">
-              <input
-                type="checkbox"
-                checked={creativeDesigns.video}
-                onChange={() => handleCreativeDesignChange("video")}
-                className="h-4 w-4 accent-[#59044c]"
-              />
-              <span>Video</span>
-            </label>
-          </div>
-        </div>
-
-        <div className="mt-10">
-          <h1 className="text-xl font-bold border-b border-border pb-3">
-            Upload Creative Designs
-          </h1>
-          <div className="mt-5">
-            <div className="">
-              <DragnDropMulti
-                title=""
-                onChange={handleChangePdf}
-                accept=".pdf,.docx,.jpeg,.png,.jpg,.JPG,.PNG,.JPEG"
-                files={files}
-                onDelete={handleDeletePdf}
+        {/* Section 4: Additional Information */}
+        <motion.div
+          custom={3}
+          initial="hidden"
+          animate="visible"
+          variants={sectionVariants}
+          className="bg-card rounded-2xl p-4 md:p-6"
+        >
+          <div className="flex items-center gap-2.5 mb-5">
+            <div className="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/40">
+              <MessageSquare
+                size={18}
+                className="text-amber-600 dark:text-amber-400"
               />
             </div>
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+              Additional Information
+            </h2>
           </div>
-        </div>
 
-        <div className="w-fit flex items-center justify-center mt-3">
+          <Controller
+            control={control}
+            name="instructionsRequirements"
+            render={({ field }) => (
+              <TextArea
+                label="Special Instructions or Requirements"
+                placeholder="Any additional information we should know..."
+                error={errors?.instructionsRequirements?.message}
+                {...field}
+              />
+            )}
+          />
+        </motion.div>
+
+        {/* Section 5: Creative Designs */}
+        <motion.div
+          custom={4}
+          initial="hidden"
+          animate="visible"
+          variants={sectionVariants}
+          className="bg-card rounded-2xl p-4 md:p-6"
+        >
+          <div className="flex items-center gap-2.5 mb-5">
+            <div className="p-2 rounded-lg bg-pink-100 dark:bg-pink-900/40">
+              <Palette
+                size={18}
+                className="text-pink-600 dark:text-pink-400"
+              />
+            </div>
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+              Request Creative Designs
+            </h2>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            {[
+              { key: "banner", label: "Banner", icon: ImageIcon },
+              { key: "audio", label: "Audio", icon: Music },
+              { key: "video", label: "Video", icon: Video },
+            ].map((item) => {
+              const Icon = item.icon;
+              const isActive =
+                creativeDesigns[
+                  item.key as keyof typeof creativeDesigns
+                ];
+              return (
+                <button
+                  key={item.key}
+                  type="button"
+                  onClick={() => handleCreativeDesignChange(item.key)}
+                  className={clsx(
+                    "flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-all",
+                    isActive
+                      ? "border-purple-500 bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-500/60"
+                      : "border-border bg-background text-muted-foreground hover:border-foreground/20"
+                  )}
+                >
+                  <Icon size={16} />
+                  <span>{item.label}</span>
+                  {isActive && <Check size={14} />}
+                </button>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        {/* Section 6: Upload */}
+        <motion.div
+          custom={5}
+          initial="hidden"
+          animate="visible"
+          variants={sectionVariants}
+          className="bg-card rounded-2xl p-4 md:p-6"
+        >
+          <div className="flex items-center gap-2.5 mb-5">
+            <div className="p-2 rounded-lg bg-sky-100 dark:bg-sky-900/40">
+              <UploadIcon
+                size={18}
+                className="text-sky-600 dark:text-sky-400"
+              />
+            </div>
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+              Upload Creative Designs
+            </h2>
+          </div>
+
+          <DragnDropMulti
+            title=""
+            onChange={handleChangePdf}
+            accept=".pdf,.docx,.jpeg,.png,.jpg,.JPG,.PNG,.JPEG"
+            files={files}
+            onDelete={handleDeletePdf}
+          />
+        </motion.div>
+
+        {/* Submit */}
+        <motion.div
+          custom={6}
+          initial="hidden"
+          animate="visible"
+          variants={sectionVariants}
+        >
           <Button
-            className="bg-[#A1238E] hover:bg-[#59044c] capitalize py-2.5 px-4 text-sm text-white font-medium"
+            className="w-full md:w-auto bg-[#A1238E] hover:bg-[#59044c] capitalize py-3 px-8 text-sm text-white font-semibold rounded-lg"
             text="Create Campaign"
             onClick={handleCreate}
             loading={isSubmitting}
           />
-        </div>
+        </motion.div>
       </div>
     </div>
   );

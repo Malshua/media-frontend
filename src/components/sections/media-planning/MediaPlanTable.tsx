@@ -16,7 +16,38 @@ import { Routes } from "@/utilities/routes";
 import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
 import React, { useMemo } from "react";
-import { MoreVertical } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  MoreVertical,
+  ChevronRight,
+  FileText,
+  Megaphone,
+  Rocket,
+  ShoppingBag,
+  CalendarHeart,
+  Target,
+} from "lucide-react";
+
+const campaignTypeIcon: Record<string, React.ElementType> = {
+  brand_awareness: Megaphone,
+  product_launch: Rocket,
+  promotion_sales: ShoppingBag,
+  event_marketing: CalendarHeart,
+  lead_generation: Target,
+};
+
+const campaignTypeColor: Record<string, string> = {
+  brand_awareness:
+    "bg-purple-100 text-purple-600 dark:bg-purple-900/40 dark:text-purple-300",
+  product_launch:
+    "bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-300",
+  promotion_sales:
+    "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-300",
+  event_marketing:
+    "bg-pink-100 text-pink-600 dark:bg-pink-900/40 dark:text-pink-300",
+  lead_generation:
+    "bg-amber-100 text-amber-600 dark:bg-amber-900/40 dark:text-amber-300",
+};
 
 function MediaPlanTable() {
   const { data: mediaPlans, isLoading } = useGetMediaPlans();
@@ -86,80 +117,114 @@ function MediaPlanTable() {
   ];
 
   return (
-    <div className="bg-card p-5 shadow-sm rounded-lg px-3 mx-4">
-      <div className=" mb-5 md:px-4">
-        <h1 className="font-bold text-base md:text-lg text-foreground">
-          Media Plans
-        </h1>
+    <>
+      {/* Desktop: Table inside card */}
+      <div className="hidden md:block bg-card p-5 shadow-sm rounded-2xl overflow-hidden">
+        <div className="mb-5 px-4">
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+            All Plans
+          </h2>
+        </div>
+        {isLoading ? (
+          <TableSkeleton />
+        ) : info?.all?.length < 1 ? (
+          <EmptyState />
+        ) : (
+          <Table columns={columns} data={info?.all} />
+        )}
       </div>
-      {isLoading ? (
-        <TableSkeleton />
-      ) : info?.all?.length < 1 ? (
-        <EmptyState />
-      ) : (
-        <div>
-          <div className="hidden md:block">
-            <Table columns={columns} data={info?.all} />
+
+      {/* Mobile: Card list */}
+      <div className="block md:hidden">
+        {isLoading ? (
+          <div className="space-y-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="h-20 rounded-xl bg-muted animate-pulse"
+              />
+            ))}
           </div>
-          <div className="block md:hidden">
+        ) : !info?.all?.length ? (
+          <div className="flex flex-col items-center py-16 gap-3">
+            <div className="h-14 w-14 rounded-full bg-muted flex items-center justify-center">
+              <FileText size={24} className="text-muted-foreground" />
+            </div>
+            <p className="text-sm text-muted-foreground text-center">
+              No media plans yet
+            </p>
+            <Link href={Routes.NEW_CAMPAIGN}>
+              <div className="px-4 py-2 rounded-lg bg-[#A1238E] text-white text-xs font-medium active:scale-95 transition-transform">
+                Create a campaign
+              </div>
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-2">
             {info?.all.map((ro: any, i: number) => {
+              const Icon =
+                campaignTypeIcon[ro?.campaignType] || FileText;
+              const iconColor =
+                campaignTypeColor[ro?.campaignType] ||
+                "bg-muted text-muted-foreground";
+
               return (
-                <div
-                  key={i}
-                  className="border px-2 py-4 rounded-md flex items-start justify-between"
+                <motion.div
+                  key={ro?.campaignId || i}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30,
+                    delay: i * 0.04,
+                  }}
                 >
-                  <div className="">
-                    <div className="flex flex-col gap-1">
-                      <div className="font-semibold text-lg">
+                  <Link
+                    href={`${Routes?.MEDIA_PLANNING}/${ro?.campaignId}`}
+                    className="flex items-center gap-3 p-3 rounded-xl bg-card active:bg-muted/60 transition-colors"
+                  >
+                    <div
+                      className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${iconColor}`}
+                    >
+                      <Icon size={18} />
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">
                         {ro?.campaignName}
-                      </div>
-
-                      <div className="whitespace-nowrap capitalize text-green-800 font-medium">
-                        {ro?.campaignType.replace(/_/g, " ")}
-                      </div>
-
-                      <div className="w-fit py-1 flex items-center gap-2 rounded-2xl capitalize">
-                        ₦{moneyFormat(ro?.budget)}
-                      </div>
+                      </p>
+                      <p className="text-xs text-muted-foreground capitalize">
+                        {ro?.campaignType?.replace(/_/g, " ")} ·{" "}
+                        <span className="font-medium text-foreground">
+                          ₦{moneyFormat(ro?.budget)}
+                        </span>
+                      </p>
                     </div>
-                  </div>
 
-                  <div className="flex flex-col items-end gap-10">
-                    <>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <Link
-                            href={`${Routes?.MEDIA_PLANNING}/${ro?.campaignId}`}
-                            className="text-[#A1238E] font-medium underline cursor-default hover:text-[#59044c]"
-                          >
-                            <DropdownMenuItem>View details</DropdownMenuItem>
-                          </Link>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </>
-                    <div className="pr-2">
-                      {
-                        <GetStatusBadge
-                          status={
-                            ro?.adminApprovalStatus ? "active" : "inactive"
-                          }
-                        />
-                      }
+                    <div className="flex items-center gap-2 shrink-0">
+                      <GetStatusBadge
+                        status={
+                          ro?.adminApprovalStatus === "approved"
+                            ? "active"
+                            : ro?.adminApprovalStatus === "rejected"
+                            ? "rejected"
+                            : "pending"
+                        }
+                      />
+                      <ChevronRight
+                        size={16}
+                        className="text-muted-foreground"
+                      />
                     </div>
-                  </div>
-                </div>
+                  </Link>
+                </motion.div>
               );
             })}
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 }
 
